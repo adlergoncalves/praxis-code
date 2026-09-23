@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "description": "Fonte canonica dos hooks de aprendizado do kit Praxis. O bloco `hooks` deve ser identico ao de .claude/settings.json (verificado pelo CI em scripts/validate-kit.mjs). NAO referencie paths que nao existam em `scripts`.",
+  "scripts": [
+    "_lib.mjs",
+    "reconcile.mjs",
+    "capture.mjs"
+  ],
+  "seeds": [
+    "docs/project/learnings/ledger.md"
+  ],
+  "gitignore": [
+    ".claude/hooks/.capture-cursor.json",
+    "docs/project/state.md"
+  ],
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/reconcile.mjs\" 2>/dev/null || true",
+            "timeout": 10,
+            "statusMessage": "Praxis: reconciliando estado e aprendizado"
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/reconcile.mjs\" 2>/dev/null || true",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/capture.mjs\" 2>/dev/null || true",
+            "timeout": 20,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "SubagentStop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/capture.mjs\" 2>/dev/null || true",
+            "timeout": 20,
+            "async": true
+          }
+        ]
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/capture.mjs\" 2>/dev/null || true",
+            "timeout": 20
+          }
+        ]
+      }
+    ],
+    "SessionEnd": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/capture.mjs\" 2>/dev/null || true",
+            "timeout": 20
+          }
+        ]
+      }
+    ]
+  }
+}

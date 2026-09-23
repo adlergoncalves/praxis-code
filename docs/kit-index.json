@@ -1,0 +1,694 @@
+{
+  "skills": [
+    {
+      "name": "adopt",
+      "path": ".claude/skills/adopt/SKILL.md",
+      "description": "Linha 3: Adocao de projeto existente. Mapeia, documenta e padroniza um projeto em andamento para uso completo do kit, sem impacto no codigo.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/discovery/codebase-mapper.md",
+        ".claude/agents/discovery/discovery.md",
+        ".claude/agents/architecture/adr-creator.md",
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/skills/validate/SKILL.md"
+      ]
+    },
+    {
+      "name": "analyze",
+      "path": ".claude/skills/analyze/SKILL.md",
+      "description": "Analise de consistencia cross-artefato (spec ↔ plan ↔ tasks). Detecta duplicacoes, gaps e inconsistencias.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/quality/analyzer.md",
+        ".claude/skills/clarify/SKILL.md"
+      ]
+    },
+    {
+      "name": "architect",
+      "path": ".claude/skills/architect/SKILL.md",
+      "description": "Fase 3: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/architecture/adr-creator.md"
+      ]
+    },
+    {
+      "name": "backend-scaffold",
+      "path": ".claude/skills/backend-scaffold/SKILL.md",
+      "description": "Roteador de scaffolding backend. Direciona para o agent correto (UseCase, Aggregate, Endpoint).",
+      "domain": null,
+      "depends": [
+        ".claude/agents/backend/scaffold-aggregate.md"
+      ]
+    },
+    {
+      "name": "backend-validate",
+      "path": ".claude/skills/backend-validate/SKILL.md",
+      "description": "Orquestra os 6 agents de validacao backend. Suporta modo paralelo (rapido) e sequencial (interativo).",
+      "domain": null,
+      "depends": [
+        ".claude/agents/backend/check-architecture.md",
+        ".claude/agents/backend/check-ddd.md",
+        ".claude/agents/backend/check-naming.md",
+        ".claude/agents/backend/check-tests.md",
+        ".claude/agents/backend/check-errors.md",
+        ".claude/agents/backend/check-security.md"
+      ]
+    },
+    {
+      "name": "checklist",
+      "path": ".claude/skills/checklist/SKILL.md",
+      "description": "Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "clarify",
+      "path": ".claude/skills/clarify/SKILL.md",
+      "description": "Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas e integra respostas na spec.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/product/clarifier.md"
+      ]
+    },
+    {
+      "name": "ddd-estrategico",
+      "path": ".claude/skills/ddd-estrategico/SKILL.md",
+      "description": "Fase 3 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/architecture/ddd-estrategico.md"
+      ]
+    },
+    {
+      "name": "debug",
+      "path": ".claude/skills/debug/SKILL.md",
+      "description": "Investigacao de bugs — entender, pesquisar, identificar causa raiz, propor e aplicar fix. Mais leve que /implement, mais pesado que /quickfix.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "define",
+      "path": ".claude/skills/define/SKILL.md",
+      "description": "Fase 2: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)",
+      "domain": null,
+      "depends": [
+        ".claude/skills/prd-create/SKILL.md",
+        ".claude/skills/prd-validate/SKILL.md",
+        ".claude/skills/prd-decompose/SKILL.md",
+        ".claude/skills/spec-from-prd/SKILL.md"
+      ]
+    },
+    {
+      "name": "design",
+      "path": ".claude/skills/design/SKILL.md",
+      "description": "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancorado no Charter.",
+      "domain": "frontend",
+      "depends": [
+        ".claude/agents/frontend/design.md",
+        ".claude/reference/frontend/heuristics.md",
+        ".claude/reference/frontend/cognitive-load.md",
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/register-product.md",
+        ".claude/reference/frontend/register-brand.md",
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/reference/frontend/adapter-react-vite-shadcn.md",
+        ".claude/reference/frontend/adapter-react-next-shadcn.md",
+        ".claude/reference/frontend/adapter-angular-material.md",
+        ".claude/reference/frontend/adapter-vue-vuetify.md"
+      ]
+    },
+    {
+      "name": "detail",
+      "path": ".claude/skills/detail/SKILL.md",
+      "description": "Fase 2 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/product/module-detailer.md"
+      ]
+    },
+    {
+      "name": "discovery",
+      "path": ".claude/skills/discovery/SKILL.md",
+      "description": "Fase 1: Discovery — Entendimento completo do projeto antes de qualquer decisao",
+      "domain": null,
+      "depends": [
+        ".claude/agents/discovery/discovery.md"
+      ]
+    },
+    {
+      "name": "ds-component",
+      "path": ".claude/skills/ds-component/SKILL.md",
+      "description": "Adiciona componente ao Design System — Busca, instala, customiza e cria showcase no design-system.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/frontend/ds-component.md"
+      ]
+    },
+    {
+      "name": "ds-init",
+      "path": ".claude/skills/ds-init/SKILL.md",
+      "description": "Inicializa Design System — Extrai tokens de screenshot, cria design-system isolado e gera ADR.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/frontend/ds-foundation.md"
+      ]
+    },
+    {
+      "name": "execute",
+      "path": ".claude/skills/execute/SKILL.md",
+      "description": "Sub-fase 5c: Executa em LOOP por fatia vertical (1 fatia = 1 User Story): implementa, roda gates, conserta ate verde (micro-loop), marca DONE no Loop Log e PARA (checkpoint; --auto encadeia). Loop Engineering (ADR-0007).",
+      "domain": null,
+      "depends": [
+        ".claude/agents/delivery/executor.md"
+      ]
+    },
+    {
+      "name": "frontend-validate",
+      "path": ".claude/skills/frontend-validate/SKILL.md",
+      "description": "Orquestra os 10 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo).",
+      "domain": null,
+      "depends": [
+        ".claude/agents/frontend/check-structure.md",
+        ".claude/agents/frontend/check-typescript.md",
+        ".claude/agents/frontend/check-react.md",
+        ".claude/agents/frontend/check-forms.md",
+        ".claude/agents/frontend/check-i18n.md",
+        ".claude/agents/frontend/check-routing.md",
+        ".claude/agents/frontend/check-responsiveness.md",
+        ".claude/agents/frontend/check-design.md",
+        ".claude/agents/frontend/check-ux.md",
+        ".claude/agents/frontend/check-security-frontend.md"
+      ]
+    },
+    {
+      "name": "implement",
+      "path": ".claude/skills/implement/SKILL.md",
+      "description": "Fase 5: Implementacao — Plan + Tasks + Execute. Planeja tecnicamente, quebra em tasks e executa respeitando ADRs.",
+      "domain": null,
+      "depends": [
+        ".claude/skills/plan/SKILL.md",
+        ".claude/skills/tasks/SKILL.md",
+        ".claude/skills/execute/SKILL.md"
+      ]
+    },
+    {
+      "name": "mode",
+      "path": ".claude/skills/mode/SKILL.md",
+      "description": "Alterna entre modo lite (simples, rapido) e full (completo, profissional). Afeta como todo o pipeline se comporta.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "plan",
+      "path": ".claude/skills/plan/SKILL.md",
+      "description": "Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/delivery/planner.md"
+      ]
+    },
+    {
+      "name": "praxis",
+      "path": ".claude/skills/praxis/SKILL.md",
+      "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/orchestration/praxis.md"
+      ]
+    },
+    {
+      "name": "prd-coverage",
+      "path": ".claude/skills/prd-coverage/SKILL.md",
+      "description": "Mostra progresso: quantas user stories do PRD foram transformadas em specs e quantas faltam.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "prd-create",
+      "path": ".claude/skills/prd-create/SKILL.md",
+      "description": "Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "prd-decompose",
+      "path": ".claude/skills/prd-decompose/SKILL.md",
+      "description": "Decompoe PRD tatico em specs independentes. Identifica dependencias e propoe ordem de implementacao.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "prd-validate",
+      "path": ".claude/skills/prd-validate/SKILL.md",
+      "description": "Valida PRD contra template canonico. Read-only — reporta mas nao corrige.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "prototype",
+      "path": ".claude/skills/prototype/SKILL.md",
+      "description": "Gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System real do projeto.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/frontend/paper-prototype.md"
+      ]
+    },
+    {
+      "name": "quickfix",
+      "path": ".claude/skills/quickfix/SKILL.md",
+      "description": "Escape hatch para trabalho trivial — bugfix, ajuste de CSS, correcao de typo. Sem cerimonia, com validacao minima.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "revalidate",
+      "path": ".claude/skills/revalidate/SKILL.md",
+      "description": "Fase 7: Revalidacao cirurgica. Le relatorio existente e re-checa apenas itens pendentes. Detecta regressoes.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/quality/revalidator.md"
+      ]
+    },
+    {
+      "name": "reverse-engineer",
+      "path": ".claude/skills/reverse-engineer/SKILL.md",
+      "description": "Fase 0: Engenharia reversa de projeto legado. Documenta logica de negocio, fluxos, telas e regras antes de modernizar.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/discovery/legacy-analyzer.md",
+        ".claude/agents/discovery/codebase-mapper.md",
+        ".claude/skills/discovery/SKILL.md"
+      ]
+    },
+    {
+      "name": "review",
+      "path": ".claude/skills/review/SKILL.md",
+      "description": "Self-review antes de commit — analisa git diff contra ADRs e SOLID. Mais leve que /validate.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/quality/solid-review.md"
+      ]
+    },
+    {
+      "name": "setup",
+      "path": ".claude/skills/setup/SKILL.md",
+      "description": "Setup interativo do template — pergunta stack, modulos e gera CLAUDE.md personalizado para o projeto.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "spec-from-prd",
+      "path": ".claude/skills/spec-from-prd/SKILL.md",
+      "description": "Transforma feature do PRD em spec tecnica detalhada para o dev. Le PRD, ADRs e specs existentes.",
+      "domain": null,
+      "depends": []
+    },
+    {
+      "name": "spec-review",
+      "path": ".claude/skills/spec-review/SKILL.md",
+      "description": "Valida se uma spec tecnica esta pronta para implementacao — criterios de aceite, edge cases, alinhamento com ADRs e learnings aplicaveis. Gate leve antes do /implement.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/quality/spec-review.md",
+        ".claude/skills/clarify/SKILL.md"
+      ]
+    },
+    {
+      "name": "start",
+      "path": ".claude/skills/start/SKILL.md",
+      "description": "Ponto de entrada do kit. Identifica a linha de trabalho (novo, legado, adocao) e guia o usuario pelo pipeline correto.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/orchestration/praxis.md"
+      ]
+    },
+    {
+      "name": "strategy",
+      "path": ".claude/skills/strategy/SKILL.md",
+      "description": "Estrategia de Negocio — Avalia ideias, prioriza features, discute modelos de negocio e questiona premissas antes de entrar no pipeline tecnico.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/discovery/strategy.md"
+      ]
+    },
+    {
+      "name": "tasks",
+      "path": ".claude/skills/tasks/SKILL.md",
+      "description": "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato (valor, PRONTO file-level, verificacao manual, refs) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
+      "domain": null,
+      "depends": [
+        ".claude/agents/delivery/task-breaker.md"
+      ]
+    },
+    {
+      "name": "ux",
+      "path": ".claude/skills/ux/SKILL.md",
+      "description": "Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/frontend/ux.md"
+      ]
+    },
+    {
+      "name": "validate",
+      "path": ".claude/skills/validate/SKILL.md",
+      "description": "Fase 6: Validacao — Orquestrador principal. Despacha agents core + frontend + backend conforme stack do projeto.",
+      "domain": null,
+      "depends": [
+        ".claude/agents/quality/solid-review.md",
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/skills/frontend-validate/SKILL.md",
+        ".claude/skills/backend-validate/SKILL.md"
+      ]
+    },
+    {
+      "name": "verify-all",
+      "path": ".claude/skills/verify-all/SKILL.md",
+      "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
+      "domain": null,
+      "depends": []
+    }
+  ],
+  "agents": [
+    {
+      "name": "adr-creator",
+      "domain": "architecture",
+      "path": ".claude/agents/architecture/adr-creator.md",
+      "description": "Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.",
+      "depends": []
+    },
+    {
+      "name": "adr-validator",
+      "domain": "architecture",
+      "path": ".claude/agents/architecture/adr-validator.md",
+      "description": "Agente dinamico que le TODAS as ADRs do projeto e valida codigo contra as regras definidas nelas. Funciona com qualquer ADR — nao tem regras hardcoded.",
+      "depends": []
+    },
+    {
+      "name": "ddd-estrategico",
+      "domain": "architecture",
+      "path": ".claude/agents/architecture/ddd-estrategico.md",
+      "description": "Especialista Senior em DDD Estrategico e Identificacao de Bounded Contexts. Use para modelagem de dominio, identificacao de subdominios, classificacao estrategica (Core/Supporting/Generic), analise de linguagem ubiqua, definicao de Bounded Contexts e construcao de Context Maps.",
+      "depends": []
+    },
+    {
+      "name": "check-architecture",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-architecture.md",
+      "description": "Valida dependencias entre camadas arquiteturais. Detecta violacoes de Clean Architecture, imports invertidos, Service Locator, Leaky Abstractions e ausencia de patterns estruturais importantes.",
+      "depends": []
+    },
+    {
+      "name": "check-ddd",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-ddd.md",
+      "description": "Valida DDD tactical patterns — aggregates, entities, VOs, encapsulamento, domain events, acoplamento entre agregados. Detecta anemic models, public setters e oportunidades de evolucao arquitetural.",
+      "depends": []
+    },
+    {
+      "name": "check-errors",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-errors.md",
+      "description": "Valida exception handling, logging estruturado e observabilidade. Detecta try/catch em handlers, swallowing de excecoes, logging nao estruturado e ausencia de correlation ID.",
+      "depends": []
+    },
+    {
+      "name": "check-naming",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-naming.md",
+      "description": "Valida convencoes de nomes em qualquer linguagem OO — classes, metodos, variaveis, sufixos. Detecta nomes genericos, abreviacoes, inconsistencias e violacoes de linguagem ubiqua do dominio.",
+      "depends": []
+    },
+    {
+      "name": "check-security",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-security.md",
+      "description": "Valida seguranca backend — SQL injection, autenticacao/autorizacao em endpoints, secrets, sanitizacao de input, audit trail e RBAC/ABAC. Detecta vulnerabilidades e oportunidades de evolucao de seguranca.",
+      "depends": []
+    },
+    {
+      "name": "check-tests",
+      "domain": "backend",
+      "path": ".claude/agents/backend/check-tests.md",
+      "description": "Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.",
+      "depends": []
+    },
+    {
+      "name": "scaffold-aggregate",
+      "domain": "backend",
+      "path": ".claude/agents/backend/scaffold-aggregate.md",
+      "description": "Gera Aggregate Root com private setters, factory method, audit fields e unit tests.",
+      "depends": []
+    },
+    {
+      "name": "executor",
+      "domain": "delivery",
+      "path": ".claude/agents/delivery/executor.md",
+      "description": "Executa em loop por fatia vertical (1 fatia = 1 User Story) — implementa, roda gates, conserta ate verde (micro-loop), marca DONE no Loop Log e PARA para revisao humana. Checkpoint por fatia; --auto encadeia com guardrails. Loop Engineering (ADR-0007).",
+      "depends": []
+    },
+    {
+      "name": "planner",
+      "domain": "delivery",
+      "path": ".claude/agents/delivery/planner.md",
+      "description": "Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.",
+      "depends": []
+    },
+    {
+      "name": "task-breaker",
+      "domain": "delivery",
+      "path": ".claude/agents/delivery/task-breaker.md",
+      "description": "Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
+      "depends": []
+    },
+    {
+      "name": "codebase-mapper",
+      "domain": "discovery",
+      "path": ".claude/agents/discovery/codebase-mapper.md",
+      "description": "Documentarista de codebase para legados. Mapeia a estrutura, padroes e dependencias do codigo existente SEM julgar ou opinar. Apenas documenta o que existe.",
+      "depends": []
+    },
+    {
+      "name": "discovery",
+      "domain": "discovery",
+      "path": ".claude/agents/discovery/discovery.md",
+      "description": "Agente de Discovery que entende o projeto completamente antes de qualquer decisao. Faz perguntas estruturadas e progressivas sobre negocio, stack, time e restricoes. NAO avanca sem entendimento completo.",
+      "depends": []
+    },
+    {
+      "name": "legacy-analyzer",
+      "domain": "discovery",
+      "path": ".claude/agents/discovery/legacy-analyzer.md",
+      "description": "Engenharia reversa completa de projetos legados. Documenta logica de negocio, fluxos, telas, regras e estrutura. Pode solicitar prints e descricoes de telas ao usuario. Produz documentacao suficiente para reconstruir o sistema sem acessar o legado novamente.",
+      "depends": [
+        ".claude/agents/discovery/codebase-mapper.md"
+      ]
+    },
+    {
+      "name": "strategy",
+      "domain": "discovery",
+      "path": ".claude/agents/discovery/strategy.md",
+      "description": "Estrategista de Negocio Senior que pensa junto com o usuario para avaliar ideias, discutir features, priorizar, questionar premissas e garantir que o produto tem potencial real antes de entrar no pipeline tecnico. Conversacional, opinativo e orientado a resultados de negocio.",
+      "depends": []
+    },
+    {
+      "name": "check-ai-cliches",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-ai-cliches.md",
+      "description": "Detecta cliches de IA no frontend (Inter onipresente, gradiente roxo-azul, cards aninhados, hero metrics row, glassmorphism decorativo, etc.). Roda o detector deterministico (.claude/scripts/frontend/detect-cliches.mjs) + aplica heuristicas que regex nao pega + contextualiza findings contra o Charter do projeto.",
+      "depends": []
+    },
+    {
+      "name": "check-design",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-design.md",
+      "description": "Valida Design System compliance — tokens de tema, componentes consistentes, sem reimplementacao de componentes existentes, spacing e tipografia via tokens.",
+      "depends": []
+    },
+    {
+      "name": "check-forms",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-forms.md",
+      "description": "Valida patterns de formularios — validacao, masks, UX, acessibilidade de form. Detecta useState por campo, onChange prematuro, falta de schema validation e double submit.",
+      "depends": []
+    },
+    {
+      "name": "check-i18n",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-i18n.md",
+      "description": "Valida internacionalizacao — detecta strings user-facing hardcoded, verifica namespaces por feature, lazy loading de traducoes e consistencia de chaves.",
+      "depends": []
+    },
+    {
+      "name": "check-react",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-react.md",
+      "description": "Valida patterns React — hooks, composicao, estado, performance, key props. Detecta anti-patterns comuns, re-renders desnecessarios e oportunidades de evolucao arquitetural.",
+      "depends": []
+    },
+    {
+      "name": "check-responsiveness",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-responsiveness.md",
+      "description": "Valida responsividade — mobile-first, breakpoints via utility classes, ausencia de @media inline e widths fixos. Detecta abordagens desktop-first e oportunidades de melhoria de layout responsivo.",
+      "depends": []
+    },
+    {
+      "name": "check-routing",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-routing.md",
+      "description": "Valida patterns de rotas — URLs semanticas, navegacao via router, lazy loading, CRUD pattern e protecao de rotas autenticadas.",
+      "depends": []
+    },
+    {
+      "name": "check-security-frontend",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-security-frontend.md",
+      "description": "Valida seguranca frontend — XSS (dangerouslySetInnerHTML, innerHTML), armazenamento inseguro de token/credencial, secrets expostos no bundle, open redirect, dados sensiveis no client e tabnabbing. Detecta vulnerabilidades client-side e oportunidades de evolucao.",
+      "depends": []
+    },
+    {
+      "name": "check-structure",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-structure.md",
+      "description": "Valida estrutura de pastas frontend, imports, barrels e coesao de modulos. Verifica feature-first, imports cruzados, uso de shared/ e oportunidades de modularizacao.",
+      "depends": []
+    },
+    {
+      "name": "check-typescript",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-typescript.md",
+      "description": "Valida configuracao TypeScript strict, uso de tipos, generics e type safety. Detecta any, ts-ignore, tipos implicitos e oportunidades de melhorar type safety.",
+      "depends": []
+    },
+    {
+      "name": "check-ux",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-ux.md",
+      "description": "Valida patterns UX — loading states, feedback visual, empty states, error handling, acessibilidade basica e consistencia de interacao.",
+      "depends": []
+    },
+    {
+      "name": "check-visual-consistency",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-visual-consistency.md",
+      "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
+      "depends": []
+    },
+    {
+      "name": "design",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/design.md",
+      "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
+      "depends": []
+    },
+    {
+      "name": "ds-component",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/ds-component.md",
+      "description": "Busca componente no registry, instala, customiza com variants e CSS variables, cria showcase no design-system. Tambem documenta componentes existentes e remove showcases orfaos.",
+      "depends": []
+    },
+    {
+      "name": "ds-foundation",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/ds-foundation.md",
+      "description": "Extrai design tokens de screenshot, inicializa biblioteca de componentes, configura CSS variables, cria design-system isolado e gera ADR do Design System.",
+      "depends": []
+    },
+    {
+      "name": "paper-prototype",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/paper-prototype.md",
+      "description": "Designer de produto senior que gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System e contexto real do projeto.",
+      "depends": []
+    },
+    {
+      "name": "ux",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/ux.md",
+      "description": "Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero.",
+      "depends": []
+    },
+    {
+      "name": "praxis",
+      "domain": "orchestration",
+      "path": ".claude/agents/orchestration/praxis.md",
+      "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
+      "depends": []
+    },
+    {
+      "name": "clarifier",
+      "domain": "product",
+      "path": ".claude/agents/product/clarifier.md",
+      "description": "Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas por impacto x incerteza e integra respostas na spec.",
+      "depends": []
+    },
+    {
+      "name": "module-detailer",
+      "domain": "product",
+      "path": ".claude/agents/product/module-detailer.md",
+      "description": "Conduz o detalhamento de um modulo pre-SDD. Scaffolda workspace canonico, preenche as 8 dimensoes interativamente, rastreia decisoes/duvidas com IDs estaveis e congela o workspace para alimentar /prd-decompose.",
+      "depends": []
+    },
+    {
+      "name": "prd-create",
+      "domain": "product",
+      "path": ".claude/agents/product/prd-create.md",
+      "description": "Cria PRD estrategico ou tatico seguindo o template canonico. Atua como Especialista Senior em Product Management — questiona premissas vagas, nao aceita \"a definir\" e prioriza clareza. Trabalho gerativo pesado, roda isolado.",
+      "depends": []
+    },
+    {
+      "name": "prd-decompose",
+      "domain": "product",
+      "path": ".claude/agents/product/prd-decompose.md",
+      "description": "Decompoe PRD tatico (ou workspace de detalhamento) em specs independentes. Identifica dependencias, propoe ordem de implementacao e gera plano salvo em disco.",
+      "depends": []
+    },
+    {
+      "name": "prd-validate",
+      "domain": "product",
+      "path": ".claude/agents/product/prd-validate.md",
+      "description": "Valida PRD contra o template canonico. Read-only — reporta erros/avisos mas nao corrige. Distingue estrategico de tatico pelo conteudo.",
+      "depends": []
+    },
+    {
+      "name": "spec-from-prd",
+      "domain": "product",
+      "path": ".claude/agents/product/spec-from-prd.md",
+      "description": "Transforma uma feature do PRD em spec tecnica detalhada, numerada e rastreavel. Le PRD, TODAS as ADRs, glossario e specs existentes. Trabalho gerativo pesado, roda isolado.",
+      "depends": []
+    },
+    {
+      "name": "analyzer",
+      "domain": "quality",
+      "path": ".claude/agents/quality/analyzer.md",
+      "description": "Analise de consistencia cross-artefato (spec ↔ plan ↔ tasks). Detecta duplicacoes, gaps, ambiguidades e inconsistencias em 6 passes.",
+      "depends": []
+    },
+    {
+      "name": "revalidator",
+      "domain": "quality",
+      "path": ".claude/agents/quality/revalidator.md",
+      "description": "Agente de revalidacao cirurgica. Le um relatorio de validacao existente, identifica itens pendentes e re-executa apenas os agents responsaveis. Detecta regressoes nos arquivos corrigidos.",
+      "depends": []
+    },
+    {
+      "name": "solid-review",
+      "domain": "quality",
+      "path": ".claude/agents/quality/solid-review.md",
+      "description": "Analisa codigo em qualquer linguagem OO para violacoes dos principios SOLID. Use para revisao de qualidade de codigo.",
+      "depends": []
+    },
+    {
+      "name": "spec-review",
+      "domain": "quality",
+      "path": ".claude/agents/quality/spec-review.md",
+      "description": "Valida se uma spec tecnica esta pronta para implementacao. Verifica campos obrigatorios, criterios de aceite concretos, edge cases, entidades definidas e ausencia de ambiguidades bloqueantes. Read-only — reporta gaps mas nao corrige.",
+      "depends": []
+    }
+  ]
+}
