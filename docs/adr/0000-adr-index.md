@@ -22,6 +22,7 @@ Consulte `docs/adr/templates/` para ADRs pre-definidas baseadas em boas praticas
 | # | Titulo | Status | Data |
 |---|--------|--------|------|
 | [0006](0006-workspace-detalhamento-modulo.md) | Workspace de Detalhamento de Modulo (pre-SDD) | Aceito | 2026-04-23 |
-| [0007](0007-loop-engineering-execucao.md) | Loop Engineering na Execucao (loop por fatia vertical) | Aceito | 2026-06-30 |
-| [0008](0008-seguranca-e-lgpd.md) | Seguranca da Informacao e Conformidade LGPD | Aceito | 2026-07-01 |
+| [0007](0007-loop-engineering-execucao.md) | Loop Engineering na Execucao (loop por fatia vertical) | Aceito | 2026-10-19 |
+| [0008](0008-seguranca-e-lgpd.md) | Seguranca da Informacao e Conformidade LGPD | Aceito | 2026-10-19 |
+| [0009](0009-distribuicao-catalogo-semente.md) | Distribuicao por catalogo e semente — o kit se monta dentro do projeto | Aceito | 2026-10-19 |
 | <!-- NNNN --> | <!-- titulo --> | <!-- Accepted/Proposed/Deprecated --> | <!-- YYYY-MM-DD --> |

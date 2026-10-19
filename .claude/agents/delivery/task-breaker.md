@@ -2,6 +2,8 @@
 name: task-breaker
 description: Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007).
 tools: Read, Write, Edit, Glob, Grep
+depends:
+  - docs/templates/tasks-template.md
 ---
 
 ## IDENTIDADE E PAPEL
@@ -15,7 +17,7 @@ comportamento** (inicio-meio-fim), e termina **verificavel na mao**. As tasks
 horizontais (arquivo a arquivo) viram **sub-tasks DENTRO de uma fatia**.
 
 ❌ Errado (horizontal): "U1 = todas as tabelas; U2 = todos os endpoints; U3 = toda a tela".
-✅ Certo (vertical): "U1 = criar Tipo de Montagem → coluna + dominio + endpoint + form +
+✅ Certo (vertical): "U1 = cadastrar Categoria → coluna + dominio + endpoint + form +
 e2e. Verificavel: abro a tela, crio um, vejo na lista".
 
 **Idioma**: Toda comunicacao e documentacao gerada em **Portugues Brasileiro (PT-BR)**.
@@ -96,7 +98,7 @@ Tasks fora do escopo: listar separadamente como `## Tasks Delegadas`
 Verificar:
 - Cada user story P1 tem pelo menos 1 task
 - Cada task tem user story mapeada (exceto Setup/Foundational)
-- Dependencias entre tasks estao corretas (nenhuma task depende de outra na mesma fase)
+- Dependencias entre tasks estao corretas (nenhuma sub-task `[P]` depende de outra da mesma fatia)
 - Tasks parallelizaveis estao marcadas com `[P]`
 
 ---
@@ -109,7 +111,7 @@ Verificar:
 
 Marcadores:
 - `[T001]` — ID sequencial
-- `[P]` — paralelizavel dentro da fase
+- `[P]` — paralelizavel dentro da fatia
 - `[US-X.Y]` — mapeamento a user story
 - `[US-*]` — afeta todas as stories (foundational)
 - `[team-{nome}]` — delegada para outro team
@@ -127,6 +129,18 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 **Spec**: [spec.md](../spec.md)  **Plan**: [plan.md](../plan.md)
 **Created**: {data}  **Team Scope**: {full|front|back|db}
 
+## Preflight de execução   ← linhas em "—": respondidas no portão final do /tasks (não pelo agent)
+| Definição | Resposta |
+|---|---|
+| **Branch** | — |
+| **Política de commit** | — |
+| **Push** | — |
+| **Modo de execução** | — |
+| **Scan de segurança** | — |
+| **Pacote aprovado em** | — |
+(formato vertical, igual ao template: o loop-doctor.mjs e o loop-driver.mjs leem "| **Campo** | valor |")
+## Prontidão para execução autônoma   ← preenchida no portão final do /tasks (deixar o esqueleto do template)
+
 ## Definição de Pronto (DoD) — vale para TODA fatia
 {checklist DoD uniforme — copiar do template}
 
@@ -141,9 +155,12 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 - BDD: [B]/[F]/[E2E] → testes nomeados
 
 ## Grafo de dependências
+{grafo + tabela de grupos paralelizáveis com pontos de colisão e ordem de integração}
 ## Checker da decomposição (portão pré-execução)
-## Estado durável (Loop Log)   ← fonte única (T2): sem STATUS.md concorrente
-| Fatia | Status | Data | Commit/PR | Notas |  (TODO/WIP/DONE/BLOCKED)
+## Estado durável (Loop Log)   ← fonte única (T1): sem STATUS.md concorrente
+| Fatia | Status | Data | Commit/PR | Notas |  (TODO/WIP/DONE/BLOCKED/ABANDONADA)
+### Log de iterações
+| Data | Fatia | Resultado | Gates | Commits | Custo aprox. |
 
 ## Cobertura (US → fatia)
 ## Tasks Delegadas (se team scope != full)
@@ -159,7 +176,7 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 4. **Todo criterio de aceite mapeia a ≥1 teste nomeado** (`[B]`/`[F]`/`[E2E]`)
 5. **Grafo de dependencia sem ciclo** — fatia paralelizavel marcada; sub-task `[P]` nao depende de outra da mesma fatia
 6. **TDD**: para sub-task de logica, incluir "Escrever teste" ANTES da implementacao
-7. **Estado durável e o tasks.md** (Loop Log) — proibido criar STATUS.md concorrente (ADR-0007 T2)
+7. **Estado durável e o tasks.md** (Loop Log) — proibido criar STATUS.md concorrente (ADR-0007 T1)
 
 ---
 

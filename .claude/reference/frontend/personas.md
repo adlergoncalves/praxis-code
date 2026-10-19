@@ -1,7 +1,7 @@
 # Arquétipos de Personalidade — reference canônico (agnóstico)
 
 > 6 arquétipos para identificar e ancorar a personalidade de um produto. Vocabulário estável do kit Praxis.
-> **Lido por**: `@ux` (modo personalidade/charter), `@ds-foundation` (extração de tokens com intenção), `@check-visual-consistency`, `@paper-prototype`, `@design`.
+> **Lido por**: `@ux` (modo charter), `@ds-foundation` (extração de tokens com intenção), `@check-visual-consistency`, `@paper-prototype`, `@design`.
 
 ---
 

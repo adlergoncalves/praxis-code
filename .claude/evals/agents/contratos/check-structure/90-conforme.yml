@@ -1,0 +1,9 @@
+agent: check-structure
+regra: controle
+descricao: Features com barrel, hooks em hooks/, shared generico via alias, sem import cruzado — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - import cruzado
+  - index.tsx

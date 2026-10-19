@@ -1,7 +1,7 @@
 # ADR-{NNNN}: Identidade Visual e Charter
 
 ## Status
-Accepted
+Template (nao adotada — personalizar via /architect)
 
 ## Contexto
 
@@ -18,10 +18,10 @@ Accepted
 - **Dominante** ({percentual}%): {arquetipo — Preciso / Polido / Amigavel / Luxuoso / Ludico / Utilitario}
 - **Secundario** ({percentual}%, se hibrido): {arquetipo}
 
-### Charter (single source of truth)
-- **Path**: `docs/project/ux-charter.md`
+### Ancora de design (single source of truth)
+- **Path**: `docs/project/ux-charter.md` (Charter, se existir) **ou** `docs/design-system/system.md` (memoria de design: Register, Direcao, Dominio)
 - **Conteudo**: register, arquetipo, atributos da personalidade, referencias, anti-referencias, scene, principios, a11y.
-- **Esta ADR aponta para o Charter** — NUNCA duplica conteudo. Toda decisao de UI/UX deve ser citavel de volta a um atributo do Charter.
+- **Esta ADR aponta para a ancora** — NUNCA duplica conteudo. Toda decisao de UI/UX deve ser citavel de volta a um atributo do Charter ou a Direcao/Dominio da memoria de design.
 
 ### Atributos da personalidade (4-6, do Charter)
 {Lista curta — ex.: "preciso, denso, sem ornamento, direto, keyboard-first, sobrio"}
@@ -64,14 +64,14 @@ Accepted
 - `/ds-init` extrai tokens **com intencao**, nao com defaults da lib.
 
 ### Negativas
-- Overhead inicial: rodar `/ux charter` antes de tocar codigo de UI (gate no executor).
+- Overhead inicial: ter uma ancora de design antes de tocar codigo de UI — o Charter (`/ux charter`) ou a exploracao do dominio gravada na memoria (`/ux shape`, `/ux direcao`) (gate no `/execute`).
 - Charter precisa ser revisado quando audiencia/posicionamento muda — risco de stale.
 
 ## Regras para Validacao
 
 ### Charter
-- OBRIGATORIO: `docs/project/ux-charter.md` existe e contem `## Register`.
-- OBRIGATORIO: gate de uso no `@executor` valida Charter+Shape antes de concluir feature de front.
+- OBRIGATORIO: existe **ancora de design** — `docs/project/ux-charter.md` com `## Register` **ou** `docs/design-system/system.md` com Register, Direcao e Dominio preenchidos.
+- OBRIGATORIO: gate de frontend do `/execute` valida ancora + Shape antes de concluir feature de front.
 
 ### Register
 - OBRIGATORIO: defaults seguem `register-{brand|product}.md` casado.
@@ -85,8 +85,8 @@ Accepted
 - PREFERIDO: tracar paralelos com as referencias citadas no Charter ao decidir patterns/microinteracoes.
 
 ### Decisoes ancoradas
-- OBRIGATORIO: cada decisao significativa de UI/UX em commit message ou spec cita o atributo do Charter que a justifica.
-- Se nao puder citar → revisar a decisao OU revisar o Charter (atributo faltando).
+- OBRIGATORIO: cada decisao significativa de UI/UX em commit message ou spec cita o atributo do Charter ou a Direcao/Dominio da memoria de design que a justifica.
+- Se nao puder citar → revisar a decisao OU revisar a ancora (atributo faltando).
 
 ### Manutencao
 - Revisar Charter quando: audiencia muda; reposicionamento estrategico; multipla feedback indicando "marca nao consolida".

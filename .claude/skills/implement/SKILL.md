@@ -46,10 +46,12 @@ verticais** (U0…Un = User Stories), cada uma com contrato (valor, PRONTO file-
 verificacao manual, refs) + DoD + mapa BDD. Inclui tasks delegadas se team scope.
 
 ### 5c — Execucao em Loop (`/execute`)
-Delegado ao agent `@executor` via skill `/execute`. Roda **em loop por fatia vertical**
-(Loop Engineering, ADR-0007): uma fatia por iteracao → implementa → gates → conserta ate
-verde → DONE no Loop Log → PARA (checkpoint). `--auto [N]` encadeia com guardrails.
-Detecta dependencias cross-team. Passa pelo **Portao Pre-execucao** antes da 1ª fatia.
+Skill `/execute`, **na sessao principal** (ADR-0007). Roda **em loop por fatia vertical**:
+uma fatia por iteracao → implementa test-first → gates → conserta ate verde → verificadores
+independentes → DONE no Loop Log → proxima fatia, **autonomo** apos o pacote aprovado no
+portao final do `/tasks`; so para no realmente bloqueante (`--checkpoint` para a cada fatia;
+`--driver` roda uma fatia por sessao nova). Detecta dependencias cross-team. Passa pelo
+**Regra 0 do `/execute`** (Gate 0 `loop-doctor.mjs`) antes da 1ª fatia; o Preflight ja vem respondido do portao final do `/tasks`.
 
 ## Team Scope — Como funciona
 
@@ -57,8 +59,7 @@ Quando `--team` e especificado, todas as sub-fases respeitam o escopo:
 
 1. **Plan** filtra estrategia de implementacao para o team
 2. **Tasks** gera tasks apenas do team + lista tasks delegadas para outros teams
-3. **Execute** implementa apenas tasks do team. Se detectar dependencia de outro team:
-   - Pausa e pergunta: "Esta task precisa de {X} do team-{Y}. Criar stub/mock ou delegar?"
+3. **Execute** implementa apenas tasks do team. Fatia que depende de trabalho de outro team ainda nao feito → `BLOCKED` (motivo + o que destrava) e o loop segue com as liberadas; stub/mock so se decidido no portao final do `/tasks`.
 
 **Delegacao cross-team**: Tasks fora do escopo sao listadas em `## Tasks Delegadas` no tasks.md. O usuario pode rodar `/implement {spec} --team {outro}` separadamente para executá-las.
 
@@ -79,9 +80,9 @@ Quando `--team` e especificado, todas as sub-fases respeitam o escopo:
 
 **REGRA MODO LITE**: Se manifesto indica `Modo: lite`:
 - **Input alternativo**: aceitar descricao livre em vez de exigir spec
-- **Fluxo simplificado**: pular plan/tasks separados, delegar direto ao `@executor` com a descricao como contexto
-- **Sem aprovacao intermediaria**: implementar direto, apresentar resultado ao final
-- O `@executor` ainda respeita ADRs se existirem e registra learnings normalmente
+- **Fluxo enxuto** (ADR-0007 › Modo lite): da descricao, gerar **spec minima + tasks por fatia + DoD minimo** sem plan separado; o portao final do `/tasks` roda em versao curta (resumo no chat, sem guia publicado) e o `/execute` segue em loop por fatia (test-first, gates por exit code, `@adr-validator` como verificador)
+- **Sem aprovacao intermediaria**: uma aprovacao so, a do resumo do pacote
+- Respeita as ADRs se existirem e registra learnings normalmente
 
 ## Gestao de Contexto
 

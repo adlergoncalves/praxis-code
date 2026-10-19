@@ -2,7 +2,10 @@
 // capture.mjs — hook de CAPTURA (caixa-preta) da memoria de aprendizado (kit Praxis).
 //
 // Eventos:
-//   Stop / SubagentStop  -> grava 1 linha (auto) no ledger com os arquivos alterados no turno
+//   Stop / SubagentStop  -> grava 1 linha (auto) em docs/project/learnings/ledger-auto.md (local,
+//                           gitignored) com os arquivos alterados no turno. Le o transcript da
+//                           sessao principal (transcript_path): edicao feita dentro de um subagente
+//                           so aparece quando registrada nele — o hook nao le o transcript do agente
 //                           + atualiza o snapshot docs/project/state.md. Roda em background
 //                           (async no settings) — nao trava o turno.
 //   PreCompact / SessionEnd -> mesmo checkpoint (redundancia). Sincrono, exit 0 (PreCompact NAO
@@ -21,7 +24,7 @@ import { fileURLToPath } from 'node:url';
 
 import {
   readStdin, parseInput, getRoot, nowISO,
-  appendLedger, writeStateFields, parseLearnings, WORK_PATH_RE,
+  appendAutoLedger, rotateLedgerIfNeeded, writeStateFields, parseLearnings, WORK_PATH_RE,
 } from './_lib.mjs';
 
 const WRITE_TOOLS = new Set(['Write', 'Edit', 'MultiEdit', 'NotebookEdit']);
@@ -48,7 +51,8 @@ function collectPaths(obj, out, root) {
 }
 
 // Caminho relativo ao projeto, ou null se o arquivo estiver fora dele. Arquivos fora do projeto
-// nunca vao para o ledger (que e versionado): caminhos absolutos expoem usuario/estrutura da maquina.
+// nunca vao para o ledger: caminhos absolutos expoem usuario/estrutura da maquina (e o ledger.md, que
+// recebe as linhas semanticas, e versionado).
 function rel(p, root) {
   const norm = String(p).replace(/\\/g, '/');
   const r = String(root).replace(/\\/g, '/').replace(/\/$/, '');
@@ -101,8 +105,9 @@ async function main() {
 
   // linha (auto) no ledger so quando houve alteracao de arquivo (evita inflar com turnos vazios)
   if (files.length) {
-    appendLedger(root, `${nowISO()} | turn | files: ${files.join(', ')} | (auto)`);
+    appendAutoLedger(root, `${nowISO()} | turn | files: ${files.join(', ')} | (auto)`);
   }
+  rotateLedgerIfNeeded(root);
   snapshot(root, event, files);
 }
 

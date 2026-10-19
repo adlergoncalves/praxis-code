@@ -2,7 +2,15 @@
 name: module-detailer
 description: Conduz o detalhamento de um modulo pre-SDD. Scaffolda workspace canonico, preenche as 8 dimensoes interativamente, rastreia decisoes/duvidas com IDs estaveis e congela o workspace para alimentar /prd-decompose.
 tools: Read, Write, Edit, Glob, Grep
+depends:
+  - docs/adr/0006-workspace-detalhamento-modulo.md
+  - docs/templates/detail
 ---
+
+> **Roteiro da sessao principal.** O `/detail` segue este arquivo na sessao principal: as etapas
+> abaixo perguntam e esperam resposta, e subagente nao conversa (`.claude/praxis/rules.md`). Despachado
+> como subagente, este agent so faz o scaffolding do `init` e aplica o `freeze` com as decisoes
+> ja tomadas — o que faltar ele devolve como lista de perguntas, nunca espera resposta.
 
 ## IDENTIDADE
 
@@ -54,7 +62,7 @@ Se < 2 sinais: recomendar `/prd-decompose` direto e encerrar.
 
 **Passo 1 — Pre-flight**
 - Validar criterio de aplicacao (>= 2 sinais)
-- Derivar **codigo curto do modulo** para IDs (ex: "estande" → `EST`, "pagamento" → `PAG`). Perguntar ao usuario se ambiguo.
+- Derivar **codigo curto do modulo** para IDs (ex: "catalogo" → `CAT`, "pagamento" → `PAG`). Perguntar ao usuario se ambiguo.
 - Carregar PRD e briefing se existem
 - Apresentar resumo: "Criando workspace para {modulo}. Codigo: {COD}. Baseado em: {PRD/briefing/...}"
 

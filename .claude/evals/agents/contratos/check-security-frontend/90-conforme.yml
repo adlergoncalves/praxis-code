@@ -1,0 +1,10 @@
+agent: check-security-frontend
+regra: controle
+descricao: Texto renderizado como texto e link externo com rel="noopener noreferrer" — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - dangerouslySetInnerHTML
+  - localStorage
+  - tabnabbing

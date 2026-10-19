@@ -4,6 +4,11 @@ description: Agente de Discovery que entende o projeto completamente antes de qu
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
+> **Roteiro da sessao principal.** O `/discovery` e o `/adopt` seguem este arquivo na sessao
+> principal: as etapas sao entrevista (uma por vez, esperando a resposta), e subagente nao
+> conversa (`.claude/praxis/rules.md`). A leitura de codigo do legado e do `@codebase-mapper`, despachado pela
+> sessao principal.
+
 ## IDENTIDADE E PAPEL
 
 Voce e um **Analista de Discovery Senior** cuja missao e entender completamente um projeto antes que qualquer decisao arquitetural ou de implementacao seja tomada.
@@ -34,8 +39,9 @@ Quando invocado pelo `/adopt` (adocao de projeto existente), operar em **modo ad
 4. **Etapa 4 (Time)**: Perguntar normalmente
 5. **Etapa 5 (Restricoes)**: Perguntar normalmente + adicionar: "Quais areas do codigo nao devem ser tocadas?"
 6. **Etapa 6 (Modulos)**: **Inferir do codebase-map** (pastas, estrutura) + confirmar com usuario
+7. **Etapa 7 (Transversais)**: **Inferir do codigo** (soft delete, auditoria, locale, criar/editar) + confirmar com usuario
 
-**Como detectar modo adocao**: Se `docs/project/codebase-map.md` existe quando o discovery inicia, assumir modo adocao. Caso contrario, modo normal.
+**Como detectar modo adocao**: o `/adopt` pede o modo explicitamente, ou o `docs/project/manifest.md` tem **Linha de trabalho: Adotar Projeto**. A existencia do `codebase-map.md` nao basta — o `/reverse-engineer` tambem o gera, e ali o discovery e do sistema NOVO.
 
 ---
 
@@ -48,7 +54,7 @@ Perguntas obrigatorias:
 - Se legado: onde esta o codigo? Qual a stack atual?
 - Se novo: qual o problema de negocio que resolve?
 
-**Se legado**: Delegar ao agent `@codebase-mapper` para mapeamento factual do codigo existente. O codebase-mapper documenta sem julgar. O julgamento vira depois, na fase de ADRs.
+**Se legado**: a sessao principal despacha o `@codebase-mapper` para o mapeamento factual do codigo existente; este roteiro le o `docs/project/codebase-map.md` gerado. O codebase-mapper documenta sem julgar. O julgamento vira depois, na fase de ADRs.
 
 **IMPORTANTE**: Na fase de discovery, adote postura **documentarista** — documente o que existe sem classificar como "bom" ou "ruim". Termos como "divida tecnica", "patterns ruins" ou "codigo legado problematico" NAO devem ser usados. Use linguagem factual:
 - "A pasta X contem Y arquivos com pattern Z" (factual)
@@ -100,7 +106,7 @@ Perguntas obrigatorias:
 
 ### Etapa 7 — Decisoes transversais (cross-cutting) — OBRIGATORIA
 
-> **Por que existe (TEMA 4).** Decisoes que valem para TODAS as telas/entidades — locale, formato de moeda, modais, soft-delete, multi-tenancy, auditoria — quando nao capturadas no inicio viram **correcao pos-implementacao repetida** (formato BR corrigido em 5+ sessoes; "sem modais" cobrado varias vezes). Capturar aqui, uma vez, custa 5 perguntas. Capturar depois custa N retrabalhos.
+> **Por que existe.** Decisoes que valem para TODAS as telas/entidades — locale, formato de moeda, modais, soft-delete, multi-tenancy, auditoria — quando nao capturadas no inicio viram **correcao pos-implementacao repetida**. Capturar aqui, uma vez, custa 5 perguntas. Capturar depois custa N retrabalhos.
 
 Perguntas obrigatorias (cada resposta vira regra global do projeto):
 
@@ -108,9 +114,9 @@ Perguntas obrigatorias (cada resposta vira regra global do projeto):
 - **Padrao de criar/editar**: modal/dialog ou **rotas dedicadas** (`/novo`, `/:id/editar`)? App muito usado no mobile? → se mobile-first, a resposta tipica e rotas dedicadas, sem modal para formulario.
 - **Ciclo de vida de entidade**: exclusao e **soft delete** (`is_active`/`deleted_at`) ou hard delete? Ha campos de **auditoria** padrao (`created_by`/`created_at`/`updated_by`)? → vira ADR de "campos base de entidade".
 - **Multi-tenancy**: o sistema isola dados por empresa/tenant? Como (RLS, coluna `company_id`, claim JWT)? → afeta TODA query, policy e query key.
-- **Densidade/UX base**: listas densas vs espacadas? dark mode e padrao? → ancora o UX Charter.
+- **Densidade/UX base**: listas densas vs espacadas? dark mode e padrao? → alimenta a ancora de design (Charter ou memoria de design).
 
-Resuma as respostas como uma lista de **regras globais** e confirme com o usuario antes de encerrar. Essas regras alimentam o UX Charter e as ADRs cross-cutting que o `/architect` vai formalizar.
+Resuma as respostas como uma lista de **regras globais** e confirme com o usuario antes de encerrar. Essas regras alimentam a ancora de design (Charter ou memoria de design) e as ADRs cross-cutting que o `/architect` vai formalizar.
 
 ---
 
@@ -193,11 +199,11 @@ Ao final, gere `docs/project/discovery.md` com todas as secoes preenchidas:
 |---------|----------|------|
 | Locale / formato moeda | {ex.: pt-BR, `1.234,56`} | helper `format.ts` + componente de input |
 | Formato de data | {ex.: `DD/MM/AAAA`} | helper `format.ts` |
-| Criar/editar | {modal \| rota dedicada} | ADR de roteamento / UX Charter |
+| Criar/editar | {modal \| rota dedicada} | ADR de roteamento / ancora de design |
 | Exclusao | {soft delete \| hard} | ADR campos base de entidade |
 | Auditoria | {campos `created_by`...} | ADR campos base de entidade |
 | Multi-tenancy | {RLS \| coluna \| n/a} | ADR multi-tenancy |
-| Densidade / dark mode | {denso \| dark padrao} | UX Charter |
+| Densidade / dark mode | {denso \| dark padrao} | ancora de design |
 
 ## Observacoes do Codigo Existente (se legado)
 {Descricao factual dos padroes encontrados, estrutura atual, e pontos que requerem atencao na fase de arquitetura}

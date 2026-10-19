@@ -128,14 +128,33 @@
 
 - **Classificação do elemento**: `novo + protótipo` | `novo sem protótipo` | `reaproveita tela existente`
 - **Barra de entrega**:
-  - `novo + protótipo` → **idêntico ao frame** (divergiu, não entrega). **Embutir** frame + valores exatos abaixo.
+  - `novo + protótipo` → **idêntico à fonte de design** (divergiu, não entrega). **Embutir** a referência + valores exatos abaixo.
   - `novo sem protótipo` → conforme o **Design System**.
   - `reaproveita tela existente` → segue a existente (sem re-skin) e **AVISA** se divergir do protótipo.
-- **Fonte de design + frame**: {link Paper/Figma + frame IDs}
-- **Valores exatos embutidos** (se pixel-perfect): {cores, ícones, posições, tipografia, espaçamento}
+- **Fonte de design**: {ferramenta de protótipo: link + IDs dos frames | página publicada (Artifact): link | HTML local: caminho | imagem: caminho | DS + memória de design (sem protótipo)}
+- **Valores exatos embutidos** (quando a fonte expõe valores — estilos computados da ferramenta, CSS do HTML): {cores, ícones, posições, tipografia, espaçamento}
 
-> Se o projeto não tem ferramenta de protótipo/Playwright conectada, a fidelidade
-> degrada para verificação estrutural (`check-design`), declarada como "auditoria parcial".
+> A conferência é por **valores** quando a fonte os expõe (ferramenta de design, HTML); fonte só
+> em imagem → conferência visual na revisão visual do `/execute`. Sem app rodando nem fonte
+> acessível, a fidelidade degrada para verificação estrutural (`check-design`), declarada como
+> "auditoria parcial".
+
+## Padrão de Campo (se Form / Modal)
+
+> Referencia o componente de campo do DS uma vez e lista só os campos com tipo, validação e
+> notas. Explicita **quando validar** (onBlur, onSubmit, onChange com debounce) e o submit
+> (disabled enquanto envia, double submit prevenido, o que acontece após o sucesso).
+
+| Campo | Tipo | Validação | Obrigatório | Notas |
+|---|---|---|---|---|
+| {campo} | {tipo} | {regra} | {sim/não} | {nota} |
+
+## Microinterações (se UI)
+
+> Referencia o `motion.md` do projeto (não re-especifica duração/easing). Microinteração fora
+> do padrão → justificar.
+
+- {elemento + gatilho}: {movimento} — ver `motion.md`
 
 ## Success Criteria (opcional)
 

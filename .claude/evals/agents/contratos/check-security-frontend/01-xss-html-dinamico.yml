@@ -1,0 +1,13 @@
+agent: check-security-frontend
+regra: "XSS — dangerouslySetInnerHTML com conteudo dinamico nao sanitizado"
+descricao: Corpo de comentario (input de usuario) renderizado como HTML sem sanitizacao
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: Comentario.tsx
+    linha: 10
+    sinal: dangerouslySetInnerHTML
+
+nao_deve_detectar:
+  - localStorage
+  - target="_blank"

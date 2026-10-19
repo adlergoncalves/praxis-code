@@ -21,13 +21,9 @@ Guia passo a passo para usar o Praxis quando você precisa modernizar, refatorar
 
 ---
 
-## Passo 1 — Setup do Template
+## Passo 1 — Instalar e montar o kit
 
-```
-/setup
-```
-
-Configure para a stack do **novo projeto** — não do legado. O setup pergunta qual será a stack alvo da modernização.
+Instale a semente (`npx degit adlergoncalves/praxis-code/seed meu-projeto`) e rode `/start`. Ele monta o kit e chama o `/setup`: configure para a stack do **novo projeto** — não do legado. O setup pergunta qual será a stack alvo da modernização.
 
 ```
 /clear
@@ -63,7 +59,7 @@ Documentação factual do código:
 - Patterns identificados (descritos, **não julgados**)
 - Métricas objetivas (linhas, complexidade, cobertura)
 
-> O mapeamento é neutro de propósito. O julgamento — "isso é ruim", "isso precisa mudar" — vem na Fase 3 (Arquitetura), não aqui. Isso evita vieses prematuros.
+> O mapeamento é neutro de propósito. O julgamento — "isso é ruim", "isso precisa mudar" — vem na Fase 2 (Arquitetura), não aqui. Isso evita vieses prematuros.
 
 **O output desta fase deve ser suficiente para reconstruir o sistema sem precisar consultar o código original novamente.**
 
@@ -137,7 +133,7 @@ Mapeia Bounded Contexts, classifica subdomínios (Core/Supporting/Generic) e pro
 
 ---
 
-## Passo 4 — Arquitetura do Novo Sistema (Fase 3)
+## Passo 4 — Arquitetura do Novo Sistema (Fase 2)
 
 ```
 /architect
@@ -162,7 +158,7 @@ O agent propõe ADRs para o **novo sistema**, considerando o que o legado fazia,
 
 ---
 
-## Passo 5 — Definição por Módulo (Fase 2)
+## Passo 5 — Definição por Módulo (Fase 3)
 
 Para legados, recomenda-se definir e implementar **módulo por módulo** em vez de tudo de uma vez.
 
@@ -258,11 +254,11 @@ Valide cada módulo após implementar:
 /validate alteracoes           # Só arquivos modificados — mais rápido
 ```
 
-**Validação sequencial por stack** (para mais controle):
+**Validação por stack** (paralela por padrão; `--mode sequential` para mais controle):
 
 ```bash
-/frontend-validate    # 10 agents frontend, um por vez
-/backend-validate     # 6 agents backend, um por vez
+/frontend-validate    # 11 agents frontend
+/backend-validate     # 6 agents backend
 ```
 
 ```
@@ -298,7 +294,7 @@ Corrija, revalide, repita até tudo OK. Depois passe para o próximo módulo:
 ## Fluxo Resumido para Legados
 
 ```
-/setup                          → Stack do NOVO projeto
+/start                          → Monta o kit; /setup com a stack do NOVO projeto
 /clear
 /reverse-engineer {legado}      → Documenta o legado (Fase 0)
 /clear
@@ -339,7 +335,7 @@ Corrija, revalide, repita até tudo OK. Depois passe para o próximo módulo:
 3. **Valide a decisão de modernizar com `/strategy`** — antes de começar, confirme que o investimento faz sentido de negócio.
 4. **Implemente módulo por módulo** — não tente reconstruir tudo de uma vez.
 5. **Comece pelo módulo mais crítico** — o que dá mais problema ou tem mais valor para o negócio.
-6. **O julgamento vem na Fase 3, não na Fase 0** — a engenharia reversa documenta o que existe, sem classificar como bom ou ruim.
+6. **O julgamento vem na Fase 2, não na Fase 0** — a engenharia reversa documenta o que existe, sem classificar como bom ou ruim.
 7. **Preserve regras de negócio que funcionam** — modernizar não significa jogar tudo fora.
 8. **Use `/spec-review` antes de cada módulo** — specs mal definidas em projetos legados custam caro, pois há menos contexto para corrigi-las no meio da implementação.
 9. **Use `/ddd-estrategico` se o domínio for complexo** — legados costumam ter Bounded Contexts implícitos que só ficam evidentes quando mapeados.

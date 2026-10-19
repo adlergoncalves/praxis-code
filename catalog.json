@@ -1,0 +1,2626 @@
+{
+  "version": "0.1.0",
+  "repo": "https://github.com/adlergoncalves/praxis-code.git",
+  "seed": [
+    ".claude/settings.json",
+    ".claude/praxis/praxis.mjs",
+    ".claude/praxis/rules.md",
+    ".claude/skills/start"
+  ],
+  "seedProject": [
+    "CLAUDE.md"
+  ],
+  "core": [
+    ".claude/agents/orchestration/praxis.md",
+    ".claude/skills/praxis",
+    ".claude/skills/mode",
+    ".claude/skills/setup",
+    ".claude/hooks/_lib.mjs",
+    ".claude/hooks/reconcile.mjs",
+    ".claude/hooks/capture.mjs",
+    ".claude/hooks/hooks.manifest.json",
+    "docs/project/learnings/README.md"
+  ],
+  "seeds": [
+    "docs/project/manifest.md",
+    "docs/project/constitution.md",
+    "docs/project/discovery.md",
+    "docs/project/glossary.md",
+    "docs/project/learnings/ledger.md",
+    "docs/project/learnings/frontend-learnings.md",
+    "docs/project/learnings/backend-learnings.md",
+    "docs/project/learnings/business-learnings.md",
+    "docs/project/learnings/architecture-learnings.md",
+    "docs/project/learnings/process-learnings.md",
+    "docs/adr/0000-adr-index.md"
+  ],
+  "modules": {
+    "linha-novo": [
+      "discovery",
+      "architect",
+      "define",
+      "implement",
+      "validate",
+      "review"
+    ],
+    "linha-legado": [
+      "reverse-engineer",
+      "discovery",
+      "architect",
+      "define",
+      "implement",
+      "validate",
+      "review"
+    ],
+    "linha-adocao": [
+      "adopt",
+      "implement",
+      "validate",
+      "review",
+      "debug",
+      "quickfix"
+    ],
+    "frontend": [
+      "ux",
+      "design",
+      "prototype",
+      "frontend-validate"
+    ],
+    "design-system": [
+      "ds-init",
+      "ds-component"
+    ],
+    "backend": [
+      "backend-validate",
+      "backend-scaffold"
+    ],
+    "ddd": [
+      "ddd-estrategico"
+    ],
+    "qualidade-hooks": [
+      ".claude/hooks/quality"
+    ],
+    "evals": [
+      "agent-eval"
+    ]
+  },
+  "skills": {
+    "adopt": ".claude/skills/adopt",
+    "agent-eval": ".claude/skills/agent-eval",
+    "analyze": ".claude/skills/analyze",
+    "architect": ".claude/skills/architect",
+    "backend-scaffold": ".claude/skills/backend-scaffold",
+    "backend-validate": ".claude/skills/backend-validate",
+    "checklist": ".claude/skills/checklist",
+    "clarify": ".claude/skills/clarify",
+    "ddd-estrategico": ".claude/skills/ddd-estrategico",
+    "debug": ".claude/skills/debug",
+    "define": ".claude/skills/define",
+    "design": ".claude/skills/design",
+    "detail": ".claude/skills/detail",
+    "discovery": ".claude/skills/discovery",
+    "ds-component": ".claude/skills/ds-component",
+    "ds-init": ".claude/skills/ds-init",
+    "execute": ".claude/skills/execute",
+    "forge": ".claude/skills/forge",
+    "frontend-validate": ".claude/skills/frontend-validate",
+    "implement": ".claude/skills/implement",
+    "mode": ".claude/skills/mode",
+    "plan": ".claude/skills/plan",
+    "praxis": ".claude/skills/praxis",
+    "prd-coverage": ".claude/skills/prd-coverage",
+    "prd-create": ".claude/skills/prd-create",
+    "prd-decompose": ".claude/skills/prd-decompose",
+    "prd-validate": ".claude/skills/prd-validate",
+    "prototype": ".claude/skills/prototype",
+    "quickfix": ".claude/skills/quickfix",
+    "revalidate": ".claude/skills/revalidate",
+    "reverse-engineer": ".claude/skills/reverse-engineer",
+    "review": ".claude/skills/review",
+    "setup": ".claude/skills/setup",
+    "spec-from-prd": ".claude/skills/spec-from-prd",
+    "spec-review": ".claude/skills/spec-review",
+    "start": ".claude/skills/start",
+    "strategy": ".claude/skills/strategy",
+    "tasks": ".claude/skills/tasks",
+    "ux": ".claude/skills/ux",
+    "validate": ".claude/skills/validate",
+    "verify-all": ".claude/skills/verify-all"
+  },
+  "agents": {
+    "adr-creator": ".claude/agents/architecture/adr-creator.md",
+    "adr-validator": ".claude/agents/architecture/adr-validator.md",
+    "ddd-estrategico": ".claude/agents/architecture/ddd-estrategico.md",
+    "check-architecture": ".claude/agents/backend/check-architecture.md",
+    "check-ddd": ".claude/agents/backend/check-ddd.md",
+    "check-errors": ".claude/agents/backend/check-errors.md",
+    "check-naming": ".claude/agents/backend/check-naming.md",
+    "check-security": ".claude/agents/backend/check-security.md",
+    "check-tests": ".claude/agents/backend/check-tests.md",
+    "scaffold-aggregate": ".claude/agents/backend/scaffold-aggregate.md",
+    "planner": ".claude/agents/delivery/planner.md",
+    "task-breaker": ".claude/agents/delivery/task-breaker.md",
+    "codebase-mapper": ".claude/agents/discovery/codebase-mapper.md",
+    "discovery": ".claude/agents/discovery/discovery.md",
+    "legacy-analyzer": ".claude/agents/discovery/legacy-analyzer.md",
+    "strategy": ".claude/agents/discovery/strategy.md",
+    "check-ai-cliches": ".claude/agents/frontend/check-ai-cliches.md",
+    "check-design": ".claude/agents/frontend/check-design.md",
+    "check-forms": ".claude/agents/frontend/check-forms.md",
+    "check-i18n": ".claude/agents/frontend/check-i18n.md",
+    "check-react": ".claude/agents/frontend/check-react.md",
+    "check-responsiveness": ".claude/agents/frontend/check-responsiveness.md",
+    "check-routing": ".claude/agents/frontend/check-routing.md",
+    "check-security-frontend": ".claude/agents/frontend/check-security-frontend.md",
+    "check-structure": ".claude/agents/frontend/check-structure.md",
+    "check-typescript": ".claude/agents/frontend/check-typescript.md",
+    "check-ux": ".claude/agents/frontend/check-ux.md",
+    "check-visual-consistency": ".claude/agents/frontend/check-visual-consistency.md",
+    "check-web-guidelines": ".claude/agents/frontend/check-web-guidelines.md",
+    "design": ".claude/agents/frontend/design.md",
+    "ds-component": ".claude/agents/frontend/ds-component.md",
+    "ds-foundation": ".claude/agents/frontend/ds-foundation.md",
+    "paper-prototype": ".claude/agents/frontend/paper-prototype.md",
+    "ux": ".claude/agents/frontend/ux.md",
+    "praxis": ".claude/agents/orchestration/praxis.md",
+    "clarifier": ".claude/agents/product/clarifier.md",
+    "module-detailer": ".claude/agents/product/module-detailer.md",
+    "prd-create": ".claude/agents/product/prd-create.md",
+    "prd-decompose": ".claude/agents/product/prd-decompose.md",
+    "prd-validate": ".claude/agents/product/prd-validate.md",
+    "spec-from-prd": ".claude/agents/product/spec-from-prd.md",
+    "analyzer": ".claude/agents/quality/analyzer.md",
+    "revalidator": ".claude/agents/quality/revalidator.md",
+    "solid-review": ".claude/agents/quality/solid-review.md",
+    "spec-review": ".claude/agents/quality/spec-review.md"
+  },
+  "tools": {
+    ".claude/agents/architecture/adr-creator.md": {
+      "kind": "agent",
+      "name": "adr-creator",
+      "domain": "architecture",
+      "description": "Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.",
+      "files": {
+        ".claude/agents/architecture/adr-creator.md": "5d99d5eabae686ede39a6e889ce4ffba8c2a03aa5ed32d1618e2c67489b1ead2"
+      },
+      "depends": []
+    },
+    ".claude/agents/architecture/adr-validator.md": {
+      "kind": "agent",
+      "name": "adr-validator",
+      "domain": "architecture",
+      "description": "Agente dinamico que le TODAS as ADRs do projeto e valida codigo contra as regras definidas nelas. Funciona com qualquer ADR — nao tem regras hardcoded.",
+      "files": {
+        ".claude/agents/architecture/adr-validator.md": "4096bf6771ae0cdccead7c84dd609a2f16537e006a05271fc2756128c428bae6"
+      },
+      "depends": []
+    },
+    ".claude/agents/architecture/ddd-estrategico.md": {
+      "kind": "agent",
+      "name": "ddd-estrategico",
+      "domain": "architecture",
+      "description": "Especialista Senior em DDD Estrategico e Identificacao de Bounded Contexts. Use para modelagem de dominio, identificacao de subdominios, classificacao estrategica (Core/Supporting/Generic), analise de linguagem ubiqua, definicao de Bounded Contexts e construcao de Context Maps.",
+      "files": {
+        ".claude/agents/architecture/ddd-estrategico.md": "968382fb595710c05571d848c666cff748def9811588d49582d73900b57b5961"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/check-architecture.md": {
+      "kind": "agent",
+      "name": "check-architecture",
+      "domain": "backend",
+      "description": "Valida dependencias entre camadas arquiteturais. Detecta violacoes de Clean Architecture, imports invertidos, Service Locator, Leaky Abstractions e ausencia de patterns estruturais importantes.",
+      "files": {
+        ".claude/agents/backend/check-architecture.md": "4add994459dc18d31600b3792a845a7669d9f7befdf93d330be0341ba2cdcc95"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/check-ddd.md": {
+      "kind": "agent",
+      "name": "check-ddd",
+      "domain": "backend",
+      "description": "Valida DDD tactical patterns — aggregates, entities, VOs, encapsulamento, domain events, acoplamento entre agregados. Detecta anemic models, public setters e oportunidades de evolucao arquitetural.",
+      "files": {
+        ".claude/agents/backend/check-ddd.md": "7c44519141bd2cda928f936b6bea723c7a22776c3b8c32adeff16e650e8b6a93"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/check-errors.md": {
+      "kind": "agent",
+      "name": "check-errors",
+      "domain": "backend",
+      "description": "Valida exception handling, logging estruturado e observabilidade. Detecta try/catch em handlers, swallowing de excecoes, logging nao estruturado e ausencia de correlation ID.",
+      "files": {
+        ".claude/agents/backend/check-errors.md": "e4dcdd0690362d52b3cb52f69ffe217fdffbb392666a49d43b1a5ef2f1632443"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/check-naming.md": {
+      "kind": "agent",
+      "name": "check-naming",
+      "domain": "backend",
+      "description": "Valida convencoes de nomes em qualquer linguagem OO — classes, metodos, variaveis, sufixos. Detecta nomes genericos, abreviacoes, inconsistencias e violacoes de linguagem ubiqua do dominio.",
+      "files": {
+        ".claude/agents/backend/check-naming.md": "b5a825762727eb4b89a085a8da8f7b7bafe6b553a26a77ea250f6c97e8c14f20"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/check-security.md": {
+      "kind": "agent",
+      "name": "check-security",
+      "domain": "backend",
+      "description": "Valida seguranca backend — SQL injection, autenticacao/autorizacao em endpoints, secrets, sanitizacao de input, audit trail e RBAC/ABAC. Detecta vulnerabilidades e oportunidades de evolucao de seguranca.",
+      "files": {
+        ".claude/agents/backend/check-security.md": "05dbdad995c77c5bcdf8e2c17e160013a4e2d7b6b720529490f42e1b597b415a"
+      },
+      "depends": [
+        "docs/adr/0008-seguranca-e-lgpd.md"
+      ]
+    },
+    ".claude/agents/backend/check-tests.md": {
+      "kind": "agent",
+      "name": "check-tests",
+      "domain": "backend",
+      "description": "Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.",
+      "files": {
+        ".claude/agents/backend/check-tests.md": "abb5ee914317c839de7cfb2b376c996e7f0191a5b9302d1c4338a7ffe8302b7d"
+      },
+      "depends": []
+    },
+    ".claude/agents/backend/scaffold-aggregate.md": {
+      "kind": "agent",
+      "name": "scaffold-aggregate",
+      "domain": "backend",
+      "description": "Gera Aggregate Root com private setters, factory method, audit fields e unit tests.",
+      "files": {
+        ".claude/agents/backend/scaffold-aggregate.md": "2ad4018eeb8ff8f7f02fd2ad60d3ebd8be220767a703ea83048614cc7bf50991"
+      },
+      "depends": []
+    },
+    ".claude/agents/delivery/planner.md": {
+      "kind": "agent",
+      "name": "planner",
+      "domain": "delivery",
+      "description": "Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.",
+      "files": {
+        ".claude/agents/delivery/planner.md": "a149374e5de7bc1e1689a70859c041493b78fdc7cccd523df971c4065fd19ae7"
+      },
+      "depends": []
+    },
+    ".claude/agents/delivery/task-breaker.md": {
+      "kind": "agent",
+      "name": "task-breaker",
+      "domain": "delivery",
+      "description": "Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
+      "files": {
+        ".claude/agents/delivery/task-breaker.md": "9ccb334485d9c3ae03714dfe1475cfb7097d163aef8e5d6af810d709fe5e5c7a"
+      },
+      "depends": [
+        "docs/templates/tasks-template.md"
+      ]
+    },
+    ".claude/agents/discovery/codebase-mapper.md": {
+      "kind": "agent",
+      "name": "codebase-mapper",
+      "domain": "discovery",
+      "description": "Documentarista de codebase para legados. Mapeia a estrutura, padroes e dependencias do codigo existente SEM julgar ou opinar. Apenas documenta o que existe.",
+      "files": {
+        ".claude/agents/discovery/codebase-mapper.md": "10b2a360cc97be24b393bf9ca18852d79792557c4c17e3be6d0b6b4d9e549a57"
+      },
+      "depends": []
+    },
+    ".claude/agents/discovery/discovery.md": {
+      "kind": "agent",
+      "name": "discovery",
+      "domain": "discovery",
+      "description": "Agente de Discovery que entende o projeto completamente antes de qualquer decisao. Faz perguntas estruturadas e progressivas sobre negocio, stack, time e restricoes. NAO avanca sem entendimento completo.",
+      "files": {
+        ".claude/agents/discovery/discovery.md": "ab0af78883036f2986f0b1adbe59f3e4aa2b189f7f44fe0e86097f482de8485c"
+      },
+      "depends": []
+    },
+    ".claude/agents/discovery/legacy-analyzer.md": {
+      "kind": "agent",
+      "name": "legacy-analyzer",
+      "domain": "discovery",
+      "description": "Engenharia reversa completa de projetos legados. Documenta logica de negocio, fluxos, telas, regras e estrutura. Pode solicitar prints e descricoes de telas ao usuario. Produz documentacao suficiente para reconstruir o sistema sem acessar o legado novamente.",
+      "files": {
+        ".claude/agents/discovery/legacy-analyzer.md": "1d690e87c1fad1851f3b174bbc73be8cab583d739382475e7287854d75fd85a7"
+      },
+      "depends": [
+        ".claude/agents/discovery/codebase-mapper.md"
+      ]
+    },
+    ".claude/agents/discovery/strategy.md": {
+      "kind": "agent",
+      "name": "strategy",
+      "domain": "discovery",
+      "description": "Estrategista de Negocio Senior que pensa junto com o usuario para avaliar ideias, discutir features, priorizar, questionar premissas e garantir que o produto tem potencial real antes de entrar no pipeline tecnico. Conversacional, opinativo e orientado a resultados de negocio.",
+      "files": {
+        ".claude/agents/discovery/strategy.md": "6e77aa0a4efd6aa3863e1338d682d88a1bd398eb75f91af0ab1fbc48a8eac3c3"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-ai-cliches.md": {
+      "kind": "agent",
+      "name": "check-ai-cliches",
+      "domain": "frontend",
+      "description": "Detecta cliches de IA no frontend (Inter onipresente, gradiente roxo-azul, cards aninhados, hero metrics row, glassmorphism decorativo, etc.). Roda o detector deterministico (.claude/scripts/frontend/detect-cliches.mjs) + aplica heuristicas que regex nao pega + contextualiza findings contra o Charter do projeto.",
+      "files": {
+        ".claude/agents/frontend/check-ai-cliches.md": "db9e9ac97a9b1caab62e0ce9b65fb0896d142227a7b09bc8d7edc6cc9d3b9067"
+      },
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/scripts/frontend/detect-cliches.mjs"
+      ]
+    },
+    ".claude/agents/frontend/check-design.md": {
+      "kind": "agent",
+      "name": "check-design",
+      "domain": "frontend",
+      "description": "Valida Design System compliance — tokens de tema, componentes consistentes, sem reimplementacao de componentes existentes, spacing e tipografia via tokens.",
+      "files": {
+        ".claude/agents/frontend/check-design.md": "f44da6ec6b0e245be91319a53208247c988c9a27b707efeeb387b36ba69c7e6d"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-forms.md": {
+      "kind": "agent",
+      "name": "check-forms",
+      "domain": "frontend",
+      "description": "Valida patterns de formularios — validacao, masks, UX, acessibilidade de form. Detecta useState por campo, onChange prematuro, falta de schema validation e double submit.",
+      "files": {
+        ".claude/agents/frontend/check-forms.md": "9ddbcd49f240a6b8008a70359e69689193972a2a5b67cbd275c4c0cf9f7cd325"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-i18n.md": {
+      "kind": "agent",
+      "name": "check-i18n",
+      "domain": "frontend",
+      "description": "Valida internacionalizacao — detecta strings user-facing hardcoded, verifica namespaces por feature, lazy loading de traducoes e consistencia de chaves.",
+      "files": {
+        ".claude/agents/frontend/check-i18n.md": "84df19209a1f91fb15bad122379c18ff898f042c18398809e129946cab6ef7cd"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-react.md": {
+      "kind": "agent",
+      "name": "check-react",
+      "domain": "frontend",
+      "description": "Valida patterns React — hooks, composicao, estado, performance, key props. Detecta anti-patterns comuns, re-renders desnecessarios e oportunidades de evolucao arquitetural.",
+      "files": {
+        ".claude/agents/frontend/check-react.md": "b0f7c4a59d036ba26e4eb04973a12fe4480e1aabf7efd8c2ad5feb8a35e0e825"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-responsiveness.md": {
+      "kind": "agent",
+      "name": "check-responsiveness",
+      "domain": "frontend",
+      "description": "Valida responsividade — mobile-first, breakpoints via utility classes, ausencia de @media inline e widths fixos. Detecta abordagens desktop-first e oportunidades de melhoria de layout responsivo.",
+      "files": {
+        ".claude/agents/frontend/check-responsiveness.md": "b4f556547354afcc52d97c21dd1366a1790b763ca3c2fb65c664dbd926d285c5"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-routing.md": {
+      "kind": "agent",
+      "name": "check-routing",
+      "domain": "frontend",
+      "description": "Valida patterns de rotas — URLs semanticas, navegacao via router, lazy loading, CRUD pattern e protecao de rotas autenticadas.",
+      "files": {
+        ".claude/agents/frontend/check-routing.md": "9aa00112e073db68f98d4243bfff42ec7badc789076497822b7199f5b0c8d32a"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-security-frontend.md": {
+      "kind": "agent",
+      "name": "check-security-frontend",
+      "domain": "frontend",
+      "description": "Valida seguranca frontend — XSS (dangerouslySetInnerHTML, innerHTML), armazenamento inseguro de token/credencial, secrets expostos no bundle, open redirect, dados sensiveis no client e tabnabbing. Detecta vulnerabilidades client-side e oportunidades de evolucao.",
+      "files": {
+        ".claude/agents/frontend/check-security-frontend.md": "bac2087d5bddf99329782d4f3428c4c72a576aac8f30034bdc7f60aeeabb4440"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-structure.md": {
+      "kind": "agent",
+      "name": "check-structure",
+      "domain": "frontend",
+      "description": "Valida estrutura de pastas frontend, imports, barrels e coesao de modulos. Verifica feature-first, imports cruzados, uso de shared/ e oportunidades de modularizacao.",
+      "files": {
+        ".claude/agents/frontend/check-structure.md": "96f59c1d146ad357ce8e7f4333152627f5450c860431cabd3da9220a15baa8d2"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-typescript.md": {
+      "kind": "agent",
+      "name": "check-typescript",
+      "domain": "frontend",
+      "description": "Valida configuracao TypeScript strict, uso de tipos, generics e type safety. Detecta any, ts-ignore, tipos implicitos e oportunidades de melhorar type safety.",
+      "files": {
+        ".claude/agents/frontend/check-typescript.md": "8da20a56ef895b15191261db7cbfae445daaaabd4430f42d019e35b3f533e0af"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-ux.md": {
+      "kind": "agent",
+      "name": "check-ux",
+      "domain": "frontend",
+      "description": "Valida patterns UX — loading states, feedback visual, empty states, error handling, acessibilidade basica e consistencia de interacao.",
+      "files": {
+        ".claude/agents/frontend/check-ux.md": "ae8636258b087f3f2e188df1cf72b83504b75c88338bfd13eeaa31fe3f0c9217"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/check-visual-consistency.md": {
+      "kind": "agent",
+      "name": "check-visual-consistency",
+      "domain": "frontend",
+      "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
+      "files": {
+        ".claude/agents/frontend/check-visual-consistency.md": "6fabf9b1dd87099233b832289a41a9ee994d6ab56c7bd69a9ad4df83c1d0f30d"
+      },
+      "depends": [
+        ".claude/reference/frontend/design-system-anatomy.md"
+      ]
+    },
+    ".claude/agents/frontend/check-web-guidelines.md": {
+      "kind": "agent",
+      "name": "check-web-guidelines",
+      "domain": "frontend",
+      "description": "Valida UI contra as Web Interface Guidelines (Vercel) — acessibilidade, foco, formularios, animacao, tipografia, conteudo, imagens, performance, navegacao e estado na URL, toque, layout, tema, locale, hidratacao e copy. Regras de um snapshot fixado no kit, filtradas pela stack e pelo idioma do projeto. Saida terse em arquivo:linha.",
+      "files": {
+        ".claude/agents/frontend/check-web-guidelines.md": "19c9883d22d7ac7ea4d2ba596eaf4fb48d36256de8a5cd403b630aa266e21729"
+      },
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/third-party"
+      ]
+    },
+    ".claude/agents/frontend/design.md": {
+      "kind": "agent",
+      "name": "design",
+      "domain": "frontend",
+      "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
+      "files": {
+        ".claude/agents/frontend/design.md": "cfc13736d70ced34c04867821e08670cc3bcf80d19c9ef6c50b9f6ca7bcb773e"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/ds-component.md": {
+      "kind": "agent",
+      "name": "ds-component",
+      "domain": "frontend",
+      "description": "Busca componente no registry, instala, customiza com variants e CSS variables, cria showcase no design-system. Tambem documenta componentes existentes e remove showcases orfaos.",
+      "files": {
+        ".claude/agents/frontend/ds-component.md": "5c3413a1d230ddf66988fdf1d5adac078e5ef61fa89d0d471734caf77463533a"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/ds-foundation.md": {
+      "kind": "agent",
+      "name": "ds-foundation",
+      "domain": "frontend",
+      "description": "Extrai design tokens de screenshot, inicializa biblioteca de componentes, configura CSS variables, cria design-system isolado e gera ADR do Design System.",
+      "files": {
+        ".claude/agents/frontend/ds-foundation.md": "de8953471ace649b8a375eb39b188af45a1a32ed9978cd30c00ce5d55e18ff69"
+      },
+      "depends": [
+        ".claude/assets/ds-styleguide-reference.png",
+        "docs/adr/templates/frontend-patterns/design-system.md",
+        "docs/templates/design-memory-template.md"
+      ]
+    },
+    ".claude/agents/frontend/paper-prototype.md": {
+      "kind": "agent",
+      "name": "paper-prototype",
+      "domain": "frontend",
+      "description": "Roteiro do /prototype para o destino Paper (MCP) — contexto do projeto, regras de construcao no Paper, padroes por tipo de tela. Lido pelo /prototype na sessao principal, onde as ferramentas do MCP existem; como subagente, nao alcanca o Paper.",
+      "files": {
+        ".claude/agents/frontend/paper-prototype.md": "8a2372e1dab45b381a9368500e954d9cb7529906be804a0207c4a9907456ff53"
+      },
+      "depends": []
+    },
+    ".claude/agents/frontend/ux.md": {
+      "kind": "agent",
+      "name": "ux",
+      "domain": "frontend",
+      "description": "Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero.",
+      "files": {
+        ".claude/agents/frontend/ux.md": "83517c566ace1796e0bea2959bef429e8237e9f5088b3fc83ee4644ddafd0f2a"
+      },
+      "depends": [
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/personas.md",
+        ".claude/reference/frontend/register-product.md",
+        "docs/templates/design-memory-template.md"
+      ]
+    },
+    ".claude/agents/orchestration/praxis.md": {
+      "kind": "agent",
+      "name": "praxis",
+      "domain": "orchestration",
+      "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
+      "files": {
+        ".claude/agents/orchestration/praxis.md": "15a0d784277e2720033bd9fa96fe8efc1f521bbd3231782fee0dbf6bb67a5dcb"
+      },
+      "depends": []
+    },
+    ".claude/agents/product/clarifier.md": {
+      "kind": "agent",
+      "name": "clarifier",
+      "domain": "product",
+      "description": "Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas por impacto x incerteza e integra respostas na spec.",
+      "files": {
+        ".claude/agents/product/clarifier.md": "cdf2e33e4d4908d219f10f281bb84025e29516c2bffc7e4902adf027943fb620"
+      },
+      "depends": [
+        "docs/templates/spec-template.md"
+      ]
+    },
+    ".claude/agents/product/module-detailer.md": {
+      "kind": "agent",
+      "name": "module-detailer",
+      "domain": "product",
+      "description": "Conduz o detalhamento de um modulo pre-SDD. Scaffolda workspace canonico, preenche as 8 dimensoes interativamente, rastreia decisoes/duvidas com IDs estaveis e congela o workspace para alimentar /prd-decompose.",
+      "files": {
+        ".claude/agents/product/module-detailer.md": "9b71d0deb74ca960f413a91fa033e776da80c86b043ccb994bd10593ffda061d"
+      },
+      "depends": [
+        "docs/adr/0006-workspace-detalhamento-modulo.md",
+        "docs/templates/detail"
+      ]
+    },
+    ".claude/agents/product/prd-create.md": {
+      "kind": "agent",
+      "name": "prd-create",
+      "domain": "product",
+      "description": "Cria PRD estrategico ou tatico seguindo o template canonico. Atua como Especialista Senior em Product Management — questiona premissas vagas, nao aceita \"a definir\" e prioriza clareza. Redige o PRD com as respostas que o /prd-create coletou na sessao principal; lacuna volta como pergunta.",
+      "files": {
+        ".claude/agents/product/prd-create.md": "adc382d5b2e90a0fbae2530d451b9bd13919370fdb9ab137d603e6be1473ac27"
+      },
+      "depends": []
+    },
+    ".claude/agents/product/prd-decompose.md": {
+      "kind": "agent",
+      "name": "prd-decompose",
+      "domain": "product",
+      "description": "Decompoe PRD tatico (ou workspace de detalhamento) em specs independentes. Identifica dependencias, propoe ordem de implementacao e gera plano salvo em disco.",
+      "files": {
+        ".claude/agents/product/prd-decompose.md": "33b81109d12117b84c26bd2691068e0ab34dd183b8b82636d57f9d9d706de116"
+      },
+      "depends": []
+    },
+    ".claude/agents/product/prd-validate.md": {
+      "kind": "agent",
+      "name": "prd-validate",
+      "domain": "product",
+      "description": "Valida PRD contra o template canonico. Read-only — reporta erros/avisos mas nao corrige. Distingue estrategico de tatico pelo conteudo.",
+      "files": {
+        ".claude/agents/product/prd-validate.md": "fabb8e112d80b2467277d396615d02ba1cf38bf7400f03782cd4bd07f9d51c5a"
+      },
+      "depends": []
+    },
+    ".claude/agents/product/spec-from-prd.md": {
+      "kind": "agent",
+      "name": "spec-from-prd",
+      "domain": "product",
+      "description": "Transforma uma feature do PRD em spec tecnica detalhada, numerada e rastreavel. Le PRD, TODAS as ADRs, glossario e specs existentes. Trabalho gerativo pesado, roda isolado.",
+      "files": {
+        ".claude/agents/product/spec-from-prd.md": "a74fd4090ff5179338d4b673072bad37ac947ac1f9a1d86a841aab4909e10dcb"
+      },
+      "depends": [
+        ".claude/skills/spec-from-prd",
+        "docs/templates/spec-template.md"
+      ]
+    },
+    ".claude/agents/quality/analyzer.md": {
+      "kind": "agent",
+      "name": "analyzer",
+      "domain": "quality",
+      "description": "Analise de consistencia cross-artefato (spec ↔ plan ↔ tasks). Detecta duplicacoes, gaps, ambiguidades e inconsistencias em 6 passes.",
+      "files": {
+        ".claude/agents/quality/analyzer.md": "67d2f4f31a58e33932358b068b9781e5fa917e334da562ff98aee4ec213a2067"
+      },
+      "depends": []
+    },
+    ".claude/agents/quality/revalidator.md": {
+      "kind": "agent",
+      "name": "revalidator",
+      "domain": "quality",
+      "description": "Agente de revalidacao cirurgica. Le um relatorio de validacao existente, identifica itens pendentes e re-executa apenas os agents responsaveis. Detecta regressoes nos arquivos corrigidos.",
+      "files": {
+        ".claude/agents/quality/revalidator.md": "6fb1e0a36c406e62312792e7db8be92c78d42cd3f5162b1994e4fc64a9cad406"
+      },
+      "depends": []
+    },
+    ".claude/agents/quality/solid-review.md": {
+      "kind": "agent",
+      "name": "solid-review",
+      "domain": "quality",
+      "description": "Analisa codigo em qualquer linguagem OO para violacoes dos principios SOLID. Use para revisao de qualidade de codigo.",
+      "files": {
+        ".claude/agents/quality/solid-review.md": "734bea53548dd0daba35cd3612098d2722cde206c2d69fe8f5c4c09936bc9731"
+      },
+      "depends": []
+    },
+    ".claude/agents/quality/spec-review.md": {
+      "kind": "agent",
+      "name": "spec-review",
+      "domain": "quality",
+      "description": "Valida se uma spec tecnica esta pronta para implementacao. Verifica campos obrigatorios, criterios de aceite concretos, edge cases, entidades definidas e ausencia de ambiguidades bloqueantes. Read-only — reporta gaps mas nao corrige.",
+      "files": {
+        ".claude/agents/quality/spec-review.md": "aedb8c19efa9b4fc9b687e427815041404a20ce795b2ed5d2a0e71e00c498ddf"
+      },
+      "depends": []
+    },
+    ".claude/assets/ds-styleguide-reference.png": {
+      "kind": "asset",
+      "files": {
+        ".claude/assets/ds-styleguide-reference.png": "eed015f7a63579dde6851ea364ee2a8676f9f4f8072700bc7232c9d561931d3e"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents": {
+      "kind": "group",
+      "files": {
+        ".claude/evals/agents/README.md": "a67c5ecf62ac9e3a37737d9b8fd79c9762dc50c12a25451094f89465988aba67",
+        ".claude/evals/agents/contratos/check-i18n/01-texto-fixo.yml": "70ae0f2e8254fa24a787366aacca644e05cf40888ef3a2383f7359e0aff5abc5",
+        ".claude/evals/agents/contratos/check-i18n/02-moeda-a-mao.yml": "2da0720d63f6ba7d5e0e0e683405c085f57c9508adc62e03970acd9f215363de",
+        ".claude/evals/agents/contratos/check-i18n/90-conforme.yml": "cfe050fc06007f9663ef4f056a7721a19d44e1452b052d05fd2f1d979f20ab5f",
+        ".claude/evals/agents/contratos/check-naming/01-usecase-como-service.yml": "856104dc5173f20f9f6ac97ffb6dc6449a4540bcce3a9df5b895bfca21beed46",
+        ".claude/evals/agents/contratos/check-naming/02-helper-generico.yml": "09f0691330770e3506e2cc49781278aed7a0e369c27c933053fac68feeed8501",
+        ".claude/evals/agents/contratos/check-naming/90-conforme.yml": "b704324128260ef3047a9cebe0f61ba8a7871acc43809c41e9eb51a4e611ea62",
+        ".claude/evals/agents/contratos/check-security-frontend/01-xss-html-dinamico.yml": "359922614b25db500f43f5b1285effaac5006d43000d76d554fc23044e396168",
+        ".claude/evals/agents/contratos/check-security-frontend/02-token-localstorage.yml": "15cb60c49dd763e0dc6620be46785c005a9bd92577d8a8d950128ed340be093a",
+        ".claude/evals/agents/contratos/check-security-frontend/90-conforme.yml": "bad29a2d872e495f9f49abbf516acbba4308c1b5114dabff0549944ed88b92c1",
+        ".claude/evals/agents/contratos/check-structure/01-import-cruzado.yml": "b1e5b535b1cad96295dd31b045be09322ed6d66ddb845ccef75e70a2188a44bc",
+        ".claude/evals/agents/contratos/check-structure/02-hook-fora-de-hooks.yml": "76a4d2fe2760669cd865099840924d363c219f4c23e88e4a7618c150bec10adf",
+        ".claude/evals/agents/contratos/check-structure/90-conforme.yml": "7feb1fa177f4b674efa2ef1a113f794229fb75caec4e59a2e9f1e1319e75e3bb",
+        ".claude/evals/agents/contratos/check-typescript/01-as-any.yml": "5fb73d965afda4f252078112a0505904e204d19297eb64e71dd84cbd69b61f6a",
+        ".claude/evals/agents/contratos/check-typescript/02-ts-ignore.yml": "3f9a7f16ac55155439f542567b8a34746958a8011ec8901fa739708cadb20313",
+        ".claude/evals/agents/contratos/check-typescript/90-conforme.yml": "c695d472523d837335480a3564bd2235dbc968a4c2204829a37d814f40246758",
+        ".claude/evals/agents/contratos/check-web-guidelines/01-div-clicavel.yml": "b7ef9fb15d450ca37df45f30b522b1bbb6123e4f610fb52b548ca34a10c96063",
+        ".claude/evals/agents/contratos/check-web-guidelines/02-botao-icone-sem-nome.yml": "7f2145ab0234a48d42ab1d42ba2eceba85d38d43dfa3153b00f8e848cd5be5d3",
+        ".claude/evals/agents/contratos/check-web-guidelines/90-conforme.yml": "93fb12e57a3ebe450471503dae5a1e141aaefc11a357c5ef745dc921aa93fcbd",
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/components/OrdersHeader.tsx": "5dab7ed360c4f2e27c02180e667fcbf85c1f7200307a751ba539e66bd7f02581",
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/i18n/pt-BR.json": "742746128790604d9b11a83419d00d890593552dcdd614a1ee48deae54776943",
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7",
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/components/OrderTotal.tsx": "6f1230c5ffcf4e4a13784cf16099c022820f0c983fbe9e70b4921777d7cc5799",
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/i18n/pt-BR.json": "742746128790604d9b11a83419d00d890593552dcdd614a1ee48deae54776943",
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7",
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/components/OrderTotal.tsx": "6736269716fcdeb9218dc64e7e11ff56f345469c2fef5af57d08ca5b96a4b172",
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/i18n/pt-BR.json": "a37ce48cef5856b1452c0099ecf85b3c31d3b2ae136749965a1a4641ed63ef0e",
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7",
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123",
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderService.cs": "439c04c269c0efc73809405c657ebd332951ca511628cfea845c34fcf02e0b00",
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6",
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3",
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123",
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6",
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderHelper.cs": "dddd51f8ff2e7748adaa428e3c10ef7768f7736353ef5d4f9f1176d72a77135d",
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3",
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123",
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderUseCase.cs": "2b9ed0514f435566969754cb473d3f60e022cb9d83713bd71192d3f5e328d5cb",
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6",
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3",
+        ".claude/evals/agents/fixtures/check-security-frontend/01-xss-html-dinamico/Comentario.tsx": "5232de60f85af3e179f5c87f20b4844e1e365cdc6bbffd3da867c076caf63e3b",
+        ".claude/evals/agents/fixtures/check-security-frontend/02-token-localstorage/sessao.ts": "4ccd71faf41e707b8edf1b625082dd097b6571acf2dace5a3b5c7f6460d43725",
+        ".claude/evals/agents/fixtures/check-security-frontend/90-conforme/Perfil.tsx": "c69e529bee8c5562fdbec1eda00828151203f6e619b54eb2197ecabc97bab542",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/components/OrderList.tsx": "4ade0db88eb0bd381ede6b354f5f800e486e3046941c7f737397743aca0a4e1c",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/hooks/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524",
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/OrderList.tsx": "0f7fe0fd69417f0ecf557ec452e191262d07012d5b6308761ab827ba04079ef6",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524",
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/components/OrderList.tsx": "4369bdb44d5f3fad3a4377134e1406bdc1eeca7e54f02797c920120c8f9615a7",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/hooks/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524",
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5",
+        ".claude/evals/agents/fixtures/check-typescript/01-as-any/pedido.ts": "0661e8e14667331d55514bdddf5d4443fd00403bec64f575f9898da8346c3681",
+        ".claude/evals/agents/fixtures/check-typescript/01-as-any/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a",
+        ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/desconto.ts": "1ce7eec56e9dcd893b75319922b0f40d2bd8ed36e30b06094dec35da380f48c3",
+        ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a",
+        ".claude/evals/agents/fixtures/check-typescript/90-conforme/frete.ts": "364c8c7ccd579c1e63a09b8aa434a742412032ae2bc7b82e4d1866b708d7b3da",
+        ".claude/evals/agents/fixtures/check-typescript/90-conforme/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a",
+        ".claude/evals/agents/fixtures/check-web-guidelines/01-div-clicavel/CartaoProjeto.tsx": "dbc5b86f0be8e23635126b1b9a15669eb71358b90416c459decc7dccbb3937bd",
+        ".claude/evals/agents/fixtures/check-web-guidelines/02-botao-icone-sem-nome/BarraFerramentas.tsx": "7d930be7b1da5892298be4cfd1a4a86700d6ec8cbaa0bc57d50b9175bb6135b3",
+        ".claude/evals/agents/fixtures/check-web-guidelines/90-conforme/BuscaClientes.tsx": "3906ec83c3cbc9a52e020002efe7a3c411bef80fbed233c869d1f88ccfc21cd7",
+        ".claude/evals/agents/linha-base.md": "feae5cbbf115a55455d98d3e0c9711f85392ceaf4fc519dd985373d9320e3590"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/README.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/README.md": "a67c5ecf62ac9e3a37737d9b8fd79c9762dc50c12a25451094f89465988aba67"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-i18n/01-texto-fixo.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-i18n/01-texto-fixo.yml": "70ae0f2e8254fa24a787366aacca644e05cf40888ef3a2383f7359e0aff5abc5"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-i18n/02-moeda-a-mao.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-i18n/02-moeda-a-mao.yml": "2da0720d63f6ba7d5e0e0e683405c085f57c9508adc62e03970acd9f215363de"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-i18n/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-i18n/90-conforme.yml": "cfe050fc06007f9663ef4f056a7721a19d44e1452b052d05fd2f1d979f20ab5f"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-naming/01-usecase-como-service.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-naming/01-usecase-como-service.yml": "856104dc5173f20f9f6ac97ffb6dc6449a4540bcce3a9df5b895bfca21beed46"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-naming/02-helper-generico.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-naming/02-helper-generico.yml": "09f0691330770e3506e2cc49781278aed7a0e369c27c933053fac68feeed8501"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-naming/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-naming/90-conforme.yml": "b704324128260ef3047a9cebe0f61ba8a7871acc43809c41e9eb51a4e611ea62"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-security-frontend/01-xss-html-dinamico.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-security-frontend/01-xss-html-dinamico.yml": "359922614b25db500f43f5b1285effaac5006d43000d76d554fc23044e396168"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-security-frontend/02-token-localstorage.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-security-frontend/02-token-localstorage.yml": "15cb60c49dd763e0dc6620be46785c005a9bd92577d8a8d950128ed340be093a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-security-frontend/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-security-frontend/90-conforme.yml": "bad29a2d872e495f9f49abbf516acbba4308c1b5114dabff0549944ed88b92c1"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-structure/01-import-cruzado.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-structure/01-import-cruzado.yml": "b1e5b535b1cad96295dd31b045be09322ed6d66ddb845ccef75e70a2188a44bc"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-structure/02-hook-fora-de-hooks.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-structure/02-hook-fora-de-hooks.yml": "76a4d2fe2760669cd865099840924d363c219f4c23e88e4a7618c150bec10adf"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-structure/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-structure/90-conforme.yml": "7feb1fa177f4b674efa2ef1a113f794229fb75caec4e59a2e9f1e1319e75e3bb"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-typescript/01-as-any.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-typescript/01-as-any.yml": "5fb73d965afda4f252078112a0505904e204d19297eb64e71dd84cbd69b61f6a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-typescript/02-ts-ignore.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-typescript/02-ts-ignore.yml": "3f9a7f16ac55155439f542567b8a34746958a8011ec8901fa739708cadb20313"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-typescript/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-typescript/90-conforme.yml": "c695d472523d837335480a3564bd2235dbc968a4c2204829a37d814f40246758"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-web-guidelines/01-div-clicavel.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-web-guidelines/01-div-clicavel.yml": "b7ef9fb15d450ca37df45f30b522b1bbb6123e4f610fb52b548ca34a10c96063"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-web-guidelines/02-botao-icone-sem-nome.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-web-guidelines/02-botao-icone-sem-nome.yml": "7f2145ab0234a48d42ab1d42ba2eceba85d38d43dfa3153b00f8e848cd5be5d3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/contratos/check-web-guidelines/90-conforme.yml": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/contratos/check-web-guidelines/90-conforme.yml": "93fb12e57a3ebe450471503dae5a1e141aaefc11a357c5ef745dc921aa93fcbd"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/components/OrdersHeader.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/components/OrdersHeader.tsx": "5dab7ed360c4f2e27c02180e667fcbf85c1f7200307a751ba539e66bd7f02581"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/i18n/pt-BR.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/features/orders/i18n/pt-BR.json": "742746128790604d9b11a83419d00d890593552dcdd614a1ee48deae54776943"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/shared/i18n/useTranslation.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/01-texto-fixo/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/components/OrderTotal.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/components/OrderTotal.tsx": "6f1230c5ffcf4e4a13784cf16099c022820f0c983fbe9e70b4921777d7cc5799"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/i18n/pt-BR.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/features/orders/i18n/pt-BR.json": "742746128790604d9b11a83419d00d890593552dcdd614a1ee48deae54776943"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/shared/i18n/useTranslation.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/02-moeda-a-mao/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/components/OrderTotal.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/components/OrderTotal.tsx": "6736269716fcdeb9218dc64e7e11ff56f345469c2fef5af57d08ca5b96a4b172"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/i18n/pt-BR.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/features/orders/i18n/pt-BR.json": "a37ce48cef5856b1452c0099ecf85b3c31d3b2ae136749965a1a4641ed63ef0e"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/shared/i18n/useTranslation.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-i18n/90-conforme/src/shared/i18n/useTranslation.ts": "c412b1f9f97bcb3fef2e8555dc736924aa4824b5a622e19b1614088d360dd2e7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderRequest.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderService.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/CreateOrderService.cs": "439c04c269c0efc73809405c657ebd332951ca511628cfea845c34fcf02e0b00"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/IUseCase.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/OrderResponse.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/01-usecase-como-service/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/02-helper-generico/CreateOrderRequest.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/02-helper-generico/IUseCase.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderHelper.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderHelper.cs": "dddd51f8ff2e7748adaa428e3c10ef7768f7736353ef5d4f9f1176d72a77135d"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderResponse.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/02-helper-generico/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderRequest.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderRequest.cs": "cdd1b869015d252ddc32435fde1c9bea0b1b302d072bb33417627b471cd0c123"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderUseCase.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/CreateOrderUseCase.cs": "2b9ed0514f435566969754cb473d3f60e022cb9d83713bd71192d3f5e328d5cb"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/90-conforme/IUseCase.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/IUseCase.cs": "3c92b78a7913261d2a0433bc43c4184a9f9f57fa1ccf649d3beb052f0cc8eac6"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-naming/90-conforme/OrderResponse.cs": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-naming/90-conforme/OrderResponse.cs": "091180c9a1928c085ca305b31188f11f82fb3cf993ac04b4583c3dc74ada40f3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-security-frontend/01-xss-html-dinamico/Comentario.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-security-frontend/01-xss-html-dinamico/Comentario.tsx": "5232de60f85af3e179f5c87f20b4844e1e365cdc6bbffd3da867c076caf63e3b"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-security-frontend/02-token-localstorage/sessao.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-security-frontend/02-token-localstorage/sessao.ts": "4ccd71faf41e707b8edf1b625082dd097b6571acf2dace5a3b5c7f6460d43725"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-security-frontend/90-conforme/Perfil.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-security-frontend/90-conforme/Perfil.tsx": "c69e529bee8c5562fdbec1eda00828151203f6e619b54eb2197ecabc97bab542"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/components/CustomerBadge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/components/OrderList.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/components/OrderList.tsx": "4ade0db88eb0bd381ede6b354f5f800e486e3046941c7f737397743aca0a4e1c"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/hooks/useOrders.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/hooks/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/components/ProductTag.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/shared/components/Badge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/01-import-cruzado/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/components/CustomerBadge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/OrderList.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/OrderList.tsx": "0f7fe0fd69417f0ecf557ec452e191262d07012d5b6308761ab827ba04079ef6"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/useOrders.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/components/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/components/ProductTag.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/shared/components/Badge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/02-hook-fora-de-hooks/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/components/CustomerBadge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/components/CustomerBadge.tsx": "252b7333008744137279bbf7d0948063f7e44f3c6e4734cbb4dbf9f7a13c7ea7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/index.ts": "f1394602034f3759d5444657a78d6ef015381d37786b8ad651cd5fd22ffe4d04"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/customers/types.ts": "44a697cc74000c39ebb8e310c859b861f49caeaa8c1573590384434a42c4ac3b"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/components/OrderList.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/components/OrderList.tsx": "4369bdb44d5f3fad3a4377134e1406bdc1eeca7e54f02797c920120c8f9615a7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/hooks/useOrders.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/hooks/useOrders.ts": "707ba9cea77f1bd4240a3ae3ede57df44f26dd1b9ee8bfc432d3ea47659609a8"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/index.ts": "075382f4773dceea54300d37a3a20c32f087c23806c857424d02e3015951bece"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/orders/types.ts": "25eb6160fa9325c138c34f2b873984d5ac2a94d31fdfbe65863a4f48ded5de4a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/components/ProductTag.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/components/ProductTag.tsx": "2f1639ebb053cb202b3067a0ab991e1b9606dd4161f9b1145e744368af2ef532"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/index.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/index.ts": "fcb7cf6e699401f1236aad5feb0d4ef632a49eb0b69cae637394cb87da041969"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/types.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/features/products/types.ts": "6c78f07fb7b4216410c28c1dbd6e3b02842d672733c967ae46f96b687c00a524"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-structure/90-conforme/src/shared/components/Badge.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-structure/90-conforme/src/shared/components/Badge.tsx": "679346cadbec654ab89827889750839cc2b188fc02fe9e86df75959ed6d53ca5"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/01-as-any/pedido.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/01-as-any/pedido.ts": "0661e8e14667331d55514bdddf5d4443fd00403bec64f575f9898da8346c3681"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/01-as-any/tsconfig.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/01-as-any/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/desconto.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/desconto.ts": "1ce7eec56e9dcd893b75319922b0f40d2bd8ed36e30b06094dec35da380f48c3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/tsconfig.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/02-ts-ignore/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/90-conforme/frete.ts": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/90-conforme/frete.ts": "364c8c7ccd579c1e63a09b8aa434a742412032ae2bc7b82e4d1866b708d7b3da"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-typescript/90-conforme/tsconfig.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-typescript/90-conforme/tsconfig.json": "6a6f7c54b8406916f7045c2f6825b05d8737a71d2ec875b77728ce95720fe14a"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-web-guidelines/01-div-clicavel/CartaoProjeto.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-web-guidelines/01-div-clicavel/CartaoProjeto.tsx": "dbc5b86f0be8e23635126b1b9a15669eb71358b90416c459decc7dccbb3937bd"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-web-guidelines/02-botao-icone-sem-nome/BarraFerramentas.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-web-guidelines/02-botao-icone-sem-nome/BarraFerramentas.tsx": "7d930be7b1da5892298be4cfd1a4a86700d6ec8cbaa0bc57d50b9175bb6135b3"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/fixtures/check-web-guidelines/90-conforme/BuscaClientes.tsx": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/fixtures/check-web-guidelines/90-conforme/BuscaClientes.tsx": "3906ec83c3cbc9a52e020002efe7a3c411bef80fbed233c869d1f88ccfc21cd7"
+      },
+      "depends": []
+    },
+    ".claude/evals/agents/linha-base.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/evals/agents/linha-base.md": "feae5cbbf115a55455d98d3e0c9711f85392ceaf4fc519dd985373d9320e3590"
+      },
+      "depends": []
+    },
+    ".claude/hooks/_lib.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/_lib.mjs": "6b6619e8a72b9f00e34fb3bad6d03308134e423b245eaa65bd1687114b4fd200"
+      },
+      "depends": []
+    },
+    ".claude/hooks/capture.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/capture.mjs": "de119d98139c05eded9cc52269bd3a7a2615fc97ecaf6647db32c5703e9a2125"
+      },
+      "depends": [
+        ".claude/hooks/_lib.mjs"
+      ]
+    },
+    ".claude/hooks/hooks.manifest.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/hooks.manifest.json": "97964f000a6730eab9aa2d14c2b18be7d8211663711945e52eead9acace2298e"
+      },
+      "depends": []
+    },
+    ".claude/hooks/quality": {
+      "kind": "group",
+      "files": {
+        ".claude/hooks/quality/critical-paths-gate.mjs": "0485742d2c0a51c4ef75e4d9a6b93547df5fdcb356bfc0b2486d29a306f79f3c",
+        ".claude/hooks/quality/hooks.quality.json": "25c8f17da885bbaa3aae5a3bfa34ab0760d61ff46a17f2dbb3296fecf37d0473",
+        ".claude/hooks/quality/quality-on-edit.mjs": "b4a348048d3e75227591cb081d224c3eeb67c0ed34b5469f3f768638cccc802b",
+        ".claude/hooks/quality/quality.example.json": "ce4ea36d6a9eea2fc0be9d31f322875cc9a8d885262a70d30103b4207d91f388"
+      },
+      "depends": []
+    },
+    ".claude/hooks/quality/critical-paths-gate.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/quality/critical-paths-gate.mjs": "0485742d2c0a51c4ef75e4d9a6b93547df5fdcb356bfc0b2486d29a306f79f3c"
+      },
+      "depends": []
+    },
+    ".claude/hooks/quality/hooks.quality.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/quality/hooks.quality.json": "25c8f17da885bbaa3aae5a3bfa34ab0760d61ff46a17f2dbb3296fecf37d0473"
+      },
+      "depends": []
+    },
+    ".claude/hooks/quality/quality-on-edit.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/quality/quality-on-edit.mjs": "b4a348048d3e75227591cb081d224c3eeb67c0ed34b5469f3f768638cccc802b"
+      },
+      "depends": []
+    },
+    ".claude/hooks/quality/quality.example.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/quality/quality.example.json": "ce4ea36d6a9eea2fc0be9d31f322875cc9a8d885262a70d30103b4207d91f388"
+      },
+      "depends": []
+    },
+    ".claude/hooks/reconcile.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/hooks/reconcile.mjs": "c6323f434804f55d9a196b6033bc93c7478f475e3a35e71b0f19e1608c4d0b28"
+      },
+      "depends": [
+        ".claude/hooks/_lib.mjs"
+      ]
+    },
+    ".claude/praxis/praxis.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/praxis/praxis.mjs": "f653d47a598c01a2c65ab867aa1a84a1163a16717c5303537dc1744199e48278"
+      },
+      "depends": []
+    },
+    ".claude/praxis/rules.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/praxis/rules.md": "0b1f84999a72443d1a3d73a8343448bdce6dcb8649389b0db2e64fa9bfd93d49"
+      },
+      "depends": [
+        ".claude/agents/orchestration/praxis.md",
+        "docs/adr/0007-loop-engineering-execucao.md"
+      ]
+    },
+    ".claude/reference/frontend/adapter-angular-material.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/adapter-angular-material.md": "6c9a683af0a55e8ad2f9aced7790ddec1a7a5cabebce62f3dfa5bf3403bbd1f3"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/adapter-react-next-shadcn.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/adapter-react-next-shadcn.md": "ab4ffc1b1a3e7b1c98b11752dd29056b7d366460ebfdc1ff45778356830c144e"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/adapter-react-vite-shadcn.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/adapter-react-vite-shadcn.md": "c40fea12bdae3da256289c721af44959c035983b4ce3cea1bb431a09cede2f84"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/adapter-vue-vuetify.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/adapter-vue-vuetify.md": "7b7bce52dc757127faeb1ea2f4cbf8aaedc52d14cd627d584c2ce1279de5c82c"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/anti-patterns.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/anti-patterns.md": "48e980486cba8152ec810d107cb5596727878bf9524db9bfd0447d7ef881181a"
+      },
+      "depends": [
+        ".claude/scripts/frontend/detect-cliches.mjs"
+      ]
+    },
+    ".claude/reference/frontend/cognitive-load.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/cognitive-load.md": "39f71dc529b03dc5db9a4ccefe4584dc9724dc88afc9838d030bac8b45bac682"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/design-system-anatomy.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/design-system-anatomy.md": "573167a71b08d6187810e79a8062e28da6dc13e651fbea0eeb5c18c6fc0e8c15"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/heuristics.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/heuristics.md": "30e2615da27fbee60f134cf3bdec6599ef2445b3da3939585a5c97e6a4e95f63"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/motion-design.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/motion-design.md": "bed9b2d3a8dda60bb3c84519e33764ab6cac101ae87efa78bfbe19170fe8fac6"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/patterns.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/patterns.md": "eeafaf3d265a48768914f6043056f9ed0e45a86bb59b8b96f0ec03f0dcedbfcb"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/personas.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/personas.md": "634951f1397ba7d8a50c0de6ff71e69e68b819647f217167eb0f3bd69889a5a9"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/register-brand.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/register-brand.md": "f8a094c784ed117ec3a35d3797eab77cd3c297304756920987e06a324e3af905"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/register-product.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/register-product.md": "794fd2251de9b4e88315caef4513569e945e61e002b7e03a1792ac4c62411dd0"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party": {
+      "kind": "group",
+      "files": {
+        ".claude/reference/frontend/third-party/README.md": "446d5d647eb418313b1c6f86aa1fff08a47932a5e8399d556ca4e82a44da299c",
+        ".claude/reference/frontend/third-party/design-review-playwright/LICENSE": "c282276aea1d12b8b5262e9651a05471d14752b2d25495f2a3d8933c86d1d8a5",
+        ".claude/reference/frontend/third-party/design-review-playwright/design-principles-example.md": "391dde26b349405def2a47a4b91842046ccfb141c148c586eb389ad75bacd243",
+        ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md": "0b6341103b9c57c44e17d1e4e20cc3d219abc39a3606f2a71aacbaf067ea5bd9",
+        ".claude/reference/frontend/third-party/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594",
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3",
+        ".claude/reference/frontend/third-party/interface-design/LICENSE": "54c405ef24e71634b73c994133d028e7a96d1906f42615366296d6583dcaba8f",
+        ".claude/reference/frontend/third-party/interface-design/design-deslop.md": "46e8a7ead38c6ec08093fc8f734d742088e9f7b2225dc4ee938ddc930be316af",
+        ".claude/reference/frontend/third-party/interface-design/design-review.md": "dfa72fb496107a20174f45b1e7b3651c5214b4bd61276ba4b9d723a6e1a5362f",
+        ".claude/reference/frontend/third-party/interface-design/examples/system-precision.md": "9fcf8381011d749c8d4d08c8f2779db32a3395d7132ff7e4877ebbd9632bda2f",
+        ".claude/reference/frontend/third-party/interface-design/examples/system-warmth.md": "c0c38c3075fa8b0bcbeb2d72098219d348825b6cabc3d8723b3d4c7c6c392fd5",
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md": "720b31a31276e899fbe3006a33cbfeaceb77a73ba4c27b80d29afd38c8b7b208",
+        ".claude/reference/frontend/third-party/interface-design/system-template.md": "d76b413d43abb064746c3e16ced8b56046f7e73da14b2064db7377fee63d4856",
+        ".claude/reference/frontend/third-party/redesign-audit/LICENSE": "4575a543ab88dad12ccea7d97e563d0bce5b448b06072e65d3264497dad326df",
+        ".claude/reference/frontend/third-party/redesign-audit/redesign-skill.md": "a75d547d04595fe97a5d377dddf145d029d51487a4f2a0a5a9d3b532ca3b84cd",
+        ".claude/reference/frontend/third-party/web-interface-guidelines/LICENSE": "6cd1609c9c12233507cdd2ce0d32e9a721e3c27494951be06b90090deeeb7af2",
+        ".claude/reference/frontend/third-party/web-interface-guidelines/command.md": "d246b026f4f29b5823a9cc857f9edf3d2507002e055e32040cadeaf3b38e0234",
+        "THIRD_PARTY_NOTICES.md": "33aa4e843ec6dc9d5ca59e1715acf47d13f4bdd6a7a953d5b1fe2fd9352fabbc"
+      },
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/settings.json"
+      ]
+    },
+    ".claude/reference/frontend/third-party/README.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/README.md": "446d5d647eb418313b1c6f86aa1fff08a47932a5e8399d556ca4e82a44da299c"
+      },
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md"
+      ]
+    },
+    ".claude/reference/frontend/third-party/design-review-playwright/LICENSE": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/design-review-playwright/LICENSE": "c282276aea1d12b8b5262e9651a05471d14752b2d25495f2a3d8933c86d1d8a5"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/design-review-playwright/design-principles-example.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/design-review-playwright/design-principles-example.md": "391dde26b349405def2a47a4b91842046ccfb141c148c586eb389ad75bacd243"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md": "0b6341103b9c57c44e17d1e4e20cc3d219abc39a3606f2a71aacbaf067ea5bd9"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/frontend-design/LICENSE.txt": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/frontend-design/LICENSE.txt": "0d542e0c8804e39aa7f37eb00da5a762149dc682d7829451287e11b938e94594"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/frontend-design/frontend-design.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md": "d91970639e9f5c37682ac7ab60094d35f1c7c1f38d731bd56396563aee10c1d3"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/LICENSE": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/LICENSE": "54c405ef24e71634b73c994133d028e7a96d1906f42615366296d6583dcaba8f"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/design-deslop.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/design-deslop.md": "46e8a7ead38c6ec08093fc8f734d742088e9f7b2225dc4ee938ddc930be316af"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/design-review.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/design-review.md": "dfa72fb496107a20174f45b1e7b3651c5214b4bd61276ba4b9d723a6e1a5362f"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/examples/system-precision.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/examples/system-precision.md": "9fcf8381011d749c8d4d08c8f2779db32a3395d7132ff7e4877ebbd9632bda2f"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/examples/system-warmth.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/examples/system-warmth.md": "c0c38c3075fa8b0bcbeb2d72098219d348825b6cabc3d8723b3d4c7c6c392fd5"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/interface-design.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md": "720b31a31276e899fbe3006a33cbfeaceb77a73ba4c27b80d29afd38c8b7b208"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/interface-design/system-template.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/interface-design/system-template.md": "d76b413d43abb064746c3e16ced8b56046f7e73da14b2064db7377fee63d4856"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/redesign-audit/LICENSE": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/redesign-audit/LICENSE": "4575a543ab88dad12ccea7d97e563d0bce5b448b06072e65d3264497dad326df"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/redesign-audit/redesign-skill.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/redesign-audit/redesign-skill.md": "a75d547d04595fe97a5d377dddf145d029d51487a4f2a0a5a9d3b532ca3b84cd"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/web-interface-guidelines/LICENSE": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/web-interface-guidelines/LICENSE": "6cd1609c9c12233507cdd2ce0d32e9a721e3c27494951be06b90090deeeb7af2"
+      },
+      "depends": []
+    },
+    ".claude/reference/frontend/third-party/web-interface-guidelines/command.md": {
+      "kind": "asset",
+      "files": {
+        ".claude/reference/frontend/third-party/web-interface-guidelines/command.md": "d246b026f4f29b5823a9cc857f9edf3d2507002e055e32040cadeaf3b38e0234"
+      },
+      "depends": []
+    },
+    ".claude/scripts/build-gate.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/build-gate.mjs": "c2ff0753380b9d8a3835d94dcc86b8372113c82964452fd4d7b6082e3ab65e8e"
+      },
+      "depends": []
+    },
+    ".claude/scripts/deps-audit.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/deps-audit.mjs": "30ed18cafeb2476d51e83184e07cec0470631187115b3175d3e51c1aa5ecca69"
+      },
+      "depends": []
+    },
+    ".claude/scripts/frontend/check-learnings.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/frontend/check-learnings.mjs": "8fbef8089c9f2f4041a0fc1455dcbfa556e9c29db96cf3ab06fc72fe15550d39"
+      },
+      "depends": []
+    },
+    ".claude/scripts/frontend/detect-cliches.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/frontend/detect-cliches.mjs": "fd13520c62fbc7b2a62db47e472c878c22fc612015909660e0d6dd92a1a75ab1"
+      },
+      "depends": []
+    },
+    ".claude/scripts/frontend/screenshot.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/frontend/screenshot.mjs": "5a796950cbcefa35ada697d057d8111d841f7d1598dcfe6c74b0b9a6b2795e1d"
+      },
+      "depends": []
+    },
+    ".claude/scripts/loop-doctor.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/loop-doctor.mjs": "98b69d3d992282833d0f3769e4065a1f04831d105a69d697bdd9afec97e0ae1e"
+      },
+      "depends": []
+    },
+    ".claude/scripts/loop-driver.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/loop-driver.mjs": "1e997e35a6391a6d2df0b4c3861742b79fec1779b5c1e6d43a200214e621fccb"
+      },
+      "depends": []
+    },
+    ".claude/scripts/mutants.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/mutants.mjs": "1654edbcc0c016e58b35467820a99876b577ad24761ba753c85171a961b52c92"
+      },
+      "depends": []
+    },
+    ".claude/settings.json": {
+      "kind": "asset",
+      "files": {
+        ".claude/settings.json": "c4b710400eaab6149935d07dfdffa5534ae31ac1ba1c6ba0fe61bf998e6f0687"
+      },
+      "depends": []
+    },
+    ".claude/skills/adopt": {
+      "kind": "skill",
+      "name": "adopt",
+      "domain": null,
+      "description": "Linha 3: Adocao de projeto existente. Mapeia, documenta e padroniza um projeto em andamento para uso completo do kit, sem impacto no codigo.",
+      "files": {
+        ".claude/skills/adopt/SKILL.md": "66f2e25f1415f18e1a7bb93df59659695a6c2cbdeae7c642180066c9991c5547"
+      },
+      "depends": [
+        ".claude/agents/architecture/adr-creator.md",
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/agents/discovery/codebase-mapper.md",
+        ".claude/agents/discovery/discovery.md",
+        ".claude/skills/validate"
+      ]
+    },
+    ".claude/skills/agent-eval": {
+      "kind": "skill",
+      "name": "agent-eval",
+      "domain": "quality",
+      "description": "Roda os check agents contra as fixtures de .claude/evals/agents/ e verifica se cada um ainda detecta o que promete — teste de regressao de prompt. Use ao alterar um agent check-*, quando pedirem 'testar os agents', 'os checks ainda funcionam?', 'rodar os evals', ou antes de confiar num /validate depois de mexer no .claude/.",
+      "files": {
+        ".claude/skills/agent-eval/SKILL.md": "c09fca8ebbc3470362f5d0cf3378cc67a881957aed0c2795137e8136bdc306a9"
+      },
+      "depends": [
+        ".claude/evals/agents"
+      ]
+    },
+    ".claude/skills/analyze": {
+      "kind": "skill",
+      "name": "analyze",
+      "domain": null,
+      "description": "Analise de consistencia cross-artefato (spec ↔ plan ↔ tasks). Detecta duplicacoes, gaps e inconsistencias.",
+      "files": {
+        ".claude/skills/analyze/SKILL.md": "68c812167b88fc3c14d21f44eaf13751701b45563b3228bb8f567c57dcb0dee2"
+      },
+      "depends": [
+        ".claude/agents/quality/analyzer.md",
+        ".claude/skills/clarify"
+      ]
+    },
+    ".claude/skills/architect": {
+      "kind": "skill",
+      "name": "architect",
+      "domain": null,
+      "description": "Fase 2: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns.",
+      "files": {
+        ".claude/skills/architect/SKILL.md": "0024c957c37bb6dd3cd27af8050d03140837f6028d42a49306c37ebb066182f2"
+      },
+      "depends": [
+        ".claude/agents/architecture/adr-creator.md"
+      ]
+    },
+    ".claude/skills/backend-scaffold": {
+      "kind": "skill",
+      "name": "backend-scaffold",
+      "domain": null,
+      "description": "Roteador de scaffolding backend — hoje so Aggregate Root + testes (@scaffold-aggregate).",
+      "files": {
+        ".claude/skills/backend-scaffold/SKILL.md": "2054637d9acea88e5fe80cbcd4b4ccfa0f92f2f0958b8409db1459ca0155e5a5"
+      },
+      "depends": [
+        ".claude/agents/backend/scaffold-aggregate.md"
+      ]
+    },
+    ".claude/skills/backend-validate": {
+      "kind": "skill",
+      "name": "backend-validate",
+      "domain": null,
+      "description": "Orquestra os 6 agents de validacao backend. Suporta modo paralelo (rapido) e sequencial (interativo).",
+      "files": {
+        ".claude/skills/backend-validate/SKILL.md": "666656bd11b56e340ddaafc53ffde642efcbb8fd1c7c567f423e280ef1bee223"
+      },
+      "depends": [
+        ".claude/agents/backend/check-architecture.md",
+        ".claude/agents/backend/check-ddd.md",
+        ".claude/agents/backend/check-errors.md",
+        ".claude/agents/backend/check-naming.md",
+        ".claude/agents/backend/check-security.md",
+        ".claude/agents/backend/check-tests.md"
+      ]
+    },
+    ".claude/skills/checklist": {
+      "kind": "skill",
+      "name": "checklist",
+      "domain": null,
+      "description": "Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos.",
+      "files": {
+        ".claude/skills/checklist/SKILL.md": "6b76b7ba83b239d722c73e0f7b5d71f1cf05af77d828dc7af5a2ccb6eb44894a"
+      },
+      "depends": []
+    },
+    ".claude/skills/clarify": {
+      "kind": "skill",
+      "name": "clarify",
+      "domain": null,
+      "description": "Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas e integra respostas na spec.",
+      "files": {
+        ".claude/skills/clarify/SKILL.md": "a8289877cdda58057f3eac6106f313ade99d92df298b96988ec40490168059fb"
+      },
+      "depends": [
+        ".claude/agents/product/clarifier.md"
+      ]
+    },
+    ".claude/skills/ddd-estrategico": {
+      "kind": "skill",
+      "name": "ddd-estrategico",
+      "domain": null,
+      "description": "Fase 2 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes.",
+      "files": {
+        ".claude/skills/ddd-estrategico/SKILL.md": "9a637c5c5b40635e3608b9ee081e8fdb8dec108eca57fdcb3e0e94188eaf616e"
+      },
+      "depends": [
+        ".claude/agents/architecture/ddd-estrategico.md"
+      ]
+    },
+    ".claude/skills/debug": {
+      "kind": "skill",
+      "name": "debug",
+      "domain": null,
+      "description": "Investigacao de bugs — entender, pesquisar, identificar causa raiz, propor e aplicar fix. Mais leve que /implement, mais pesado que /quickfix.",
+      "files": {
+        ".claude/skills/debug/SKILL.md": "3b3898f6b25a8283f4c5627326669af37e2d119f58a1639b04b4ee533b56a50c"
+      },
+      "depends": []
+    },
+    ".claude/skills/define": {
+      "kind": "skill",
+      "name": "define",
+      "domain": null,
+      "description": "Fase 3: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)",
+      "files": {
+        ".claude/skills/define/SKILL.md": "7674c85b2e33969fef70ab2ad9dd18ac94f7afae3c4676a52474c25ab53a73f2"
+      },
+      "depends": [
+        ".claude/skills/prd-create",
+        ".claude/skills/prd-decompose",
+        ".claude/skills/prd-validate",
+        ".claude/skills/spec-from-prd",
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
+      ]
+    },
+    ".claude/skills/design": {
+      "kind": "skill",
+      "name": "design",
+      "domain": "frontend",
+      "description": "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden), na sessao principal, olhando a tela renderizada. Ancorado no Charter e na memoria de design do projeto.",
+      "files": {
+        ".claude/skills/design/SKILL.md": "36d51ceee5ce2f0946ad7abbe42cd77cb96616c308a4f7956d07ef3441037693"
+      },
+      "depends": [
+        ".claude/agents/frontend/design.md",
+        ".claude/reference/frontend/adapter-angular-material.md",
+        ".claude/reference/frontend/adapter-react-next-shadcn.md",
+        ".claude/reference/frontend/adapter-react-vite-shadcn.md",
+        ".claude/reference/frontend/adapter-vue-vuetify.md",
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/cognitive-load.md",
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/reference/frontend/heuristics.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/register-brand.md",
+        ".claude/reference/frontend/register-product.md",
+        ".claude/reference/frontend/third-party/interface-design/design-deslop.md",
+        ".claude/reference/frontend/third-party/interface-design/design-review.md",
+        ".claude/reference/frontend/third-party/redesign-audit/redesign-skill.md",
+        "docs/templates/design-memory-template.md"
+      ]
+    },
+    ".claude/skills/detail": {
+      "kind": "skill",
+      "name": "detail",
+      "domain": null,
+      "description": "Fase 3 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose.",
+      "files": {
+        ".claude/skills/detail/SKILL.md": "2033c349f90f5b5bdc41eadd62fc0a73e96c5443d1e13fda8a99611a6a4cd943"
+      },
+      "depends": [
+        ".claude/agents/product/module-detailer.md",
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
+      ]
+    },
+    ".claude/skills/discovery": {
+      "kind": "skill",
+      "name": "discovery",
+      "domain": null,
+      "description": "Fase 1: Discovery — Entendimento completo do projeto antes de qualquer decisao",
+      "files": {
+        ".claude/skills/discovery/SKILL.md": "a210fbbe55ce3482acb8c8f6b4462ba89ad892db70812b3e70b30e8d38143d42"
+      },
+      "depends": [
+        ".claude/agents/discovery/discovery.md"
+      ]
+    },
+    ".claude/skills/ds-component": {
+      "kind": "skill",
+      "name": "ds-component",
+      "domain": null,
+      "description": "Adiciona componente ao Design System — Busca, instala, customiza e cria showcase no design-system.",
+      "files": {
+        ".claude/skills/ds-component/SKILL.md": "1a4a8a48b880cb0f9dcd31e6c0c5fc9438e9638266986bb7f4d103067697c68e"
+      },
+      "depends": [
+        ".claude/agents/frontend/ds-component.md"
+      ]
+    },
+    ".claude/skills/ds-init": {
+      "kind": "skill",
+      "name": "ds-init",
+      "domain": null,
+      "description": "Inicializa Design System — Extrai tokens de screenshot, cria design-system isolado e gera ADR.",
+      "files": {
+        ".claude/skills/ds-init/SKILL.md": "b4df2d0e87e702c489ce82e7dfbd276e7a9ae86dbd6395d12c8eeade2f4533e5"
+      },
+      "depends": [
+        ".claude/agents/frontend/ds-foundation.md"
+      ]
+    },
+    ".claude/skills/execute": {
+      "kind": "skill",
+      "name": "execute",
+      "domain": null,
+      "description": "Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007).",
+      "files": {
+        ".claude/skills/execute/SKILL.md": "02d1fc8d85c27b63c7db824da65d4625c349213b75860d575dfbbe75d336cb40",
+        ".claude/skills/execute/checklists.md": "265e9784e15e0d1b81c79c994f510cade4b18396099a7bbf852057897492b5c1"
+      },
+      "depends": [
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md",
+        ".claude/reference/frontend/third-party/interface-design/design-review.md",
+        ".claude/scripts/loop-doctor.mjs",
+        ".claude/scripts/mutants.mjs",
+        ".claude/skills/backend-validate",
+        ".claude/skills/execute/checklists.md",
+        ".claude/skills/frontend-validate",
+        ".claude/skills/verify-all"
+      ]
+    },
+    ".claude/skills/forge": {
+      "kind": "skill",
+      "name": "forge",
+      "domain": "orchestration",
+      "description": "Cria uma ferramenta DO PROJETO (skill, agent de checagem ou subagente de trabalho) nas convencoes do kit, a partir do que o projeto precisa. Use quando uma regra se repete, um fluxo do projeto vira rotina, ou o Praxis propoe transformar um learning recorrente em check — 'cria um check para X', 'quero um comando para Y', 'isso devia ser automatico'.",
+      "files": {
+        ".claude/skills/forge/SKILL.md": "c388ba3b90f3b013cc56a1faa2b3d80000da607c334562a5b6944b949484fd0e"
+      },
+      "depends": [
+        ".claude/evals/agents/README.md"
+      ]
+    },
+    ".claude/skills/frontend-validate": {
+      "kind": "skill",
+      "name": "frontend-validate",
+      "domain": null,
+      "description": "Orquestra os 11 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo).",
+      "files": {
+        ".claude/skills/frontend-validate/SKILL.md": "862d6fa1e41e7543ec5c5ee5d3d0aa3bc28f311b9ea5b23d268d2b65ca69805d"
+      },
+      "depends": [
+        ".claude/agents/frontend/check-design.md",
+        ".claude/agents/frontend/check-forms.md",
+        ".claude/agents/frontend/check-i18n.md",
+        ".claude/agents/frontend/check-react.md",
+        ".claude/agents/frontend/check-responsiveness.md",
+        ".claude/agents/frontend/check-routing.md",
+        ".claude/agents/frontend/check-security-frontend.md",
+        ".claude/agents/frontend/check-structure.md",
+        ".claude/agents/frontend/check-typescript.md",
+        ".claude/agents/frontend/check-ux.md",
+        ".claude/agents/frontend/check-web-guidelines.md"
+      ]
+    },
+    ".claude/skills/implement": {
+      "kind": "skill",
+      "name": "implement",
+      "domain": null,
+      "description": "Fase 5: Implementacao — Plan + Tasks + Execute. Planeja tecnicamente, quebra em tasks e executa respeitando ADRs.",
+      "files": {
+        ".claude/skills/implement/SKILL.md": "1aeede0ac03d2e20586c278a117683a9110d7ae3a7ca3fe38d81a4d16e55cf1a"
+      },
+      "depends": [
+        ".claude/skills/execute",
+        ".claude/skills/plan",
+        ".claude/skills/tasks"
+      ]
+    },
+    ".claude/skills/mode": {
+      "kind": "skill",
+      "name": "mode",
+      "domain": null,
+      "description": "Alterna entre modo lite (simples, rapido) e full (completo, profissional). Afeta como todo o pipeline se comporta.",
+      "files": {
+        ".claude/skills/mode/SKILL.md": "6c013cf0955bb261a8a71dc18a6c28c6681dd610e13c2d0269b8e857ef788816"
+      },
+      "depends": [
+        "docs/adr/templates/backend-patterns/clean-architecture.md",
+        "docs/adr/templates/frontend-patterns/feature-first-structure.md",
+        "docs/adr/templates/universal/naming-conventions.md"
+      ]
+    },
+    ".claude/skills/plan": {
+      "kind": "skill",
+      "name": "plan",
+      "domain": null,
+      "description": "Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts.",
+      "files": {
+        ".claude/skills/plan/SKILL.md": "80000fe3294ce73e10357c158b49741edfa082b13c9a512be53766a41a01b1ea"
+      },
+      "depends": [
+        ".claude/agents/delivery/planner.md"
+      ]
+    },
+    ".claude/skills/praxis": {
+      "kind": "skill",
+      "name": "praxis",
+      "domain": null,
+      "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
+      "files": {
+        ".claude/skills/praxis/SKILL.md": "564d848fc1d5331c68f68f670470683843b28259118f0d524b91959cf95df12f"
+      },
+      "depends": [
+        ".claude/agents/orchestration/praxis.md"
+      ]
+    },
+    ".claude/skills/prd-coverage": {
+      "kind": "skill",
+      "name": "prd-coverage",
+      "domain": null,
+      "description": "Mostra progresso: quantas user stories do PRD foram transformadas em specs e quantas faltam.",
+      "files": {
+        ".claude/skills/prd-coverage/SKILL.md": "d40cf3ff1769306fd1be7a0eaea49d07386a89d78c24f993be0d4ce4efef9842"
+      },
+      "depends": []
+    },
+    ".claude/skills/prd-create": {
+      "kind": "skill",
+      "name": "prd-create",
+      "domain": null,
+      "description": "Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas.",
+      "files": {
+        ".claude/skills/prd-create/SKILL.md": "7e1e5d3e86d7e2853741c444585babb191076b50486aa674d3342902f74ecb75"
+      },
+      "depends": [
+        ".claude/agents/product/prd-create.md"
+      ]
+    },
+    ".claude/skills/prd-decompose": {
+      "kind": "skill",
+      "name": "prd-decompose",
+      "domain": null,
+      "description": "Decompoe PRD tatico em specs independentes. Identifica dependencias e propoe ordem de implementacao.",
+      "files": {
+        ".claude/skills/prd-decompose/SKILL.md": "78d77ad3770c759d24b429b165a38918da6042c676f85379b7776c277ab2f83d"
+      },
+      "depends": []
+    },
+    ".claude/skills/prd-validate": {
+      "kind": "skill",
+      "name": "prd-validate",
+      "domain": null,
+      "description": "Valida PRD contra template canonico. Read-only — reporta mas nao corrige.",
+      "files": {
+        ".claude/skills/prd-validate/SKILL.md": "164d510860bba40a8bc3c892620ab038c73b69dda45851db8e438a2ff06af116"
+      },
+      "depends": []
+    },
+    ".claude/skills/prototype": {
+      "kind": "skill",
+      "name": "prototype",
+      "domain": null,
+      "description": "Gera prototipo hi-fi de uma tela (ou 2-3 direcoes para escolher) no destino que a sessao tiver: ferramenta de prototipo do projeto (ex.: Paper MCP), pagina publicada (Artifact) ou HTML local. Usa o Design System e a memoria de design do projeto. Nenhum destino e obrigatorio.",
+      "files": {
+        ".claude/skills/prototype/SKILL.md": "f721a342c26a28d1e317d1fa279244f6b221828ef4866fb4f120d28d46eb38c9"
+      },
+      "depends": [
+        ".claude/agents/frontend/paper-prototype.md",
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md",
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md",
+        ".claude/scripts/frontend/screenshot.mjs"
+      ]
+    },
+    ".claude/skills/quickfix": {
+      "kind": "skill",
+      "name": "quickfix",
+      "domain": null,
+      "description": "Escape hatch para trabalho trivial — bugfix, ajuste de CSS, correcao de typo. Sem cerimonia, com validacao minima.",
+      "files": {
+        ".claude/skills/quickfix/SKILL.md": "815d756dc3fdaf05fa36ccc94ea820ddc1b7f5b3705b1f5dbaac3738f30bc130"
+      },
+      "depends": []
+    },
+    ".claude/skills/revalidate": {
+      "kind": "skill",
+      "name": "revalidate",
+      "domain": null,
+      "description": "Fase 7: Revalidacao cirurgica. Le relatorio existente e re-checa apenas itens pendentes. Detecta regressoes.",
+      "files": {
+        ".claude/skills/revalidate/SKILL.md": "fcad5392c2d50a13229a3239b805695e5e5face3019a78ada049e8459f041481"
+      },
+      "depends": [
+        ".claude/agents/quality/revalidator.md"
+      ]
+    },
+    ".claude/skills/reverse-engineer": {
+      "kind": "skill",
+      "name": "reverse-engineer",
+      "domain": null,
+      "description": "Fase 0: Engenharia reversa de projeto legado. Documenta logica de negocio, fluxos, telas e regras antes de modernizar.",
+      "files": {
+        ".claude/skills/reverse-engineer/SKILL.md": "97c5d4ce88140eea5aa4b81c3598c58e1796ed118027b40adc9b911ddb139800"
+      },
+      "depends": [
+        ".claude/agents/discovery/codebase-mapper.md",
+        ".claude/agents/discovery/legacy-analyzer.md",
+        ".claude/skills/discovery"
+      ]
+    },
+    ".claude/skills/review": {
+      "kind": "skill",
+      "name": "review",
+      "domain": null,
+      "description": "Self-review antes de commit — analisa git diff contra ADRs e SOLID. Mais leve que /validate.",
+      "files": {
+        ".claude/skills/review/SKILL.md": "253af137b533034857fb86672b28152db9fc5d2671ec2d420082088035c4524d"
+      },
+      "depends": [
+        ".claude/agents/quality/solid-review.md"
+      ]
+    },
+    ".claude/skills/setup": {
+      "kind": "skill",
+      "name": "setup",
+      "domain": null,
+      "description": "Setup interativo do kit Praxis — pergunta stack e modulos, puxa do catalogo so o que o projeto usa e preenche a secao do projeto no CLAUDE.md.",
+      "files": {
+        ".claude/skills/setup/SKILL.md": "508cdf079b246114444a61d40fccfdb6a4a338c8e66eb93b97022433fe3c707d"
+      },
+      "depends": [
+        ".claude/hooks/quality"
+      ]
+    },
+    ".claude/skills/spec-from-prd": {
+      "kind": "skill",
+      "name": "spec-from-prd",
+      "domain": null,
+      "description": "Transforma feature do PRD em spec tecnica detalhada para o dev. Le PRD, ADRs e specs existentes.",
+      "files": {
+        ".claude/skills/spec-from-prd/SKILL.md": "a325277f89013edbd2e6bf46fe68d4dfa270a3cfcff8a97d5df071c1e91a7244"
+      },
+      "depends": []
+    },
+    ".claude/skills/spec-review": {
+      "kind": "skill",
+      "name": "spec-review",
+      "domain": null,
+      "description": "Valida se uma spec tecnica esta pronta para implementacao — criterios de aceite, edge cases, alinhamento com ADRs e learnings aplicaveis. Gate leve antes do /implement.",
+      "files": {
+        ".claude/skills/spec-review/SKILL.md": "5cd953ace9a8602a8eb1abaf4b71d3d35a7200a8507c71b023b3c4036226e605"
+      },
+      "depends": [
+        ".claude/agents/quality/spec-review.md",
+        ".claude/skills/clarify"
+      ]
+    },
+    ".claude/skills/start": {
+      "kind": "skill",
+      "name": "start",
+      "domain": null,
+      "description": "Ponto de entrada do kit. Identifica a linha de trabalho (novo, legado, adocao) e guia o usuario pelo pipeline correto.",
+      "files": {
+        ".claude/skills/start/SKILL.md": "0e9744adffa2cd8509354a4ae7eec1904fa67eec6bb24b30874830886f94f39e"
+      },
+      "depends": [
+        ".claude/agents/orchestration/praxis.md"
+      ]
+    },
+    ".claude/skills/strategy": {
+      "kind": "skill",
+      "name": "strategy",
+      "domain": null,
+      "description": "Estrategia de Negocio — Avalia ideias, prioriza features, discute modelos de negocio e questiona premissas antes de entrar no pipeline tecnico.",
+      "files": {
+        ".claude/skills/strategy/SKILL.md": "cf997f0f8053854931b8a9d722a359415a3f9386ce23b4d60c0d04942dfb0b99"
+      },
+      "depends": [
+        ".claude/agents/discovery/strategy.md"
+      ]
+    },
+    ".claude/skills/tasks": {
+      "kind": "skill",
+      "name": "tasks",
+      "domain": null,
+      "description": "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007).",
+      "files": {
+        ".claude/skills/tasks/SKILL.md": "8ec8ca3eb41cca54614fd9718d32544648452b269b49f65fa3b27496373c6401"
+      },
+      "depends": [
+        ".claude/agents/delivery/task-breaker.md",
+        ".claude/agents/quality/analyzer.md",
+        "docs/templates/doctor-template.json",
+        "docs/templates/guide-template.md",
+        "docs/templates/tasks-template.md"
+      ]
+    },
+    ".claude/skills/ux": {
+      "kind": "skill",
+      "name": "ux",
+      "domain": null,
+      "description": "Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real.",
+      "files": {
+        ".claude/skills/ux/SKILL.md": "a87335f6115ce8982cfb2c91ea540b085fe2c83c9bb4b473f647b828bdd552c8"
+      },
+      "depends": [
+        ".claude/agents/frontend/ux.md",
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/cognitive-load.md",
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/reference/frontend/heuristics.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/personas.md",
+        ".claude/reference/frontend/register-brand.md",
+        ".claude/reference/frontend/register-product.md",
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md",
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md",
+        "docs/templates/design-memory-template.md"
+      ]
+    },
+    ".claude/skills/validate": {
+      "kind": "skill",
+      "name": "validate",
+      "domain": null,
+      "description": "Fase 6: Validacao — Orquestrador principal. Despacha agents core + frontend + backend conforme stack do projeto.",
+      "files": {
+        ".claude/skills/validate/SKILL.md": "6f80ec9ad6932b1b111f395605d7537e4c710bd00fd53f93f4c7fa673253c3a7"
+      },
+      "depends": [
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/agents/quality/solid-review.md",
+        ".claude/skills/backend-validate",
+        ".claude/skills/frontend-validate"
+      ]
+    },
+    ".claude/skills/verify-all": {
+      "kind": "skill",
+      "name": "verify-all",
+      "domain": null,
+      "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
+      "files": {
+        ".claude/skills/verify-all/SKILL.md": "9e160a2edb21199db1a270463e01690fc503353f36480ad2a01866dc384cfb21"
+      },
+      "depends": [
+        ".claude/skills/execute"
+      ]
+    },
+    "THIRD_PARTY_NOTICES.md": {
+      "kind": "asset",
+      "files": {
+        "THIRD_PARTY_NOTICES.md": "33aa4e843ec6dc9d5ca59e1715acf47d13f4bdd6a7a953d5b1fe2fd9352fabbc"
+      },
+      "depends": [
+        ".claude/reference/frontend/third-party/README.md",
+        ".claude/settings.json"
+      ]
+    },
+    "docs/adr/0000-adr-index.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0000-adr-index.md": "a5dd34fb6b30edfc2576f6146f4b5a3edcc67dfbcce5046e51cd1afad15eb18d"
+      },
+      "depends": []
+    },
+    "docs/adr/0006-workspace-detalhamento-modulo.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0006-workspace-detalhamento-modulo.md": "86f524ea1335633d88910e7b4df4f8ccd5486b4f6e5b22edbe82951d3ec15a89"
+      },
+      "depends": []
+    },
+    "docs/adr/0007-loop-engineering-execucao.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0007-loop-engineering-execucao.md": "f7c5c1cea84c44c84ad5d58e517ce7143d6e030d03cd7e20a6ddfed177431621"
+      },
+      "depends": [
+        ".claude/scripts/loop-doctor.mjs",
+        ".claude/scripts/loop-driver.mjs",
+        "docs/templates/doctor-template.json",
+        "docs/templates/guide-template.md"
+      ]
+    },
+    "docs/adr/0008-seguranca-e-lgpd.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0008-seguranca-e-lgpd.md": "d7bee5b9dc4a0cdd25dddd3ebbe92c0603d88be27f776f2bc57fe3e1f0f1ef20"
+      },
+      "depends": [
+        ".claude/agents/backend/check-security.md",
+        ".claude/agents/frontend/check-security-frontend.md",
+        ".claude/scripts/deps-audit.mjs",
+        ".claude/settings.json"
+      ]
+    },
+    "docs/adr/0009-distribuicao-catalogo-semente.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0009-distribuicao-catalogo-semente.md": "d853879875071383a95e9c56544adcc330ec1c67fcb898b70481b2b4b97d5fc5"
+      },
+      "depends": [
+        ".claude/praxis/rules.md",
+        ".claude/settings.json",
+        "docs/project/learnings/README.md"
+      ]
+    },
+    "docs/adr/templates": {
+      "kind": "group",
+      "files": {
+        "docs/adr/templates/backend-patterns/clean-architecture.md": "4d56b4a37ee72129c04e526552bd20571e9a0b4d16b7e9f47749822118cabb9d",
+        "docs/adr/templates/backend-patterns/ddd-aggregates-entities.md": "89e7185bb4385454c3d08e5c5a08d8826f5f5e1433cae5bbbef3f43371da1176",
+        "docs/adr/templates/backend-patterns/exception-propagation.md": "4b3175e37c41537aaeee6cf61ffec9e9a1f6c7e44239760dce995f7f36c6338d",
+        "docs/adr/templates/backend-patterns/unit-testing-strategy.md": "2a867c4b95fd9542784998aa7d9801b870418d33417322f9db2b26713c33e866",
+        "docs/adr/templates/frontend-patterns/design-system.md": "b1e3ad017e41b861ec2961e9dd83ae9fcb9ec953277863ec52c9876c6cd3905f",
+        "docs/adr/templates/frontend-patterns/feature-first-structure.md": "8da1a3d15917c365f0de7f8c9965e4ab1365086ff227625834e2bdd27e934f10",
+        "docs/adr/templates/frontend-patterns/forms-stack.md": "55a25658eef72b1c2a432289345c023a7c7138ac09e73db2411f14cd055ac21a",
+        "docs/adr/templates/frontend-patterns/i18n-lazy-loading.md": "9fe13a520e0d29f8b90d5ee23cb04fa365cb8b2d310abb16eec24fa6f5b6fece",
+        "docs/adr/templates/frontend-patterns/loading-strategy.md": "dfb7a10835b6ee7d315da395387acded113d20638b006bc09ff9d611b7b2121d",
+        "docs/adr/templates/frontend-patterns/visual-identity.md": "110aa7cdc7d22a3da54da672cc3d7ecc3eddb004972b96c22e979902296e07f1",
+        "docs/adr/templates/universal/cyclomatic-complexity.md": "fb7cf925585e05ca0710b21f1ecef386425d6abd5c03bdccab72e676a9fb0ca3",
+        "docs/adr/templates/universal/naming-conventions.md": "6c0a660f7d20fec8e468264329ff5698ba3672f7eea58f88d2157b713948b507",
+        "docs/adr/templates/universal/solid-principles.md": "d09f25e2b0e2ca8842f8628b72a8e3c213949edd36d02211ba6b10cdc1a7bba5"
+      },
+      "depends": [
+        ".claude/reference/frontend/personas.md"
+      ]
+    },
+    "docs/adr/templates/backend-patterns/clean-architecture.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/backend-patterns/clean-architecture.md": "4d56b4a37ee72129c04e526552bd20571e9a0b4d16b7e9f47749822118cabb9d"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/backend-patterns/ddd-aggregates-entities.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/backend-patterns/ddd-aggregates-entities.md": "89e7185bb4385454c3d08e5c5a08d8826f5f5e1433cae5bbbef3f43371da1176"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/backend-patterns/exception-propagation.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/backend-patterns/exception-propagation.md": "4b3175e37c41537aaeee6cf61ffec9e9a1f6c7e44239760dce995f7f36c6338d"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/backend-patterns/unit-testing-strategy.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/backend-patterns/unit-testing-strategy.md": "2a867c4b95fd9542784998aa7d9801b870418d33417322f9db2b26713c33e866"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/design-system.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/design-system.md": "b1e3ad017e41b861ec2961e9dd83ae9fcb9ec953277863ec52c9876c6cd3905f"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/feature-first-structure.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/feature-first-structure.md": "8da1a3d15917c365f0de7f8c9965e4ab1365086ff227625834e2bdd27e934f10"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/forms-stack.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/forms-stack.md": "55a25658eef72b1c2a432289345c023a7c7138ac09e73db2411f14cd055ac21a"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/i18n-lazy-loading.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/i18n-lazy-loading.md": "9fe13a520e0d29f8b90d5ee23cb04fa365cb8b2d310abb16eec24fa6f5b6fece"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/loading-strategy.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/loading-strategy.md": "dfb7a10835b6ee7d315da395387acded113d20638b006bc09ff9d611b7b2121d"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/frontend-patterns/visual-identity.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/frontend-patterns/visual-identity.md": "110aa7cdc7d22a3da54da672cc3d7ecc3eddb004972b96c22e979902296e07f1"
+      },
+      "depends": [
+        ".claude/reference/frontend/personas.md"
+      ]
+    },
+    "docs/adr/templates/universal/cyclomatic-complexity.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/universal/cyclomatic-complexity.md": "fb7cf925585e05ca0710b21f1ecef386425d6abd5c03bdccab72e676a9fb0ca3"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/universal/naming-conventions.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/universal/naming-conventions.md": "6c0a660f7d20fec8e468264329ff5698ba3672f7eea58f88d2157b713948b507"
+      },
+      "depends": []
+    },
+    "docs/adr/templates/universal/solid-principles.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/templates/universal/solid-principles.md": "d09f25e2b0e2ca8842f8628b72a8e3c213949edd36d02211ba6b10cdc1a7bba5"
+      },
+      "depends": []
+    },
+    "docs/project/learnings/README.md": {
+      "kind": "asset",
+      "files": {
+        "docs/project/learnings/README.md": "6039780b2b4760beaa49c5f5e7287abfacd437827817b92075b0281b71a54255"
+      },
+      "depends": []
+    },
+    "docs/templates/checklist-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/checklist-template.md": "f80f4f1cca4084ae42a54673fdeffc126bdccaedef7f7ff7f86eadd976e6831c"
+      },
+      "depends": []
+    },
+    "docs/templates/design-memory-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/design-memory-template.md": "49b4a415e82fce8285e662a3eb3c81ba5b45b40c4ad6fa6b1a36256f9be89b5c"
+      },
+      "depends": [
+        ".claude/reference/frontend/personas.md"
+      ]
+    },
+    "docs/templates/detail": {
+      "kind": "group",
+      "files": {
+        "docs/templates/detail/00-visao-geral.md": "323b3027584cb18a670a6472b2fff3985a320bcac55e04ad1b24122441f50634",
+        "docs/templates/detail/01-fronteiras-e-decisoes.md": "f5a818766040706bfdf7377f34d73d0c8c412fd26e5e5739a15e221f792ab30b",
+        "docs/templates/detail/40-glossario.md": "96862faa608b2d624230a908d394c8310c71a94dffb564742bfef16449897cc0",
+        "docs/templates/detail/50-integracoes.md": "e9f67c699e5bd0b66bbb6283304c2281cc7f83652a43acabdda2bbb38bc7806b",
+        "docs/templates/detail/60-regras-negocio.md": "a680438b1ede43bc710286c706c40931a96f2411dbab8d7c36e92f2d29c7df8c",
+        "docs/templates/detail/70-duvidas-abertas.md": "c236dadf701c1267ce2b4d6a9199cb71c32b38943b235b35090123a4f1b7d900",
+        "docs/templates/detail/NN-parte-template.md": "486034601489df15d8cb0b29363c2ca709d8af7084e0f73890f62e2e399eaeaf",
+        "docs/templates/detail/README.md": "088e48bbbf360870a8e5d744e77f6a791bd69e0db34bc06f9a6211dd3af3cc08",
+        "docs/templates/detail/historico.md": "bedabe44753eea9fe4e93dfcc4c4c4e3c37627d97754546b8ed6023efb55b221"
+      },
+      "depends": [
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
+      ]
+    },
+    "docs/templates/detail/00-visao-geral.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/00-visao-geral.md": "323b3027584cb18a670a6472b2fff3985a320bcac55e04ad1b24122441f50634"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/01-fronteiras-e-decisoes.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/01-fronteiras-e-decisoes.md": "f5a818766040706bfdf7377f34d73d0c8c412fd26e5e5739a15e221f792ab30b"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/40-glossario.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/40-glossario.md": "96862faa608b2d624230a908d394c8310c71a94dffb564742bfef16449897cc0"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/50-integracoes.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/50-integracoes.md": "e9f67c699e5bd0b66bbb6283304c2281cc7f83652a43acabdda2bbb38bc7806b"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/60-regras-negocio.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/60-regras-negocio.md": "a680438b1ede43bc710286c706c40931a96f2411dbab8d7c36e92f2d29c7df8c"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/70-duvidas-abertas.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/70-duvidas-abertas.md": "c236dadf701c1267ce2b4d6a9199cb71c32b38943b235b35090123a4f1b7d900"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/NN-parte-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/NN-parte-template.md": "486034601489df15d8cb0b29363c2ca709d8af7084e0f73890f62e2e399eaeaf"
+      },
+      "depends": []
+    },
+    "docs/templates/detail/README.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/README.md": "088e48bbbf360870a8e5d744e77f6a791bd69e0db34bc06f9a6211dd3af3cc08"
+      },
+      "depends": [
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
+      ]
+    },
+    "docs/templates/detail/historico.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/detail/historico.md": "bedabe44753eea9fe4e93dfcc4c4c4e3c37627d97754546b8ed6023efb55b221"
+      },
+      "depends": []
+    },
+    "docs/templates/doctor-template.json": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/doctor-template.json": "24e227f61ad1ca787b502db16ab2a4e1f0757810571388da21738eca8856a2f1"
+      },
+      "depends": []
+    },
+    "docs/templates/guide-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/guide-template.md": "14a83110bced509c03272ecfcce00f0d198e631e8f1ea031a839daaa2b9aa48c"
+      },
+      "depends": []
+    },
+    "docs/templates/plan-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/plan-template.md": "509146a57374d755479b8df7e6eea42ce7a6e8c8884b8e72eddeedf2cf4d20b2"
+      },
+      "depends": []
+    },
+    "docs/templates/spec-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/spec-template.md": "fe0d13888dd6ec197187f14af1f6fd56bb620088d3a5e120abb8a1316abe7403"
+      },
+      "depends": []
+    },
+    "docs/templates/tasks-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/tasks-template.md": "7c1bb9a8bf6312ca4a8f4f1ea8ffbc0e50895a53d8459dbb25b57ada485599f2"
+      },
+      "depends": [
+        ".claude/scripts/mutants.mjs"
+      ]
+    }
+  }
+}

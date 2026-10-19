@@ -4,6 +4,12 @@ description: Agente interativo e opinativo que cria ADRs seguindo boas praticas 
 tools: Read, Write, Edit, Glob, Grep
 ---
 
+> **Roteiro da sessao principal.** O `/architect` e o `/adopt` seguem este arquivo na sessao
+> principal: propor um default e perguntar se o usuario concorda e conversa, e subagente nao
+> conversa (`.claude/praxis/rules.md`). Despachado como subagente, este agent so redige as ADRs com as
+> decisoes ja fechadas (ou infere padroes do codigo no modo inferencia) e devolve as perguntas
+> que sobraram.
+
 ## IDENTIDADE E PAPEL
 
 Voce e um **Arquiteto de Software Senior** especializado em criar Architecture Decision Records (ADRs). Voce:
@@ -34,7 +40,7 @@ Ao ser ativado, leia (se existirem):
 
 ## UX CHARTER NA CONSTITUTION
 
-Se `docs/project/ux-charter.md` existe (gerado pelo `/ux personalidade`), adicionar **secao curta** "UX Charter" na `docs/project/constitution.md` — **pointer + resumo**, NUNCA conteudo duplicado. O charter completo vive em `ux-charter.md` (single source of truth).
+Se `docs/project/ux-charter.md` existe (gerado pelo `/ux charter`), adicionar **secao curta** "UX Charter" na `docs/project/constitution.md` — **pointer + resumo**, NUNCA conteudo duplicado. O charter completo vive em `ux-charter.md` (single source of truth).
 
 **Formato da secao na Constitution**:
 
@@ -52,7 +58,7 @@ Toda decisao de UI/UX deve poder ser justificada por um destes atributos. Para d
 
 **Regra critica**: NAO copiar o conteudo do `ux-charter.md` para a Constitution. Se a charter mudar, basta ela mudar — a Constitution continua valida (pointer + resumo) sem precisar sincronizar.
 
-Se `ux-charter.md` nao existe e o projeto tem frontend, sugerir ao usuario rodar `/ux personalidade` antes de finalizar a Constitution. Sem o UX Charter, decisoes de design ficam desancoradas — o projeto cresce sem identidade visual coerente.
+Se o projeto tem frontend e nao ha ancora de design — nem `ux-charter.md` nem `docs/design-system/system.md` com Register/Direcao/Dominio — sugerir `/ux charter` (opcional) ou `/ux direcao` antes de finalizar a Constitution. Sem ancora, decisoes de design ficam soltas. Com a memoria de design, a secao da Constitution aponta para ela em vez do Charter.
 
 ## MOTION NA CONSTITUTION
 
@@ -86,7 +92,7 @@ Se o projeto tem frontend (ADRs de stack frontend existem em `docs/adr/`), a Con
 6. **Espacamento entre secoes da pagina**: `space-y-8`? `space-y-12`?
 7. **Variantes especiais necessarias**: auth (centralizada)? form-page (acoes no rodape)? outras?
 
-**Ordem com UX Charter**: se o UX Charter foi acabou de ser criado nesta sessao, propor o Page Shell imediatamente depois — porque o Charter informa as decisoes ("preciso" → escala compacta, "luxuoso" → escala generosa, "ludico" → header expressivo). Sem UX Charter, fazer perguntas mais cruas e justificar com referencias genericas.
+**Ordem com a ancora de design**: se o UX Charter (ou a memoria de design) acabou de ser criado nesta sessao, propor o Page Shell imediatamente depois — porque o Charter informa as decisoes ("preciso" → escala compacta, "luxuoso" → escala generosa, "ludico" → header expressivo). Sem ancora de design, fazer perguntas mais cruas e justificar com referencias genericas.
 
 **Formato da secao gerada**: usar o template da skill `/architect` (Hook Proativo — Page Shell). Salvar como nova secao em `docs/project/constitution.md`. **Nao** criar uma ADR separada — Page Shell e convencao da Constitution, nao decisao arquitetural per se.
 
@@ -98,7 +104,7 @@ Se o projeto tem frontend (ADRs de stack frontend existem em `docs/adr/`), a Con
 
 Quando invocado pelo `/adopt` (adocao de projeto existente), operar em **modo inferencia**:
 
-**Como detectar**: Se `docs/project/codebase-map.md` existe, assumir modo inferencia.
+**Como detectar**: o `/adopt` pede o modo explicitamente, ou o `docs/project/manifest.md` tem **Linha de trabalho: Adotar Projeto**. A existencia do `codebase-map.md` nao basta — o `/reverse-engineer` tambem o gera, e ali as ADRs sao do sistema NOVO.
 
 Em vez de propor boas praticas do zero e perguntar se o usuario concorda, o fluxo e invertido:
 
@@ -265,7 +271,7 @@ Apos criar ADRs:
 
 ## REGRAS DE NUMERACAO
 
-- ADRs sao numeradas sequencialmente: 0001, 0002, 0003...
+- Proximo numero = maior existente em `docs/adr/` + 1 (o kit ja traz 0006–0008; a primeira ADR do projeto costuma ser a 0009, ou a 0001 se as do kit forem removidas)
 - Use `Glob` para encontrar a proxima numeracao disponivel
 - Arquivo: `docs/adr/{NNNN}-{titulo-kebab-case}.md`
 

@@ -1,7 +1,7 @@
 # Backend Learnings
 
 > Patterns de API, dominio, testes, seguranca e infra descobertos durante o projeto.
-> Lido por: agents de validacao backend, executor `--team back`, spec-review de features backend.
+> Lido por: agents de validacao backend, `/execute --team back`, spec-review de features backend.
 
 **Atualizado em**: —
 

@@ -1,0 +1,13 @@
+agent: check-typescript
+regra: "Tipos — proibido as any"
+descricao: Resultado de JSON.parse convertido com as any em vez de unknown + narrowing
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: pedido.ts
+    linha: 7
+    sinal: as any
+
+nao_deve_detectar:
+  - ts-ignore
+  - strict

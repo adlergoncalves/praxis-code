@@ -1,0 +1,31 @@
+{
+  "$comment": "Molde de .claude/quality.json — o /setup gera o do projeto a partir da stack. {file} = arquivo editado; {testFile} = teste colocado (x.test.ts / x.spec.ts); comando com {testFile} sem teste ao lado e pulado. Use so comandos que ja existem no projeto (--no-install).",
+  "onEdit": [
+    {
+      "match": "\\.(ts|tsx|js|jsx)$",
+      "commands": [
+        "npx --no-install prettier --write {file}",
+        "npx --no-install eslint --fix {file}",
+        "npx --no-install vitest run {testFile}"
+      ],
+      "timeout": 120
+    },
+    {
+      "match": "\\.cs$",
+      "commands": ["dotnet format --include {file} --verbosity quiet"],
+      "timeout": 120
+    },
+    {
+      "match": "\\.py$",
+      "commands": ["ruff format {file}", "ruff check --fix {file}"],
+      "timeout": 60
+    }
+  ],
+  "criticalPaths": [
+    "^docs/adr/",
+    "^\\.github/workflows/",
+    "^\\.claude/settings\\.json$",
+    "^\\.claude/hooks/",
+    "^\\.claude/quality\\.json$"
+  ]
+}

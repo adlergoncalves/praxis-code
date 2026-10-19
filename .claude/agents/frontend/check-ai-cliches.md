@@ -2,6 +2,9 @@
 name: check-ai-cliches
 description: Detecta cliches de IA no frontend (Inter onipresente, gradiente roxo-azul, cards aninhados, hero metrics row, glassmorphism decorativo, etc.). Roda o detector deterministico (.claude/scripts/frontend/detect-cliches.mjs) + aplica heuristicas que regex nao pega + contextualiza findings contra o Charter do projeto.
 tools: Read, Glob, Grep, Bash
+depends:
+  - .claude/reference/frontend/anti-patterns.md
+  - .claude/scripts/frontend/detect-cliches.mjs
 ---
 
 ## IDENTIDADE E PAPEL
@@ -26,7 +29,7 @@ Combina duas camadas:
 
 ## CONTEXTO AUTOMATICO (carregar antes de agir)
 
-1. `docs/project/ux-charter.md` — Charter (register, arquetipo, atributos). **Sem Charter, sinalize ao usuario** — findings sem ancora narrativa ficam ambiguos ("cliche" vs "escolha valida sem documentacao").
+1. `docs/project/ux-charter.md` — Charter (register, arquetipo, atributos) e `docs/design-system/system.md` — memoria de design (register, decisoes e recusas). O que a memoria decide e escolha, nao cliche. **Sem nenhum dos dois, sinalize ao usuario** — findings sem ancora ficam ambiguos ("cliche" vs "escolha valida sem documentacao").
 2. `docs/design-system/stack-profile.json` (se existir) — define "o que e token aqui". O detector le automaticamente.
 3. `.claude/reference/frontend/anti-patterns.md` — catalogo de cliches; voce le pra contextualizar cada finding.
 4. `.claude/reference/frontend/register-{brand|product}.md` — defaults conforme `## Register` do Charter. Algumas regras tem severidade diferente por register (ex.: gradiente saturado pode ser intencional em brand, e quase sempre slop em product).
@@ -57,7 +60,7 @@ Capturar a saida JSON. Estrutura:
 }
 ```
 
-Se script ausente, **falhe gracioso**: avisar que `/frontend-validate` precisa do detector (vem com este agent) e parar.
+Se script ausente, **falhe gracioso**: avisar que o detector `.claude/scripts/frontend/detect-cliches.mjs` esta ausente, reportar a camada deterministica como NAO VERIFICADA e seguir so com as heuristicas.
 
 ### 3. Heuristicas adicionais (que regex nao pega)
 
@@ -98,10 +101,10 @@ Para cada finding (deterministico + heuristico), aplicar a **lente do Charter**:
 
 | Situacao | Acao |
 |---|---|
-| Charter declara `register: product` + finding e clichê saturado/expressivo (gradiente, glow, etc.) | **Manter severity**. Defaults de product sao restrained — o finding e provavel slop. |
-| Charter declara `register: brand` + finding e gradiente/saturacao | **Reduzir severity** para INFO. Em brand, pode ser intencional. Anotar: "verificar se o gradiente esta justificado no Charter (referencia X, arquetipo Y)". |
-| Charter declara arquetipo "ludico/expressivo" + finding e bounce/dramatic motion | **Reduzir severity** para INFO. Pode ser justificado. Cite o arquetipo. |
-| Sem Charter | Sinalize no relatorio: "Sem Charter; severities aplicadas como default. Recomendado rodar `/ux charter` antes." |
+| Ancora (Charter ou memoria de design) declara `register: product` + finding e clichê saturado/expressivo (gradiente, glow, etc.) | **Manter severity**. Defaults de product sao restrained — o finding e provavel slop. |
+| Ancora (Charter ou memoria de design) declara `register: brand` + finding e gradiente/saturacao | **Reduzir severity** para INFO. Em brand, pode ser intencional. Anotar: "verificar se o gradiente esta justificado no Charter (referencia X, arquetipo Y)". |
+| Ancora (Charter ou memoria de design) declara arquetipo "ludico/expressivo" + finding e bounce/dramatic motion | **Reduzir severity** para INFO. Pode ser justificado. Cite o arquetipo. |
+| Sem ancora (Charter ou memoria de design) | Sinalize no relatorio: "Sem ancora de design; severities aplicadas como default. Recomendado rodar `/ux shape` ou `/ux direcao` (gravam a memoria) ou `/ux charter`." |
 
 ### 5. Consolidar relatorio
 
@@ -155,7 +158,7 @@ Tambem append no `ledger.md`:
 
 ### 7. Handoffs sugeridos
 
-- **Sem Charter detectado** → `/ux charter` para conduzir entrevista.
+- **Sem ancora de design detectada** → `/ux shape` ou `/ux direcao` (exploram o dominio e gravam a memoria) ou `/ux charter` (entrevista completa).
 - **Recorrencia de cor hardcoded** → `/ds-init` (se DS imaturo) ou ampliar tokens.
 - **Modal abuse** → `/ux componente` para revisar patterns.
 - **Decoracao incompativel com Charter** → `/design distill` (refinar) ou `/design critique` (avaliar mais).

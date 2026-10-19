@@ -1,6 +1,10 @@
 ---
 description: "Alterna entre modo lite (simples, rapido) e full (completo, profissional). Afeta como todo o pipeline se comporta."
 user-invocable: true
+depends:
+  - docs/adr/templates/universal/naming-conventions.md
+  - docs/adr/templates/frontend-patterns/feature-first-structure.md
+  - docs/adr/templates/backend-patterns/clean-architecture.md
 ---
 
 # /mode
@@ -11,8 +15,8 @@ Alterna o modo de operacao do kit. Afeta como **todas as skills** se comportam.
 
 - `/mode lite` → Ativa modo lite (simples, rapido, sem cerimonia)
 - `/mode full` → Ativa modo full (pipeline completo, profissional)
-- `/mode praxis on` → Ativa o agente Praxis como orquestrador padrao (todo input passa pelo Praxis)
-- `/mode praxis off` → Desativa o Praxis (skills funcionam diretamente, sem orquestracao)
+- `/mode praxis on` → Liga o Praxis como orquestrador (todo input passa pelo Praxis) — **padrao do kit**
+- `/mode praxis off` → Desliga o Praxis (skills funcionam diretamente, sem orquestracao; `/praxis` continua disponivel)
 - `/mode` → Mostra modo atual (lite/full + Praxis on/off)
 
 > **Eixos independentes**: `lite|full` e `praxis on|off` sao ortogonais. Voce pode ter qualquer combinacao (ex: `full + praxis on`, `lite + praxis off`).
@@ -25,12 +29,12 @@ Alterna o modo de operacao do kit. Afeta como **todas as skills** se comportam.
 |---------|--------------|
 | Discovery | 3 perguntas rapidas (problema, stack, escopo) |
 | ADRs | 2-3 ADRs default geradas automaticamente pela stack |
-| PRD/Spec | Nao necessario — `/implement` aceita descricao livre |
-| /implement | Descricao → implementa direto (sem plan/tasks separados) |
+| PRD/Spec | PRD nao necessario — `/implement` aceita descricao livre e gera a spec minima |
+| /implement | Descricao → spec minima + tasks por fatia (sem plan separado) → `/execute` em loop por fatia |
 | /validate | Profile minimal (so ADR validator) |
-| Testes | Sem obrigatoriedade de TDD |
+| Testes | Test-first do `/execute` (RED→GREEN), DoD minimo |
 | DDD | Desativado |
-| /clarify, /analyze, /checklist | Desativados |
+| /clarify, /analyze, /checklist | Desativados como skills avulsas; o `@analyzer` do portao final roda em versao curta |
 
 ### Full (default) — Para projetos medios/grandes, times
 
@@ -111,14 +115,14 @@ Alterna o modo de operacao do kit. Afeta como **todas as skills** se comportam.
 ### Se `/mode praxis on`
 
 1. Atualizar manifesto: linha `**Praxis**:` → `on`
-2. Atualizar ponteiro no `CLAUDE.md`: na secao "Agente Principal: Praxis", linha `**Status atual**:` → `ATIVO`
+2. O `rules.md` do kit ja diz que o estado vive no manifesto — nada a editar no `CLAUDE.md`
 3. Informar ao usuario:
    ```
    Praxis ativado como orquestrador padrao.
 
    A partir de agora:
    - Todo input do usuario passa pelo Praxis antes de qualquer skill
-   - Toda skill que termina notifica o Praxis (regra global no CLAUDE.md)
+   - Ao fim de cada skill, o Praxis propoe o proximo passo (regra em `.claude/praxis/rules.md`)
    - Praxis propoe proximo passo e interrompe se ver risco
 
    Para invocar pontualmente: /praxis
@@ -128,7 +132,7 @@ Alterna o modo de operacao do kit. Afeta como **todas as skills** se comportam.
 ### Se `/mode praxis off`
 
 1. Atualizar manifesto: linha `**Praxis**:` → `off`
-2. Atualizar ponteiro no `CLAUDE.md`: na secao "Agente Principal: Praxis", linha `**Status atual**:` → `DESATIVADO`
+2. Nada a editar no `CLAUDE.md` (o estado vive no manifesto)
 3. Informar ao usuario:
    ```
    Praxis desativado.

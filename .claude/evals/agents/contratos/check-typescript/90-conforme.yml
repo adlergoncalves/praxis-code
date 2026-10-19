@@ -1,0 +1,9 @@
+agent: check-typescript
+regra: controle
+descricao: Tipos explicitos, acesso indexado tratado como possivelmente undefined, tsconfig estrito — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - as any
+  - ts-ignore

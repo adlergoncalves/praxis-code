@@ -16,7 +16,7 @@ $ARGUMENTS → Caminho ou "geral"
 
 ### Estrutura de Namespaces
 - Proibido: arquivo global unico de traducao (`common.json` com tudo) em projetos com 3+ features
-- Cada feature deve ter seu proprio namespace de traducao (`features/orders/i18n/pt-BR.json`)
+- Cada feature deve ter seu proprio namespace de traducao (ex.: `locales/pt-BR/orders.json`, como no template de ADR de i18n, ou o caminho decidido no projeto)
 - Namespace `common` reservado para strings realmente compartilhadas (sim, nao, cancelar, salvar, erro generico)
 - Chaves de traducao em inglês e descritivas (`orders.create.title`, nao `orders.t1`)
 
@@ -66,7 +66,7 @@ Ler ADRs em `docs/adr/` sobre i18n, traducoes, namespaces. Carregar `docs/projec
 
 ## CLASSIFICACAO
 - **ERRO**: Strings user-facing hardcoded em componente de producao
-- **AVISO**: Namespace global unico, lazy loading ausente, pluralizacao manual, formatacao de data/moeda hardcoded, chave sem traducao correspondente
+- **AVISO**: Namespace global unico, lazy loading ausente, pluralizacao manual, formatacao de data/moeda hardcoded, chave sem traducao correspondente, chave orfa (presente no arquivo de traducao e usada em nenhum lugar do escopo)
 
 ## SECAO OBRIGATORIA: Oportunidades de Evolucao
 

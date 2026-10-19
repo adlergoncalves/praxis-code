@@ -10,8 +10,8 @@
 
 | Arquivo | Quando escrever | Quem le |
 |---------|----------------|---------|
-| `frontend-learnings.md` | Patterns de UI, componentes, estado, rotas, DS | `@check-*` frontend, `@executor` (team front) |
-| `backend-learnings.md` | Patterns de API, dominio, testes, infra | `@check-*` backend, `@executor` (team back) |
+| `frontend-learnings.md` | Patterns de UI, componentes, estado, rotas, DS | `@check-*` frontend, `/execute` (team front) |
+| `backend-learnings.md` | Patterns de API, dominio, testes, infra | `@check-*` backend, `/execute` (team back) |
 | `business-learnings.md` | Regras de negocio, decisoes de produto, personas | `@strategy`, `/prd-create`, `/spec-from-prd`, `@spec-review` |
 | `architecture-learnings.md` | Decisoes arquiteturais recorrentes, ADR patterns | `@adr-creator`, `@adr-validator`, `@planner` |
 | `process-learnings.md` | O que funciona (ou nao) no processo do kit | Todas as skills ao iniciar |
@@ -59,8 +59,7 @@ Agents carregam **apenas o arquivo relevante ao seu escopo** + sempre `process-l
 
 | Agent / Skill | Learnings a carregar |
 |---|---|
-| Executor `--team front` | `frontend-learnings.md` + `process-learnings.md` |
-| Executor `--team back` ou `--team db` | `backend-learnings.md` + `process-learnings.md` |
+| `/execute` (qualquer `--team`) | **todos** os arquivos de learning — tasks de uma camada tem implicacao na outra |
 | `@check-*` frontend | `frontend-learnings.md` |
 | `@check-*` backend | `backend-learnings.md` |
 | `@adr-creator` | `architecture-learnings.md` + `process-learnings.md` |
@@ -69,7 +68,32 @@ Agents carregam **apenas o arquivo relevante ao seu escopo** + sempre `process-l
 | `@spec-review` | arquivo do dominio da spec + `process-learnings.md` |
 | `@strategy`, `/prd-create`, `/spec-from-prd` | `business-learnings.md` |
 
-**Regra**: `process-learnings.md` e obrigatorio para agents que executam ou planejam codigo (executor, planner, adr-creator, adr-validator, spec-review). Agents de validacao de codigo carregam apenas o arquivo do dominio.
+**Regra**: `process-learnings.md` e obrigatorio para skills e agents que executam ou planejam codigo (`/execute`, planner, adr-creator, adr-validator, spec-review). Agents de validacao de codigo carregam apenas o arquivo do dominio.
+
+---
+
+## Ledger — a linha do tempo
+
+Alem dos arquivos por dominio, dois ledgers registram **quando** cada coisa aconteceu:
+
+| Arquivo | Versionado? | Quem grava | O que entra |
+|---|---|---|---|
+| `ledger.md` | sim | o assistente, no instante | linhas `(llm)`: decisao, correcao, descoberta |
+| `ledger-auto.md` | nao (gitignored) | hook `capture.mjs`, a cada turno | linhas `(auto)`: arquivos alterados no turno |
+
+Formato (uma linha por evento, abaixo da marca `<!-- LEDGER:START -->`):
+
+```
+<timestamp ISO> | <tipo> | domain:<dominio> | "<resumo>" | (llm)
+```
+
+- Descoberta → entrada Tipo 1 no arquivo do dominio **e** linha `descoberta` no `ledger.md`.
+- Correcao do usuario → entrada `[CORRECAO DO USUARIO]` **e** linha `correcao` com a regra derivada.
+- O hook `reconcile.mjs` le os dois ledgers numa linha do tempo so (inicio de sessao e cada
+  prompt): injeta correcoes e pendencias como contexto e avisa quando ha turno com arquivo
+  alterado sem linha `(llm)` correspondente. Os hooks sao rede; a fonte primaria e a gravacao
+  no instante.
+- Detalhe do formato e dos tipos: o cabecalho de `ledger.md`.
 
 ---
 

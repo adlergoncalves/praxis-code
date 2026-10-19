@@ -88,7 +88,7 @@ Ou se for uma feature dentro de um PRD existente:
 /spec-from-prd docs/prds/prd-meu-modulo.md FEATURE:2.1
 ```
 
-**Resultado**: Spec em `docs/specs/NNN-feature/spec.md`
+**Resultado**: o `/prd-create` gera o PRD em `docs/prds/`; a spec vem do `/spec-from-prd` (o segundo comando acima), em `docs/specs/NNN-feature/spec.md`.
 
 ```
 /clear
@@ -187,7 +187,7 @@ Para features pequenas que não precisam de PRD completo:
 
 1. Crie a pasta `docs/specs/005-minha-feature/`
 2. Crie o `spec.md` seguindo o template em `docs/templates/spec-template.md`
-3. Preencha pelo menos: User Stories, Functional Requirements e Success Criteria
+3. Preencha os blocos marcados OBRIGATORIO no template: Escopo, Personas e Permissões, Regras de Negócio, Decisões Fechadas, User Scenarios & Testing, Requirements e Edge Cases
 
 Depois:
 
@@ -220,15 +220,15 @@ Para checar o estado geral de conformidade:
 
 ```bash
 /validate geral              # Perfil standard (default)
-/validate geral full         # Todos os agents — antes de release
-/validate geral minimal      # Só ADR validator — check rápido
+/validate geral --profile full         # Todos os agents — antes de release
+/validate geral --profile minimal      # Só ADR validator — check rápido
 ```
 
-**Validação sequencial por stack** (para mais controle, corrigindo entre agents):
+**Validação por stack** (paralela por padrão; `--mode sequential` para corrigir entre agents):
 
 ```bash
-/frontend-validate    # 10 agents frontend, um por vez
-/backend-validate     # 6 agents backend, um por vez
+/frontend-validate    # 11 agents frontend
+/backend-validate     # 6 agents backend
 ```
 
 ---
@@ -337,7 +337,7 @@ Gera checklists com 9 dimensões de qualidade — "testes unitários para texto"
 
 ### Antes de release
 ```
-/validate geral full
+/validate geral --profile full
 /revalidate
 ```
 

@@ -28,7 +28,7 @@ Se nao especificado, perguntar onde esta o codigo legado.
 
 ## Execucao
 
-Delegar ao agent `@legacy-analyzer` que executa 6 etapas:
+Roda **nesta sessao**, usando `.claude/agents/discovery/legacy-analyzer.md` como roteiro. A leitura pesada de codigo vai a subagentes (sem conversa): Etapa 1 ao `@codebase-mapper`, Etapas 2-3 ao `@legacy-analyzer`. As Etapas 4-5 (prints e perguntas) sao conduzidas aqui. As 6 etapas:
 
 1. **Mapeamento estrutural** → `@codebase-mapper` → `docs/project/codebase-map.md`
 2. **Logica de negocio** → `docs/project/legacy/business-logic.md`
@@ -56,16 +56,16 @@ docs/project/legacy/
 
 ## Apos a Engenharia Reversa
 
-Com a documentacao completa do legado, o fluxo normal do template pode comecar:
+Com a documentacao completa do legado, o fluxo normal do kit pode comecar:
 
 ```
 /reverse-engineer {legado}     — Fase 0: documentar o legado
         ↓
 /discovery                     — Fase 1: discovery do NOVO projeto (usando docs do legado)
         ↓
-/architect                     — Fase 3: ADRs do novo sistema
+/architect                     — Fase 2: ADRs do novo sistema
         ↓
-/define                        — Fase 2: PRDs modulo por modulo
+/define                        — Fase 3: PRDs modulo por modulo
         ↓
 /implement + /validate         — Fases 5-7: implementar o novo sistema
 ```

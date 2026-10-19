@@ -10,7 +10,7 @@ labels: bug
 
 ## Como reproduzir
 
-1. Skill/agent usado (ex.: `/execute --auto 3`):
+1. Skill/agent usado (ex.: `/execute --max 3`):
 2. Estado do projeto (trecho relevante do `docs/project/manifest.md`):
 3. Passos:
 

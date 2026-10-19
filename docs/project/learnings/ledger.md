@@ -4,9 +4,12 @@
 > sobrevive a qualquer fechamento (abrupto ou limpo) porque e gravado no disco no instante
 > em que o trabalho acontece — nao depende de `/compact` nem do fim de uma skill.
 >
-> Duas fontes escrevem aqui (redundancia proposital):
-> - `(auto)` — o hook `capture.mjs` grava uma linha determinista por turno (timestamp + arquivos alterados).
-> - `(llm)` — o assistente grava a linha semantica no instante em que ha decisao, correcao ou descoberta.
+> Este arquivo e **versionado** e recebe so as linhas **semanticas**:
+> - `(llm)` — o assistente grava a linha no instante em que ha decisao, correcao ou descoberta.
+>
+> As linhas `(auto)` (uma por turno com arquivo alterado, gravadas pelo hook `capture.mjs`) vao
+> para `ledger-auto.md` ao lado — **local e gitignored**, para nao gerar alteracao versionada a cada
+> turno. Os hooks leem os dois arquivos numa linha do tempo so.
 
 ## Formato (pipe-delimited, uma linha por evento)
 
@@ -22,8 +25,8 @@
 
 ## Rotacao
 
-Quando passar de ~500 linhas ou virar o mes, o hook arquiva o corpo em
-`docs/project/learnings/ledger-archive/AAAA-MM.md` e mantem so o cabecalho-resumo aqui.
+Quando passar de ~500 linhas, o hook `capture.mjs` arquiva as mais antigas em
+`docs/project/learnings/ledger-archive/AAAA-MM.md` e mantem aqui as ~250 mais recentes.
 
 ---
 

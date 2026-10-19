@@ -1,0 +1,12 @@
+agent: check-structure
+regra: "Feature-first — feature importando de outra feature"
+descricao: features/orders importa componente interno de features/customers
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: OrderList.tsx
+    linha: 1
+    sinal: customers
+
+nao_deve_detectar:
+  - index.tsx

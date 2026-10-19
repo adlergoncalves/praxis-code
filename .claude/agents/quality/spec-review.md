@@ -145,4 +145,4 @@ Verificar `docs/project/learnings/` por entradas relevantes ao dominio da spec:
 2. **Seja especifico** — "criterio de aceite vago na US-1.2" e melhor que "criterios vagos"
 3. **Cite a linha ou secao** — facilita a correcao
 4. **Nao invente gaps** — se a spec cobre o item de forma alternativa, aprovar
-5. **Registre em learnings** — se encontrar padrao recorrente de gap, registrar em `docs/project/learnings/`
+5. **Aponte o padrao recorrente** — se o gap se repete, diga isso no relatorio; quem grava o learning em `docs/project/learnings/` e a skill `/spec-review` (este agent e read-only)

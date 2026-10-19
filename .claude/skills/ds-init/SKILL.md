@@ -43,6 +43,7 @@ Delegar ao agent `@ds-foundation` que executa:
 6. **Demo Components**: Instala componentes base para o design-system
 7. **Design System Scaffold**: Cria design-system ISOLADO em pasta separada
 8. **ADR**: Gera ADR do DS com regras de validacao
+8b. **stack-profile.json + memoria de design**: emite `docs/design-system/stack-profile.json` a partir do adapter casado e grava a secao Tokens de `docs/design-system/system.md`
 9. **Summary**: Resumo visual (primary color, font, style, radius, overall feel)
 
 ## Atualizacao do Manifesto

@@ -74,7 +74,7 @@ Modulos de alto nivel nao devem depender de modulos de baixo nivel. Ambos devem 
 - PROIBIDO: Classes com mais de 300 linhas
 - PROIBIDO: Metodos com mais de 50 linhas
 - PROIBIDO: Interfaces com mais de 5 metodos
-- PROIBIDO: Profundidade de aninhamento maior que 3 niveis
+- PROIBIDO: Profundidade de aninhamento acima de 4 niveis (alvo: 3 — ver `cyclomatic-complexity.md`)
 - PROIBIDO: Complexidade ciclomatica acima de 15 por metodo
 - PROIBIDO: Dependencia direta de implementacoes concretas em camadas de dominio/aplicacao
 - OBRIGATORIO: Classes com no maximo 200 linhas

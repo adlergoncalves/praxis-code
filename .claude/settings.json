@@ -4,7 +4,8 @@
     "allow": [
       "Read(docs/**)",
       "Glob(docs/**)",
-      "Grep(docs/**)"
+      "Grep(docs/**)",
+      "Bash(node .claude/praxis/praxis.mjs *)"
     ]
   },
   "hooks": {
@@ -77,5 +78,16 @@
         ]
       }
     ]
+  },
+  "enabledPlugins": {
+    "claude-security@claude-plugins-official": true
+  },
+  "extraKnownMarketplaces": {
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
+      }
+    }
   }
 }

@@ -11,7 +11,11 @@
   ],
   "gitignore": [
     ".claude/hooks/.capture-cursor.json",
-    "docs/project/state.md"
+    "docs/project/state.md",
+    "docs/project/learnings/ledger-auto.md",
+    ".claude/praxis.lock",
+    ".claude/praxis.update.json",
+    ".claude/praxis.check.json"
   ],
   "hooks": {
     "SessionStart": [

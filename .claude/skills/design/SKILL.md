@@ -1,5 +1,5 @@
 ---
-description: "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancorado no Charter."
+description: "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden), na sessao principal, olhando a tela renderizada. Ancorado no Charter e na memoria de design do projeto."
 domain: frontend
 user-invocable: true
 depends:
@@ -16,6 +16,10 @@ depends:
   - .claude/reference/frontend/adapter-react-next-shadcn.md
   - .claude/reference/frontend/adapter-angular-material.md
   - .claude/reference/frontend/adapter-vue-vuetify.md
+  - .claude/reference/frontend/third-party/interface-design/design-review.md
+  - .claude/reference/frontend/third-party/interface-design/design-deslop.md
+  - .claude/reference/frontend/third-party/redesign-audit/redesign-skill.md
+  - docs/templates/design-memory-template.md
 ---
 
 # /design
@@ -36,7 +40,8 @@ Ativa o **Design Craftsman** para refinamentos cirurgicos sobre codigo ja gerado
 | Modo | O que faz | Edita? |
 |---|---|---|
 | `polish` | Passe geral aplicando heuristicas Refactoring UI por ordem de impacto | sim |
-| `critique` | Review honesto sem editar — aponta problemas e sugere correcoes | nao |
+| `critique` | Review estrito sem editar — lentes, severidade, regua de aprovacao (design review da interface-design) | nao |
+| `deslop` | Passe rapido no diff da branch: squint na tela + tells linha a linha | sim |
 | `distill` | Remove decoracao desnecessaria (sombras/gradientes/icones gratuitos) | sim |
 | `animate` | Aplica motion grammar (microinteracoes, durations, easings) | sim |
 | `colorize` | Introduz cor estrategica; remove cor que nao comunica | sim |
@@ -53,24 +58,26 @@ Ativa o **Design Craftsman** para refinamentos cirurgicos sobre codigo ja gerado
 /design <modo> [escopo]
 ```
 
-- `modo` — obrigatorio. Um dos 11 acima.
+- `modo` — obrigatorio. Um dos 12 acima.
 - `escopo` — opcional. Arquivo, dir, ou feature. Sem escopo, o agent identifica componente/feature recente ou pergunta.
 
 ## Pre-requisitos
 
-- **`docs/project/ux-charter.md`** obrigatorio. Sem Charter, o agent para e conduz `/ux charter` antes (sem fallback generico).
+- **Ancora**: `docs/project/ux-charter.md` e/ou `docs/design-system/system.md` (memoria de design). Sem nenhum dos dois, a sessao comeca explorando o dominio e grava a memoria antes do primeiro edit — nao trava pedindo a entrevista do Charter.
 - Codigo existente no escopo (este e o craftsman do "30%", opera sobre o que ja foi gerado).
 - Recomendado (nao obrigatorio): `docs/design-system/stack-profile.json` para detalhes de stack.
 
 ## Execucao
 
+Roda **nesta sessao**, usando `.claude/agents/frontend/design.md` como roteiro: o `/design` mostra o diff, espera a aprovacao e olha a tela renderizada — coisas que um subagente nao faz.
+
 1. Identificar modo no argumento.
-2. Verificar Charter; se ausente → conduzir `/ux charter` antes.
-3. Delegar a `@design` com `{modo, escopo}`.
-4. `@design` carrega Charter + reference files do modo + adapter da stack.
-5. `@design` analisa codigo + propoe **diff com justificativa por edit**.
-6. Apresentar diff ao usuario. Aprovar individual, todos, ou discutir.
-7. Aplicar edits aprovados.
+2. Carregar a ancora (Charter, memoria de design); sem nenhuma → explorar o dominio e gravar a memoria.
+3. Carregar reference files do modo + adapter da stack.
+4. **Ver a tela**: com o app rodando, prints em 1440/768/390 e por estado (Playwright MCP ou `screenshot.mjs`).
+5. Analisar codigo + tela e propor **diff com justificativa por edit** (ou, em `critique`, o relatorio com veredito).
+6. Apresentar ao usuario. Aprovar individual, todos, ou discutir.
+7. Aplicar edits aprovados; registrar decisoes na memoria de design.
 8. Sugerir handoffs (ex.: drift -> `@check-visual-consistency`, gap no DS -> `/ds-component`).
 
 ## Pipeline
@@ -80,10 +87,11 @@ Ativa o **Design Craftsman** para refinamentos cirurgicos sobre codigo ja gerado
     → /design critique    → avaliacao honesta sem edit
     → /design polish      → passe geral aplicando heuristicas
     → /design <modo>      → refino especifico (animate, colorize, typeset, ...)
-    → /frontend-validate  → validacao final (inclui @check-ai-cliches e @check-visual-consistency)
+    → /frontend-validate  → validacao final
+    → @check-ai-cliches e @check-visual-consistency (avulsos — nao fazem parte do /frontend-validate)
 ```
 
-`/design` opera **entre** `/execute` e `/frontend-validate`. Nao substitui o `@executor`; complementa.
+`/design` opera **entre** `/execute` e `/frontend-validate`. Nao substitui o `/execute`; complementa.
 
 ## Limites (regras de seguranca)
 

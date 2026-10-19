@@ -1,0 +1,9 @@
+agent: check-i18n
+regra: controle
+descricao: Textos via t() com namespace da feature e moeda via Intl.NumberFormat — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - Pedidos em aberto
+  - R$

@@ -15,9 +15,9 @@ Modulos grandes, ambiguos ou com muitas fronteiras interinas de negocio nao cabe
 2. **Duvidas soltas em conversas** — informacoes criticas ficam em chats, reunioes e commits dispersos, sem rastreabilidade.
 3. **PRDs que envelhecem mal** — um documento unico de 80+ paginas vira fonte unica de verdade ilegivel; ninguem sabe o que esta decidido, o que esta pendente, o que foi descartado e por que.
 
-**O metodo validado em dois modulos deste projeto** (o primeiro deles: modulo de estandes, iniciado em 2026-04-20) consiste em criar um **workspace de detalhamento** — uma pasta com multiplos arquivos curtos e proposito unico — **antes** de escrever specs de implementacao. O workspace e descartavel ou arquivavel ao final: o que importa e chegar ao SDD com 100% da intencao explicitada.
+**O metodo, validado em uso real em modulos grandes antes de ser formalizado,** consiste em criar um **workspace de detalhamento** — uma pasta com multiplos arquivos curtos e proposito unico — **antes** de escrever specs de implementacao. O workspace e descartavel ou arquivavel ao final: o que importa e chegar ao SDD com 100% da intencao explicitada.
 
-Este ADR formaliza o metodo para que possa ser reaplicado em outros modulos e **outros projetos**. No kit, o metodo e automatizado pela skill `/detail` (Fase 2, entre `/prd-validate` e `/prd-decompose`).
+Este ADR formaliza o metodo para que possa ser reaplicado em outros modulos e **outros projetos**. No kit, o metodo e automatizado pela skill `/detail` (Fase 3, entre `/prd-validate` e `/prd-decompose`).
 
 ---
 
@@ -56,7 +56,6 @@ docs/prds/<modulo>/
 ├── 10-parte1-<nome>.md             # Detalhamento da parte 1 (8 dimensoes)
 ├── 20-parte2-<nome>.md             # Detalhamento da parte 2
 ├── 30-parte3-<nome>.md             # Detalhamento da parte 3
-├── 40-parte4-<nome>.md             # Detalhamento da parte 4 (se houver)
 ├── 40-glossario.md                 # Linguagem ubiqua especifica do modulo
 ├── 50-integracoes.md               # Fronteiras com modulos externos
 ├── 60-regras-negocio.md            # Compilado de regras cross-parte
@@ -67,7 +66,7 @@ docs/prds/<modulo>/
 **Convencao de prefixos numericos:**
 
 - `00-09`: estruturais (visao geral, fronteiras).
-- `10, 20, 30, 40, ...`: partes funcionais (uma casa decimal por parte permite subarquivos `11-`, `12-` se uma parte crescer).
+- `10, 20, 30`: partes funcionais (uma casa decimal por parte permite subarquivos `11-`, `12-` se uma parte crescer). Modulo com mais de 3 partes: subdividir dentro das dezenas (`31-`, `32-`), sem invadir a faixa `40`.
 - `40-69`: transversais (glossario, integracoes, regras).
 - `70+`: meta (duvidas, historico, rascunhos).
 
@@ -100,8 +99,8 @@ Toda decisao, duvida e fronteira recebe um **ID estavel** para referencia cruzad
 
 | Prefixo | Significado | Exemplo |
 |---------|-------------|---------|
-| `D-<MOD>-##` | Decisao especifica do modulo | `D-EST-01` (Estandes), `D-PAG-07` (Pagamento) |
-| `Q-<MOD>-##` | Duvida em aberto | `Q-EST-14` |
+| `D-<MOD>-##` | Decisao especifica do modulo | `D-CAT-01` (Catalogo), `D-PAG-07` (Pagamento) |
+| `Q-<MOD>-##` | Duvida em aberto | `Q-CAT-14` |
 | `F#` | Fronteira entre partes do proprio modulo | `F1`, `F2`, `F3` |
 | `D##` (sem prefixo) | Referencia a decisao herdada do PRD original | `D09`, `D41` |
 
@@ -117,7 +116,7 @@ Decisao tomada → sai de 70-duvidas-abertas, vira D-<MOD>-## em 60-regras-negoc
 Entrada em historico.md com data, contexto, decisao e impacto
 ```
 
-IDs **nunca sao reutilizados**, mesmo quando a duvida e descartada. `Q-EST-05` descartada continua `~~Q-EST-05~~` no historico.
+IDs **nunca sao reutilizados**, mesmo quando a duvida e descartada. `Q-CAT-05` descartada continua `~~Q-CAT-05~~` no historico.
 
 ---
 
@@ -190,7 +189,7 @@ O workspace **antecede** o SDD — nao compete com ele:
 Workspace (este ADR)          SDD (/spec-from-prd → /implement)
 ─────────────────────         ─────────────────────────
 Pergunta: "o que?"      →     Pergunta: "como implementar?"
-Saida: intencao 100%    →     Entrada: plan → tasks → implement
+Saida: intencao 100%    →     Entrada: plan → tasks → execute
 fechada e rastreavel
 ```
 
@@ -198,14 +197,14 @@ fechada e rastreavel
 
 ---
 
-## Exemplo Concreto
+## Exemplo Ilustrativo
 
-O primeiro workspace seguindo este metodo vive em `prds/modulo-estande/` (projeto de origem) e serve como referencia de estilo. Principais pontos que funcionaram:
+Num modulo de catalogo detalhado com este metodo, os pontos que mais pesaram:
 
-- **Reescopos explicitos**: em 2026-04-22, a parte de "Precificacao" saiu e a parte de "Importacao" entrou. O reescopo foi registrado em `historico.md`, duvidas da parte removida foram marcadas ❌ "Prejudicada" (nao apagadas), e o README atualizou a tabela de partes.
+- **Reescopos explicitos**: no meio do detalhamento, a parte de "Precificacao" saiu e a parte de "Importacao" entrou. O reescopo foi registrado em `historico.md`, duvidas da parte removida foram marcadas ❌ "Prejudicada" (nao apagadas), e o README atualizou a tabela de partes.
 - **Fronteiras como primeira preocupacao**: `01-fronteiras-e-decisoes.md` foi o primeiro arquivo a ficar estavel — resolver "o que e de quem" desbloqueou as outras partes.
 - **Duvidas priorizadas por impacto**: `70-duvidas-abertas.md` tem coluna "Por que importa" — forcou o time a separar duvida real de ruido.
-- **IDs como chave de discussao**: em reunioes, referir-se a "Q-EST-14" e mais rapido e menos ambiguo que reexplicar o contexto da duvida toda vez.
+- **IDs como chave de discussao**: em reunioes, referir-se a "Q-CAT-14" e mais rapido e menos ambiguo que reexplicar o contexto da duvida toda vez.
 
 ---
 

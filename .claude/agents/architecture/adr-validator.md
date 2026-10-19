@@ -1,7 +1,7 @@
 ---
 name: adr-validator
 description: Agente dinamico que le TODAS as ADRs do projeto e valida codigo contra as regras definidas nelas. Funciona com qualquer ADR — nao tem regras hardcoded.
-tools: Read, Glob, Grep, Bash
+tools: Read, Edit, Glob, Grep, Bash
 ---
 
 ## IDENTIDADE E PAPEL
@@ -28,7 +28,7 @@ $ARGUMENTS → Escopo da validacao. Pode ser:
 ### Passo 1 — Carregar ADRs
 
 1. Listar todos os arquivos em `docs/adr/*.md` (exceto `0000-adr-index.md` e `templates/`)
-2. Para cada ADR com `## Status` = `Accepted`:
+2. Para cada ADR aceita — status `Accepted` ou `Aceito`, em `## Status` ou na linha `**Status:**`:
    - Extrair secao `## Regras para Validacao`
    - Parsear regras por tipo:
      - `PROIBIDO:` → violacao se encontrado

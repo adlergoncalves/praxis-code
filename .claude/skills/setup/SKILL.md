@@ -1,22 +1,24 @@
 ---
-description: "Setup interativo do template — pergunta stack, modulos e gera CLAUDE.md personalizado para o projeto."
+description: "Setup interativo do kit Praxis — pergunta stack e modulos, puxa do catalogo so o que o projeto usa e preenche a secao do projeto no CLAUDE.md."
 user-invocable: true
+depends:
+  - .claude/hooks/quality
 ---
 
 # /setup
 
-Configura o template para um projeto especifico. Gera CLAUDE.md personalizado.
+Configura o kit para um projeto especifico. Pergunta a stack, **puxa do catalogo os modulos que se aplicam** (ADR-0009 — nada e removido: o que nao se aplica simplesmente nao entra) e preenche a secao `## Projeto` do `CLAUDE.md`.
 
 ## Quando usar
 
-- Ao clonar o template para um projeto novo
-- Ao adotar o template num projeto existente
+- No primeiro `/start` de um projeto novo (o `/start` chama o `/setup` se ainda nao rodou)
+- Ao adotar o kit num projeto existente (o `/adopt` confere a instalacao antes)
 
 ## Execucao
 
 ### Passo 1 — Perguntas de setup
 
-Perguntar ao usuario:
+Perguntar ao usuario, uma por vez:
 
 1. **Nome do projeto**: Como se chama o projeto?
 2. **Linha de trabalho**:
@@ -30,44 +32,23 @@ Perguntar ao usuario:
 7. **Porte do projeto**: Pequeno/MVP ou Medio/Grande?
    → Pequeno: configurar modo lite automaticamente (apos setup)
    → Medio/Grande: manter modo full (default)
-8. **Modulos a ativar**:
-   - Core (sempre ativo)
-   - Docs/PM (sempre ativo)
-   - Frontend validation (se tem frontend)
-   - Design System (se tem frontend e usuario quer DS)
-   - Backend validation (se tem backend)
-   - DDD Estrategico (se dominio complexo)
+8. **Dominio complexo?** Varios modulos interdependentes, termos que mudam de sentido entre areas, mais de um time? (s/n) → decide o modulo `ddd`
+9. **Superficie de marca** (so se tem frontend): o projeto tem landing, site institucional ou outra pagina publica? Se sim, oferecer o **modulo de marca** (taste-skill v2) com a implicacao: direcao de arte melhor para paginas publicas; exige Node 22+, Chrome/Edge/Chromium e acesso a rede; ~1,8 MB de biblioteca. Default: nao instalar.
+10. **Hooks de qualidade** (opt-in): a cada edicao, formatar, lintar e rodar o teste ao lado do arquivo, e pedir confirmacao antes de editar caminho critico (ADRs, pipelines, configuracao do kit). Implicacao: **executam comandos do projeto** (diferente dos hooks de aprendizado, que so gravam em `docs/project/` e num cursor local); seguram o loop autonomo no instante do erro e impedem que ele reescreva um ADR sem supervisao. Default: recomendar ligar quando o projeto vai rodar o `/execute` autonomo.
 
-### Passo 2 — Gerar CLAUDE.md personalizado (evolutivo)
+### Passo 2 — Preencher a secao do projeto no CLAUDE.md
 
-Com base nas respostas, gerar `CLAUDE.md` customizado. **Este CLAUDE.md vai CRESCER com o projeto** — cada fase do pipeline enriquece ele.
+O `CLAUDE.md` do projeto importa as regras do kit (`@.claude/praxis/rules.md`, do kit, atualizado pelo catalogo) e tem a secao `## Projeto`, que e do projeto. **Este CLAUDE.md vai CRESCER com o projeto** — cada fase do pipeline enriquece a secao do projeto.
 
-**Secoes fixas (geradas pelo setup)**:
-- `## Idioma` — regra PT-BR (copiar do template)
-- `## Sistema Nervoso — Evolucao Continua` — manifesto, learnings, CLAUDE.md evolutivo (copiar do template)
-- `## Projeto — Identificacao` — nome, descricao, linha de trabalho
-- `## Projeto — Stack` — tabela de stack (frontend, backend, db, infra)
-- `## Projeto — Modulos Ativos` — quais modulos foram ativados
-- `## Projeto — Skills Disponiveis` — tabela filtrada pela stack
-- `## 3 Linhas de Trabalho` — tabela com os 3 fluxos (copiar do template)
-- `## Team Scope` — documentacao do --team (copiar do template)
+Preencher em `## Projeto` (nunca mexer no import nem copiar as regras do kit para ca):
+- **Identificacao** — nome, descricao em uma linha, linha de trabalho
+- **Stack** — tabela (frontend, backend, db, infra)
+- **Modulos do kit** — os que foram puxados no Passo 3, uma linha
+- Manter os marcadores `<!-- EVOLUI: ... -->` — `/discovery`, `/architect` e `/ds-init` inserem ponteiros neles
 
-**Secoes evolutivas (adicionadas pelas skills ao longo do tempo)**:
-- `## Projeto — Regras Arquiteturais` — adicionada pelo `/architect`
-- `## Projeto — Design System` — adicionada pelo `/ds-init`
-- `## Projeto Adotado` — adicionada pelo `/adopt`
-- `## Projeto — Stack e Modulos` — enriquecida pelo `/discovery`
+**REGRA DE TAMANHO**: o `CLAUDE.md` deve ficar abaixo de ~4KB (o import conta). So regras e ponteiros curtos (1-2 linhas por artefato). Detalhes completos vao para o manifesto. Ao enriquecer, as skills conferem o tamanho; passou → mover o detalhe para o manifesto e deixar ponteiro.
 
-**REGRA DE TAMANHO**: O CLAUDE.md deve ficar abaixo de ~4KB. So regras e ponteiros curtos (1-2 linhas por artefato). Detalhes completos vao para o manifesto.
-
-**REGRA DE FORMATO**: Incluir marcadores onde as secoes evolutivas serao inseridas:
-```markdown
-<!-- EVOLUI: /discovery adiciona ponteiro de stack aqui -->
-<!-- EVOLUI: /architect adiciona ponteiro de ADRs aqui -->
-<!-- EVOLUI: /ds-init adiciona ponteiro de DS aqui -->
-```
-
-**REGRA DE ALERTA**: Ao enriquecer o CLAUDE.md, as skills devem verificar o tamanho. Se > 4KB apos a insercao, mover o conteudo mais detalhado para o manifesto e substituir por ponteiro.
+Projeto que **ja tinha** `CLAUDE.md` proprio (adocao): acrescentar o import e a secao, sem reescrever o texto do dono do projeto — e perguntar antes de mover qualquer coisa para o manifesto.
 
 ### Passo 2b — Inicializar Manifesto
 
@@ -76,39 +57,47 @@ Atualizar `docs/project/manifest.md` com:
 - Stack preenchida
 - Setup → `completo`
 
-### Passo 3 — Limpar artefatos nao utilizados
+### Passo 3 — Puxar os modulos do catalogo
 
-**Templates de ADR**:
-- Se nao tem frontend: remover `docs/adr/templates/frontend-patterns/`
-- Se nao tem backend: remover `docs/adr/templates/backend-patterns/`
+Com as respostas, rodar (sem perguntar de novo; cada comando e idempotente):
 
-**Agents de validacao**:
-- Se nao tem frontend: remover `.claude/agents/frontend/` **exceto `ux.md`** (o `@ux` e usado em qualquer projeto)
-- Se nao tem backend OO: remover `.claude/agents/backend/` (6 agents de check-* + scaffold)
-- **NUNCA** remover `orchestration/`, `discovery/`, `product/`, `architecture/`, `delivery/` nem `quality/` — sao o nucleo do kit (ver `docs/kit-domains.md`)
+| Resposta | Comando |
+|---|---|
+| Tem frontend | `node .claude/praxis/praxis.mjs add --module frontend` |
+| Tem frontend e quer DS | `node .claude/praxis/praxis.mjs add --module design-system` |
+| Tem backend OO (.NET, Java, Node, Python com camadas) | `node .claude/praxis/praxis.mjs add --module backend` |
+| Dominio complexo | `node .claude/praxis/praxis.mjs add --module ddd` |
 
-**Skills de validacao**:
-- Se nao tem frontend: remover `.claude/skills/frontend-validate/`
-- Se nao tem backend: remover `.claude/skills/backend-validate/` e `.claude/skills/backend-scaffold/`
+A trilha da linha de trabalho (`linha-novo`, `linha-legado`, `linha-adocao`) e puxada pelo `/start`. O que nao se aplica **nao e puxado** — e, se mais tarde o Praxis despachar uma skill ausente, ela entra sozinha (regra em `.claude/praxis/rules.md`).
 
-**Design System e Prototipagem**:
-- Se nao tem frontend OU nao quer DS: remover `.claude/agents/frontend/ds-foundation.md`, `.claude/agents/frontend/ds-component.md`
-- Se nao tem frontend OU nao quer DS: remover `.claude/skills/ds-init/`, `.claude/skills/ds-component/`
-- Se nao tem frontend: remover `.claude/agents/frontend/paper-prototype.md`, `.claude/skills/prototype/`
+### Passo 3b — Modulo de marca (so se aceito no Passo 1)
+
+Instalar a taste-skill v2 **fixada em commit** (`f624f37a8c650b9cc550253104925efe4c8de246`, o mesmo registrado no README de `third-party/`), num diretorio temporario fora do projeto, e copiar so a skill:
+
+```bash
+git clone --filter=blob:none https://github.com/Leonxlnx/taste-skill.git <tmp>/taste-skill
+git -C <tmp>/taste-skill checkout f624f37a8c650b9cc550253104925efe4c8de246
+# copiar <tmp>/taste-skill/skills/taste-skill  →  .claude/skills/taste-skill/
+# copiar <tmp>/taste-skill/LICENSE             →  .claude/skills/taste-skill/LICENSE
+```
+
+Cada comando passa pelo pedido de permissao normal do Claude Code. Registrar no manifesto (Configuracao): `taste-skill v2 — instalada pelo /setup em {data}, commit f624f37`. Os scripts dela gravam em `.taste-skill/`: acrescentar essa pasta ao `.gitignore` do projeto. A taste-skill e do projeto (nao esta no lock): o catalogo nunca a toca.
+
+### Passo 3c — Hooks de qualidade (so se aceito no Passo 1)
+
+1. **Gerar `.claude/quality.json`** a partir de `.claude/hooks/quality/quality.example.json`, mantendo so as regras da stack do projeto e so comandos de ferramentas que **ja existem** no projeto (conferir `package.json`/dependencias, `dotnet`, `ruff`...). Nao instalar ferramenta para isso. Mostrar o arquivo ao usuario antes de gravar.
+2. **Ligar os hooks**: fazer o merge do bloco `hooks` de `.claude/hooks/quality/hooks.quality.json` em `.claude/settings.local.json` (criar se nao existir; preservar o que ja houver; acrescentar aos arrays de `PreToolUse`/`PostToolUse`, sem duplicar). **Nunca** no `.claude/settings.json` versionado.
+3. Registrar no manifesto (Configuracao): hooks de qualidade ligados, data.
 
 ### Passo 4 — Proximos passos
 
-Sugerir ao usuario via `/start`:
-- "Agora rode `/start` para iniciar o pipeline correto para sua situacao."
-
-Ou diretamente:
-- Se projeto novo: `/discovery`
-- Se legado para modernizar: `/reverse-engineer`
-- Se projeto existente para adotar: `/adopt`
+- Se o `/setup` foi chamado pelo `/start`: devolver o controle ao `/start`, que puxa a trilha da linha e indica o primeiro comando.
+- Se foi chamado direto: "Agora rode `/start` para iniciar o pipeline correto para sua situacao."
 
 ## Regras
 
 - NAO assumir stack — sempre perguntar
-- NAO remover agents core ou docs — eles sao sempre uteis
-- Gerar CLAUDE.md funcional, nao um template com placeholders
-- Listar ao final o que foi removido para transparencia
+- NAO remover nada: o kit se monta por adicao; ferramenta que o projeto nao usa simplesmente nao e puxada
+- NAO copiar as regras do kit para o `CLAUDE.md` do projeto — elas vem do import e sao atualizadas pelo catalogo
+- Preencher a secao do projeto com conteudo real, nao com placeholders
+- Listar ao final o que foi puxado (`node .claude/praxis/praxis.mjs status`) para transparencia

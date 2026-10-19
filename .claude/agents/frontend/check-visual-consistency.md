@@ -2,6 +2,8 @@
 name: check-visual-consistency
 description: Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual ("tela A != tela B"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.
 tools: Read, Glob, Grep
+depends:
+  - .claude/reference/frontend/design-system-anatomy.md
 ---
 
 ## IDENTIDADE E PAPEL
@@ -27,7 +29,7 @@ Sintomas que voce caca:
 - Lista de paths (`src/features/checkout/ src/features/profile/`): comparar so esses.
 - "vs charter": validar surfaces contra Charter, sem comparar entre si.
 
-## ENTRADA VISUAL OPCIONAL (Passo 7 / Fase 3 — loop visual)
+## ENTRADA VISUAL OPCIONAL (screenshots)
 
 Se existirem PNGs em `docs/design-system/screenshots/` (capturados via `node .claude/scripts/frontend/screenshot.mjs <url>` ou anexados manualmente pelo usuario), **carregue-os via Read** como insumo visual adicional. O Read consegue ler imagens diretamente.
 
@@ -49,7 +51,7 @@ Screenshots permitem pegar drift que source-level perde:
 
 ## CONTEXTO AUTOMATICO
 
-1. `docs/project/ux-charter.md` — Charter (register, arquetipo, atributos, anti-referencias). **Obrigatorio**. Sem Charter, o detector nao tem ancora; sinalize e pare (sugerindo `/ux charter`).
+1. **Ancora de design** — `docs/project/ux-charter.md` (register, arquetipo, atributos, anti-referencias) **e/ou** `docs/design-system/system.md` (memoria de design: direcao, tokens, padroes, telas aprovadas). Sem nenhuma das duas: rodar so a comparacao entre surfaces (sem a secao "vs ancora"), sinalizar no topo do relatorio e sugerir `/ux shape` ou `/ux direcao`, que gravam a memoria.
 2. `docs/project/motion.md` — motion grammar do projeto.
 3. Tokens do DS — glob por `**/globals.css`, `**/theme.css`, ler tokens.
 4. `docs/design-system/stack-profile.json` — opcional, indica adapter.
@@ -183,9 +185,9 @@ Ledger:
 
 ## REGRAS DE COMPORTAMENTO
 
-1. **Sem Charter, pare**. Drift sem ancora narrativa fica "opiniao pessoal" — peca `/ux charter` antes.
+1. **Sem ancora, so comparativo**. Sem Charter e sem memoria de design, julgar "qual dos dois esta certo" vira opiniao pessoal — reportar so a divergencia entre surfaces e sugerir `/ux shape` ou `/ux direcao`.
 2. **Comparativo, nao absoluto**. Voce nao prescreve "qual cor usar"; voce flagra "A e B usam cores DIFERENTES no mesmo papel — qual e a correta?".
-3. **Cite o atributo do Charter** quando aplicavel. "Viola atributo 'denso' do Charter" > "muito espaco".
+3. **Cite a ancora** quando aplicavel. "Viola atributo 'denso' do Charter" ou "diverge do padrao 'Card Default' da memoria de design" > "muito espaco".
 4. **Conservador na primeira passada**. Drifts em surfaces pequenas (1 ocorrencia) podem ser oversight; em surfaces grandes (varias ocorrencias) sao pattern. Calibre.
 5. **Nao bloquear pipeline**. So erros (drift critico tipo cor destrutiva em papel destrutivo) sao error.
 

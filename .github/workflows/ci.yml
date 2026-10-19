@@ -22,8 +22,11 @@ jobs:
       - name: Structural checks
         run: node scripts/validate-kit.mjs
 
-      - name: Kit index is up to date
+      - name: Kit index and catalog are up to date
         run: node scripts/generate-index.mjs --check
 
+      - name: Seed is up to date
+        run: node scripts/build-seed.mjs --check
+
       - name: Hook and gate scripts parse
-        run: for f in .claude/hooks/*.mjs .claude/scripts/*.mjs .claude/scripts/*/*.mjs scripts/*.mjs; do node --check "$f"; done
+        run: for f in .claude/hooks/*.mjs .claude/hooks/*/*.mjs .claude/scripts/*.mjs .claude/scripts/*/*.mjs .claude/praxis/*.mjs scripts/*.mjs scripts/lib/*.mjs; do node --check "$f"; done

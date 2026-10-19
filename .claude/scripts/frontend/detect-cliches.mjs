@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// detect-cliches.mjs — Detector de cliches de IA do kit Praxis (Fase 3, Passo 3).
+// detect-cliches.mjs — Detector de cliches de IA do kit Praxis.
 //
 // Detector NATIVO, AGNOSTICO de stack, sem LLM. Le source-level (CSS/HTML/JS/JSX/TSX/Vue/Svelte/Astro)
 // e detecta cliches comuns de UI gerada por IA. Conhecimento de base: .claude/reference/frontend/anti-patterns.md.
@@ -14,12 +14,12 @@
 //   2 — falha de execucao (path invalido, etc.)
 //
 // Saida:
-//   - Default: linhas legiveis "severity  rule  file:line — message"
+//   - Default: agrupado por arquivo; por achado, uma linha "SEV regra Lx:y" + descricao, match e sugestao
 //   - --json: objeto { findings: [...], summary: { errors, warnings, files_scanned } }
 //
 // IMPORTANTE — agnostico:
 //   - Este detector NAO conhece stack. Olha o output textual (source files).
-//   - A regra "hardcoded vs token" (que depende da stack) e adicionada no Passo 4 via stack-profile.
+//   - A regra "hardcoded vs token" (que depende da stack) usa docs/design-system/stack-profile.json, quando presente.
 //   - Comecar conservador. Calibrar via learnings (false-positives viram entradas em frontend-learnings.md).
 
 import { readFile, readdir, stat } from 'node:fs/promises';
@@ -101,6 +101,15 @@ const RULES = [
     pattern: /backdrop-filter\s*:\s*[^;]*blur\s*\(/gi,
   },
 
+  {
+    id: 'color/assistant-palette',
+    severity: 'info',
+    description: 'Paleta de assistente (creme #F4F1EA / terracota #D97757) — para onde a geracao por IA converge hoje',
+    suggestion: 'Tire a paleta do mundo de cor do dominio (register-product.md › Onde mora a identidade). Se o briefing pede esta paleta, e decisao — registre na memoria de design. Ver anti-patterns.md #2.8.',
+    extensions: ['.css', '.scss', '.sass', '.less', '.html', '.tsx', '.ts', '.jsx', '.js', '.vue', '.svelte', '.astro'],
+    pattern: /#(?:d97757|f4f1ea)(?![0-9a-f])/gi,
+  },
+
   // ---------------- COMPOSICAO ----------------
   {
     id: 'composition/side-stripe',
@@ -119,8 +128,10 @@ const RULES = [
     description: 'Easing com overshoot (bounce/back) em transition — frequente em microinteracoes onde nao cabe',
     suggestion: 'Em product register, use ease-out 150-250ms. Reserve bounce para celebracoes ou register brand justificado. Ver motion-design.md + anti-patterns.md #5.1.',
     extensions: ['.css', '.scss', '.sass', '.less', '.html', '.tsx', '.ts', '.jsx', '.js', '.vue', '.svelte', '.astro'],
-    // cubic-bezier com y1 (pos 2) ou y2 (pos 4) >= 1.1 OU <= -0.1 (overshoot)
-    pattern: /cubic-bezier\(\s*-?\d*\.?\d+\s*,\s*(?:-\d*\.?\d+|[1-9]\d*\.?\d*|1\.[1-9]\d*)\s*,\s*-?\d*\.?\d+\s*,\s*(?:-\d*\.?\d+|[1-9]\d*\.?\d*|1\.[1-9]\d*|[\d.]+)\s*\)/g,
+    // cubic-bezier(x1, y1, x2, y2): overshoot quando y1 ou y2 sai de [0, 1]. O regex so captura os
+    // quatro numeros; quem decide e o accept (regex sozinho nao compara numero).
+    pattern: /cubic-bezier\(\s*(-?\d*\.?\d+)\s*,\s*(-?\d*\.?\d+)\s*,\s*(-?\d*\.?\d+)\s*,\s*(-?\d*\.?\d+)\s*\)/g,
+    accept: (m) => [Number(m[2]), Number(m[4])].some((y) => y > 1 || y < 0),
   },
 
   {
@@ -146,7 +157,7 @@ const RULES = [
 ];
 
 // ---------------------------------------------------------------------------
-// Stack profile (Passo 4 — adapter por stack)
+// Stack profile (adapter por stack)
 // ---------------------------------------------------------------------------
 //
 // O stack-profile.json materializa "o que e token nesta stack". Schema v1:
@@ -165,7 +176,7 @@ const RULES = [
 //   }
 // }
 //
-// O detector NAO PRECISA do profile pra rodar — as 8 regras agnosticas funcionam sem ele.
+// O detector NAO PRECISA do profile pra rodar — as 9 regras agnosticas funcionam sem ele.
 // Quando o profile esta presente, o detector ADICIONA a regra `tokens/hardcoded-color`
 // baseada no profile.tokens.patterns.hardcoded. Pular linhas com declaracao de token
 // (`--xxx: ...`, `:root`) e comentarios.
@@ -217,7 +228,7 @@ function buildSynthesizedRules(profile) {
     id: 'tokens/hardcoded-color',
     severity: 'warn',
     description: `Cor hardcoded fora de declaracao de token — projeto usa "${stackLabel}", deveria usar token`,
-    suggestion: `Use o token definido em ${tokenLoc} (formato: ${tokenFormat}). Ver register-{brand|product}.md e color-and-contrast.md.`,
+    suggestion: `Use o token definido em ${tokenLoc} (formato: ${tokenFormat}). Ver register-{brand|product}.md e anti-patterns.md #2.7.`,
     extensions: ['.css', '.scss', '.sass', '.less', '.html', '.tsx', '.ts', '.jsx', '.js', '.vue', '.svelte', '.astro'],
     pattern: rx,
     // Conservador: pular declaracoes de variavel, blocos :root e linhas de comentario.
@@ -306,6 +317,11 @@ async function scanFile(filePath, rootPath, rules) {
     const re = new RegExp(rule.pattern.source, rule.pattern.flags);
     let m;
     while ((m = re.exec(content)) !== null) {
+      // accept — regra que precisa de mais que regex (ex.: comparar numeros capturados)
+      if (rule.accept && !rule.accept(m)) {
+        if (m.index === re.lastIndex) re.lastIndex++;
+        continue;
+      }
       // Suporte a skipLine — regras profile-driven podem ignorar contextos (ex: `:root`, `--var:`)
       if (rule.skipLine) {
         const lineText = getLineAt(content, m.index);
@@ -454,8 +470,11 @@ async function main() {
 }
 
 // Executa main apenas se chamado direto (nao se importado)
-const isDirectRun = import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}` ||
-                    import.meta.url.endsWith(process.argv[1].split(/[\\/]/).pop());
+const entry = process.argv[1]; // undefined quando importado via `node -e` ou como modulo
+const isDirectRun = !!entry && (
+  import.meta.url === `file://${entry.replace(/\\/g, '/')}` ||
+  import.meta.url.endsWith(entry.split(/[\\/]/).pop())
+);
 if (isDirectRun) {
   main();
 }

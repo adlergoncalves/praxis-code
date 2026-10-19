@@ -14,7 +14,7 @@ Valida PRDs contra o template canonico. Distingue automaticamente entre PRD estr
 ## Auto-deteccao
 
 - Contem "Contexto e Visao de Negocio" → **Estrategico**
-- Contem "EPICO" ou "FEATURE" → **Tatico**
+- Contem "Epico" ou "Feature" como cabecalho (sem diferenciar maiusculas) → **Tatico**
 
 ## Validacao Estrategico
 
@@ -37,7 +37,7 @@ Valida PRDs contra o template canonico. Distingue automaticamente entre PRD estr
 
 - >= 1 EPICO com descricao + tabela "Atores impactados"
 - Cada FEATURE com descricao + criterios
-- Cada US com "Como/Quero/Para" + criterios em tabela `| Cenario | Comportamento |`
+- Cada US com "Como/Quero/Para" + criterios de aceite em tabela `| # | Given | When | Then |` (o `/spec-from-prd` converte cada linha em um cenario)
 - Decisoes no formato D{NN} (sem prefixo de modulo)
 
 ## Cross-checks

@@ -30,5 +30,8 @@
 ## Modulos / Dominios
 <!-- Mapa de modulos ou bounded contexts identificados -->
 
-## Divida Tecnica (se legado)
-<!-- Problemas conhecidos, patterns ruins, riscos -->
+## Decisoes Transversais (cross-cutting)
+<!-- Locale, formatos, criar/editar, exclusao, auditoria, multi-tenancy, densidade — ver Etapa 7 do @discovery -->
+
+## Observacoes do Codigo Existente (se legado)
+<!-- Descricao factual dos padroes encontrados — sem juizo de valor -->

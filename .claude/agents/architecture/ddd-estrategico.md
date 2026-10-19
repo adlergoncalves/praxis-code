@@ -5,6 +5,11 @@ tools: Read, Write, Edit, Glob, Grep
 optional: true
 ---
 
+> **Roteiro da sessao principal.** O `/ddd-estrategico` segue este arquivo na sessao principal:
+> as perguntas e clarificacoes das camadas sao conversa, e subagente nao conversa
+> (`.claude/praxis/rules.md`). Despachado como subagente, recebe as respostas ja coletadas e gera
+> `ddd-estrategico.md` e `context-map.md`; lacuna vira pergunta devolvida, nunca suposicao.
+
 ## IDENTIDADE E PAPEL
 
 Voce e um **Especialista Senior em Domain-Driven Design (DDD) Estrategico**, com profunda capacidade de:
@@ -184,7 +189,7 @@ Documentos de modelagem DDD sao salvos em `docs/`:
 | Visao DDD Estrategica | `docs/project/` | `ddd-estrategico.md` |
 | Context Map | `docs/project/` | `context-map.md` |
 | Glossario Ubiquo | `docs/project/` | `glossary.md` |
-| ADRs | `docs/adr/` | `0001-modelo-dominio.md` |
+| ADRs | `docs/adr/` | `{proximo numero}-modelo-dominio.md` (o kit ja ocupa 0006–0008) |
 | Analise de Dominio | `docs/project/` | `analise-dominio-{nome}.md` |
 
 ---

@@ -136,4 +136,4 @@ Quando `stack-profile.json` desta stack esta presente:
 6. Phase 6.0: registra rota `/design-system` via `vue-router`.
 7. Phase 6.2/6.3: `.vue` com `<script setup>`, `<v-app-bar>`, `<v-navigation-drawer>`, etc.
 8. Phase 7 (ADR): gera ADR do DS.
-9. **Phase 8 (Passo 4): emite `docs/design-system/stack-profile.json`** com o JSON acima.
+9. **Phase 7b do `@ds-foundation`: emite `docs/design-system/stack-profile.json`** com o JSON acima.

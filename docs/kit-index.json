@@ -14,6 +14,15 @@
       ]
     },
     {
+      "name": "agent-eval",
+      "path": ".claude/skills/agent-eval/SKILL.md",
+      "description": "Roda os check agents contra as fixtures de .claude/evals/agents/ e verifica se cada um ainda detecta o que promete — teste de regressao de prompt. Use ao alterar um agent check-*, quando pedirem 'testar os agents', 'os checks ainda funcionam?', 'rodar os evals', ou antes de confiar num /validate depois de mexer no .claude/.",
+      "domain": "quality",
+      "depends": [
+        ".claude/evals/agents"
+      ]
+    },
+    {
       "name": "analyze",
       "path": ".claude/skills/analyze/SKILL.md",
       "description": "Analise de consistencia cross-artefato (spec ↔ plan ↔ tasks). Detecta duplicacoes, gaps e inconsistencias.",
@@ -26,7 +35,7 @@
     {
       "name": "architect",
       "path": ".claude/skills/architect/SKILL.md",
-      "description": "Fase 3: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns.",
+      "description": "Fase 2: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns.",
       "domain": null,
       "depends": [
         ".claude/agents/architecture/adr-creator.md"
@@ -35,7 +44,7 @@
     {
       "name": "backend-scaffold",
       "path": ".claude/skills/backend-scaffold/SKILL.md",
-      "description": "Roteador de scaffolding backend. Direciona para o agent correto (UseCase, Aggregate, Endpoint).",
+      "description": "Roteador de scaffolding backend — hoje so Aggregate Root + testes (@scaffold-aggregate).",
       "domain": null,
       "depends": [
         ".claude/agents/backend/scaffold-aggregate.md"
@@ -74,7 +83,7 @@
     {
       "name": "ddd-estrategico",
       "path": ".claude/skills/ddd-estrategico/SKILL.md",
-      "description": "Fase 3 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes.",
+      "description": "Fase 2 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes.",
       "domain": null,
       "depends": [
         ".claude/agents/architecture/ddd-estrategico.md"
@@ -90,19 +99,20 @@
     {
       "name": "define",
       "path": ".claude/skills/define/SKILL.md",
-      "description": "Fase 2: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)",
+      "description": "Fase 3: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)",
       "domain": null,
       "depends": [
         ".claude/skills/prd-create/SKILL.md",
         ".claude/skills/prd-validate/SKILL.md",
         ".claude/skills/prd-decompose/SKILL.md",
-        ".claude/skills/spec-from-prd/SKILL.md"
+        ".claude/skills/spec-from-prd/SKILL.md",
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
       ]
     },
     {
       "name": "design",
       "path": ".claude/skills/design/SKILL.md",
-      "description": "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancorado no Charter.",
+      "description": "Craftsman de design — refinamentos cirurgicos sobre codigo ja gerado (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden), na sessao principal, olhando a tela renderizada. Ancorado no Charter e na memoria de design do projeto.",
       "domain": "frontend",
       "depends": [
         ".claude/agents/frontend/design.md",
@@ -117,16 +127,21 @@
         ".claude/reference/frontend/adapter-react-vite-shadcn.md",
         ".claude/reference/frontend/adapter-react-next-shadcn.md",
         ".claude/reference/frontend/adapter-angular-material.md",
-        ".claude/reference/frontend/adapter-vue-vuetify.md"
+        ".claude/reference/frontend/adapter-vue-vuetify.md",
+        ".claude/reference/frontend/third-party/interface-design/design-review.md",
+        ".claude/reference/frontend/third-party/interface-design/design-deslop.md",
+        ".claude/reference/frontend/third-party/redesign-audit/redesign-skill.md",
+        "docs/templates/design-memory-template.md"
       ]
     },
     {
       "name": "detail",
       "path": ".claude/skills/detail/SKILL.md",
-      "description": "Fase 2 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose.",
+      "description": "Fase 3 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose.",
       "domain": null,
       "depends": [
-        ".claude/agents/product/module-detailer.md"
+        ".claude/agents/product/module-detailer.md",
+        "docs/adr/0006-workspace-detalhamento-modulo.md"
       ]
     },
     {
@@ -159,16 +174,33 @@
     {
       "name": "execute",
       "path": ".claude/skills/execute/SKILL.md",
-      "description": "Sub-fase 5c: Executa em LOOP por fatia vertical (1 fatia = 1 User Story): implementa, roda gates, conserta ate verde (micro-loop), marca DONE no Loop Log e PARA (checkpoint; --auto encadeia). Loop Engineering (ADR-0007).",
+      "description": "Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007).",
       "domain": null,
       "depends": [
-        ".claude/agents/delivery/executor.md"
+        ".claude/skills/execute/checklists.md",
+        ".claude/scripts/loop-doctor.mjs",
+        ".claude/scripts/mutants.mjs",
+        ".claude/skills/verify-all/SKILL.md",
+        ".claude/skills/frontend-validate/SKILL.md",
+        ".claude/skills/backend-validate/SKILL.md",
+        ".claude/agents/architecture/adr-validator.md",
+        ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md",
+        ".claude/reference/frontend/third-party/interface-design/design-review.md"
+      ]
+    },
+    {
+      "name": "forge",
+      "path": ".claude/skills/forge/SKILL.md",
+      "description": "Cria uma ferramenta DO PROJETO (skill, agent de checagem ou subagente de trabalho) nas convencoes do kit, a partir do que o projeto precisa. Use quando uma regra se repete, um fluxo do projeto vira rotina, ou o Praxis propoe transformar um learning recorrente em check — 'cria um check para X', 'quero um comando para Y', 'isso devia ser automatico'.",
+      "domain": "orchestration",
+      "depends": [
+        ".claude/evals/agents/README.md"
       ]
     },
     {
       "name": "frontend-validate",
       "path": ".claude/skills/frontend-validate/SKILL.md",
-      "description": "Orquestra os 10 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo).",
+      "description": "Orquestra os 11 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo).",
       "domain": null,
       "depends": [
         ".claude/agents/frontend/check-structure.md",
@@ -180,7 +212,8 @@
         ".claude/agents/frontend/check-responsiveness.md",
         ".claude/agents/frontend/check-design.md",
         ".claude/agents/frontend/check-ux.md",
-        ".claude/agents/frontend/check-security-frontend.md"
+        ".claude/agents/frontend/check-security-frontend.md",
+        ".claude/agents/frontend/check-web-guidelines.md"
       ]
     },
     {
@@ -199,7 +232,11 @@
       "path": ".claude/skills/mode/SKILL.md",
       "description": "Alterna entre modo lite (simples, rapido) e full (completo, profissional). Afeta como todo o pipeline se comporta.",
       "domain": null,
-      "depends": []
+      "depends": [
+        "docs/adr/templates/universal/naming-conventions.md",
+        "docs/adr/templates/frontend-patterns/feature-first-structure.md",
+        "docs/adr/templates/backend-patterns/clean-architecture.md"
+      ]
     },
     {
       "name": "plan",
@@ -231,7 +268,9 @@
       "path": ".claude/skills/prd-create/SKILL.md",
       "description": "Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas.",
       "domain": null,
-      "depends": []
+      "depends": [
+        ".claude/agents/product/prd-create.md"
+      ]
     },
     {
       "name": "prd-decompose",
@@ -250,10 +289,13 @@
     {
       "name": "prototype",
       "path": ".claude/skills/prototype/SKILL.md",
-      "description": "Gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System real do projeto.",
+      "description": "Gera prototipo hi-fi de uma tela (ou 2-3 direcoes para escolher) no destino que a sessao tiver: ferramenta de prototipo do projeto (ex.: Paper MCP), pagina publicada (Artifact) ou HTML local. Usa o Design System e a memoria de design do projeto. Nenhum destino e obrigatorio.",
       "domain": null,
       "depends": [
-        ".claude/agents/frontend/paper-prototype.md"
+        ".claude/agents/frontend/paper-prototype.md",
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md",
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md",
+        ".claude/scripts/frontend/screenshot.mjs"
       ]
     },
     {
@@ -295,9 +337,11 @@
     {
       "name": "setup",
       "path": ".claude/skills/setup/SKILL.md",
-      "description": "Setup interativo do template — pergunta stack, modulos e gera CLAUDE.md personalizado para o projeto.",
+      "description": "Setup interativo do kit Praxis — pergunta stack e modulos, puxa do catalogo so o que o projeto usa e preenche a secao do projeto no CLAUDE.md.",
       "domain": null,
-      "depends": []
+      "depends": [
+        ".claude/hooks/quality"
+      ]
     },
     {
       "name": "spec-from-prd",
@@ -337,10 +381,14 @@
     {
       "name": "tasks",
       "path": ".claude/skills/tasks/SKILL.md",
-      "description": "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato (valor, PRONTO file-level, verificacao manual, refs) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
+      "description": "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007).",
       "domain": null,
       "depends": [
-        ".claude/agents/delivery/task-breaker.md"
+        ".claude/agents/delivery/task-breaker.md",
+        ".claude/agents/quality/analyzer.md",
+        "docs/templates/guide-template.md",
+        "docs/templates/doctor-template.json",
+        "docs/templates/tasks-template.md"
       ]
     },
     {
@@ -349,7 +397,19 @@
       "description": "Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real.",
       "domain": null,
       "depends": [
-        ".claude/agents/frontend/ux.md"
+        ".claude/agents/frontend/ux.md",
+        ".claude/reference/frontend/third-party/interface-design/interface-design.md",
+        ".claude/reference/frontend/third-party/frontend-design/frontend-design.md",
+        "docs/templates/design-memory-template.md",
+        ".claude/reference/frontend/cognitive-load.md",
+        ".claude/reference/frontend/personas.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/heuristics.md",
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/register-product.md",
+        ".claude/reference/frontend/register-brand.md",
+        ".claude/reference/frontend/design-system-anatomy.md"
       ]
     },
     {
@@ -369,7 +429,9 @@
       "path": ".claude/skills/verify-all/SKILL.md",
       "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
       "domain": null,
-      "depends": []
+      "depends": [
+        ".claude/skills/execute"
+      ]
     }
   ],
   "agents": [
@@ -427,7 +489,9 @@
       "domain": "backend",
       "path": ".claude/agents/backend/check-security.md",
       "description": "Valida seguranca backend — SQL injection, autenticacao/autorizacao em endpoints, secrets, sanitizacao de input, audit trail e RBAC/ABAC. Detecta vulnerabilidades e oportunidades de evolucao de seguranca.",
-      "depends": []
+      "depends": [
+        "docs/adr/0008-seguranca-e-lgpd.md"
+      ]
     },
     {
       "name": "check-tests",
@@ -444,13 +508,6 @@
       "depends": []
     },
     {
-      "name": "executor",
-      "domain": "delivery",
-      "path": ".claude/agents/delivery/executor.md",
-      "description": "Executa em loop por fatia vertical (1 fatia = 1 User Story) — implementa, roda gates, conserta ate verde (micro-loop), marca DONE no Loop Log e PARA para revisao humana. Checkpoint por fatia; --auto encadeia com guardrails. Loop Engineering (ADR-0007).",
-      "depends": []
-    },
-    {
       "name": "planner",
       "domain": "delivery",
       "path": ".claude/agents/delivery/planner.md",
@@ -462,7 +519,9 @@
       "domain": "delivery",
       "path": ".claude/agents/delivery/task-breaker.md",
       "description": "Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
-      "depends": []
+      "depends": [
+        "docs/templates/tasks-template.md"
+      ]
     },
     {
       "name": "codebase-mapper",
@@ -499,7 +558,10 @@
       "domain": "frontend",
       "path": ".claude/agents/frontend/check-ai-cliches.md",
       "description": "Detecta cliches de IA no frontend (Inter onipresente, gradiente roxo-azul, cards aninhados, hero metrics row, glassmorphism decorativo, etc.). Roda o detector deterministico (.claude/scripts/frontend/detect-cliches.mjs) + aplica heuristicas que regex nao pega + contextualiza findings contra o Charter do projeto.",
-      "depends": []
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/scripts/frontend/detect-cliches.mjs"
+      ]
     },
     {
       "name": "check-design",
@@ -576,13 +638,25 @@
       "domain": "frontend",
       "path": ".claude/agents/frontend/check-visual-consistency.md",
       "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
-      "depends": []
+      "depends": [
+        ".claude/reference/frontend/design-system-anatomy.md"
+      ]
+    },
+    {
+      "name": "check-web-guidelines",
+      "domain": "frontend",
+      "path": ".claude/agents/frontend/check-web-guidelines.md",
+      "description": "Valida UI contra as Web Interface Guidelines (Vercel) — acessibilidade, foco, formularios, animacao, tipografia, conteudo, imagens, performance, navegacao e estado na URL, toque, layout, tema, locale, hidratacao e copy. Regras de um snapshot fixado no kit, filtradas pela stack e pelo idioma do projeto. Saida terse em arquivo:linha.",
+      "depends": [
+        ".claude/reference/frontend/anti-patterns.md",
+        ".claude/reference/frontend/third-party"
+      ]
     },
     {
       "name": "design",
       "domain": "frontend",
       "path": ".claude/agents/frontend/design.md",
-      "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
+      "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
       "depends": []
     },
     {
@@ -597,13 +671,17 @@
       "domain": "frontend",
       "path": ".claude/agents/frontend/ds-foundation.md",
       "description": "Extrai design tokens de screenshot, inicializa biblioteca de componentes, configura CSS variables, cria design-system isolado e gera ADR do Design System.",
-      "depends": []
+      "depends": [
+        ".claude/assets/ds-styleguide-reference.png",
+        "docs/adr/templates/frontend-patterns/design-system.md",
+        "docs/templates/design-memory-template.md"
+      ]
     },
     {
       "name": "paper-prototype",
       "domain": "frontend",
       "path": ".claude/agents/frontend/paper-prototype.md",
-      "description": "Designer de produto senior que gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System e contexto real do projeto.",
+      "description": "Roteiro do /prototype para o destino Paper (MCP) — contexto do projeto, regras de construcao no Paper, padroes por tipo de tela. Lido pelo /prototype na sessao principal, onde as ferramentas do MCP existem; como subagente, nao alcanca o Paper.",
       "depends": []
     },
     {
@@ -611,7 +689,14 @@
       "domain": "frontend",
       "path": ".claude/agents/frontend/ux.md",
       "description": "Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero.",
-      "depends": []
+      "depends": [
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/reference/frontend/motion-design.md",
+        ".claude/reference/frontend/patterns.md",
+        ".claude/reference/frontend/personas.md",
+        ".claude/reference/frontend/register-product.md",
+        "docs/templates/design-memory-template.md"
+      ]
     },
     {
       "name": "praxis",
@@ -625,20 +710,25 @@
       "domain": "product",
       "path": ".claude/agents/product/clarifier.md",
       "description": "Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas por impacto x incerteza e integra respostas na spec.",
-      "depends": []
+      "depends": [
+        "docs/templates/spec-template.md"
+      ]
     },
     {
       "name": "module-detailer",
       "domain": "product",
       "path": ".claude/agents/product/module-detailer.md",
       "description": "Conduz o detalhamento de um modulo pre-SDD. Scaffolda workspace canonico, preenche as 8 dimensoes interativamente, rastreia decisoes/duvidas com IDs estaveis e congela o workspace para alimentar /prd-decompose.",
-      "depends": []
+      "depends": [
+        "docs/adr/0006-workspace-detalhamento-modulo.md",
+        "docs/templates/detail"
+      ]
     },
     {
       "name": "prd-create",
       "domain": "product",
       "path": ".claude/agents/product/prd-create.md",
-      "description": "Cria PRD estrategico ou tatico seguindo o template canonico. Atua como Especialista Senior em Product Management — questiona premissas vagas, nao aceita \"a definir\" e prioriza clareza. Trabalho gerativo pesado, roda isolado.",
+      "description": "Cria PRD estrategico ou tatico seguindo o template canonico. Atua como Especialista Senior em Product Management — questiona premissas vagas, nao aceita \"a definir\" e prioriza clareza. Redige o PRD com as respostas que o /prd-create coletou na sessao principal; lacuna volta como pergunta.",
       "depends": []
     },
     {
@@ -660,7 +750,10 @@
       "domain": "product",
       "path": ".claude/agents/product/spec-from-prd.md",
       "description": "Transforma uma feature do PRD em spec tecnica detalhada, numerada e rastreavel. Le PRD, TODAS as ADRs, glossario e specs existentes. Trabalho gerativo pesado, roda isolado.",
-      "depends": []
+      "depends": [
+        ".claude/skills/spec-from-prd",
+        "docs/templates/spec-template.md"
+      ]
     },
     {
       "name": "analyzer",

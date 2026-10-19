@@ -108,4 +108,4 @@ Quando `stack-profile.json` desta stack esta presente:
 5. Phase 6.0: registra rota `/design-system` em `src/App.tsx` via `react-router`.
 6. Phase 6.2/6.3: componentes sem `"use client"`, sem `Metadata`.
 7. Phase 7 (ADR): gera ADR do DS.
-8. **Phase 8 (novo Passo 4): emite `docs/design-system/stack-profile.json`** com o JSON acima.
+8. **Phase 7b do `@ds-foundation`: emite `docs/design-system/stack-profile.json`** com o JSON acima.

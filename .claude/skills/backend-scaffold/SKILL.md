@@ -1,5 +1,5 @@
 ---
-description: "Roteador de scaffolding backend. Direciona para o agent correto (UseCase, Aggregate, Endpoint)."
+description: "Roteador de scaffolding backend — hoje so Aggregate Root + testes (@scaffold-aggregate)."
 user-invocable: true
 depends:
   - .claude/agents/backend/scaffold-aggregate.md

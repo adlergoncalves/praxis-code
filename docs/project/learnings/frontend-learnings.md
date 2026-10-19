@@ -1,7 +1,7 @@
 # Frontend Learnings
 
 > Patterns de UI, componentes, estado, rotas e Design System descobertos durante o projeto.
-> Lido por: agents de validacao frontend, executor `--team front`, spec-review de features frontend.
+> Lido por: agents de validacao frontend, `/execute --team front`, spec-review de features frontend.
 
 **Atualizado em**: —
 

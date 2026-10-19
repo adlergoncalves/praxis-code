@@ -1,0 +1,12 @@
+agent: check-structure
+regra: "Organizacao — hook customizado fora de hooks/"
+descricao: useOrders.ts dentro de components/ em vez de hooks/
+
+deve_detectar:
+  - severidade: AVISO
+    arquivo: useOrders.ts
+    linha: 3
+    sinal: useOrders
+
+nao_deve_detectar:
+  - import cruzado

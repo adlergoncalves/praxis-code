@@ -105,7 +105,7 @@ Ao final do relatorio, emitir secao com sugestoes baseadas no que foi encontrado
 ### Mutation Testing
 [Se detectado: cobertura de linha alta mas suspeita de testes de baixo valor]
 - **Situacao**: Cobertura numericamente boa mas patterns de assertions fracas detectados
-- **Sugestao**: Avaliar mutation testing (Stryker.NET, PITest) para validar qualidade real dos testes
+- **Sugestao**: Provar os testes de regra de negocio com mutantes — `node .claude/scripts/mutants.mjs <mutantes.json>` por fatia, ou mutation testing completo (Stryker, PITest) no CI
 - **Como**: `/architect` → criar ADR de Mutation Testing como gate de qualidade
 - **Beneficio**: Descobre testes que passam mesmo com bugs — cobertura que realmente protege
 ```

@@ -41,7 +41,8 @@ Orquestra validacao completa do codigo contra ADRs e boas praticas.
 
 ### 1. Selecao de Escopo
 
-Determinar quais arquivos validar com base no input.
+Determinar quais arquivos validar com base no input. Fora do escopo, sempre: `.claude/` (as fixtures
+de `.claude/evals/` sao codigo propositalmente errado), `node_modules/`, `bin/`, `obj/`, `dist/`.
 
 ### 2. Selecao de Profile
 
@@ -165,7 +166,7 @@ Formato do registro (Tipo 1 — Descoberta durante execucao):
 5. Se algum candidato e claramente **uma ADR nao escrita ainda** (ex: pattern de seguranca recorrente sem ADR cobrindo), sugerir ao usuario:
    > "A regra '{descricao}' parece arquitetural — talvez merece virar ADR formal via `/architect`. Quer abrir essa sessao agora ou registrar so como learning?"
 
-**Regra**: o passo 5 (promocao) e obrigatorio mesmo que o usuario diga "nenhuma" — registrar a interacao em `process-learnings.md` ("validate rodada em {data}: nenhum padrao recorrente para promover").
+**Regra**: o passo 6 (promocao) e obrigatorio mesmo que o usuario diga "nenhuma" — registrar a interacao em `process-learnings.md` ("validate rodada em {data}: nenhum padrao recorrente para promover").
 
 ### 7. Sugestao automatica de /revalidate
 

@@ -1,9 +1,10 @@
 ---
 name: detail
-description: "Fase 2 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose."
+description: "Fase 3 (opcional): Detalhamento pre-SDD. Cria workspace canonico para modulos grandes/ambiguos antes do /prd-decompose. Entre /prd-validate e /prd-decompose."
 user-invocable: true
 depends:
   - .claude/agents/product/module-detailer.md
+  - docs/adr/0006-workspace-detalhamento-modulo.md
 ---
 
 # /detail
@@ -27,9 +28,9 @@ Modulo qualifica se **>= 2 sinais** se aplicam:
 
 `/detail {modulo} [--action init|continue|freeze]`
 
-- `/detail estande` → se workspace nao existe, faz `init`; se existe, faz `continue`
-- `/detail estande --action freeze` → encerra workspace e escolhe governanca documental
-- `/detail estande --action init` → forca scaffolding (falha se workspace ja existe)
+- `/detail catalogo` → se workspace nao existe, faz `init`; se existe, faz `continue`
+- `/detail catalogo --action freeze` → encerra workspace e escolhe governanca documental
+- `/detail catalogo --action init` → forca scaffolding (falha se workspace ja existe)
 
 ## Posicao no pipeline
 
@@ -47,7 +48,7 @@ O `/detail` entra **entre** `/prd-validate` e `/prd-decompose`. O `/prd-decompos
 ## O que faz
 
 1. Le ADR-006 (`docs/adr/0006-workspace-detalhamento-modulo.md`) — metodo canonico
-2. Delega ao agent `@module-detailer` (modo init / continue / freeze)
+2. Conduz o modo (init / continue / freeze) **nesta sessao**, usando `.claude/agents/product/module-detailer.md` como roteiro
 3. Scaffolda `docs/prds/{modulo}/` com estrutura canonica (11+ arquivos)
 4. Conduz preenchimento das **8 dimensoes** por parte funcional
 5. Rastreia decisoes (`D-<COD>-##`) e duvidas (`Q-<COD>-##`) com IDs estaveis
@@ -75,7 +76,7 @@ docs/prds/{modulo}/
 
 1. Verificar se o usuario passou o modulo; se nao, perguntar
 2. Validar criterio de aplicacao (>= 2 sinais). Se < 2, recomendar `/prd-decompose` direto
-3. Delegar ao agent `@module-detailer` com `{modulo}` e `--action`
+3. Conduzir **nesta sessao** o `--action` pedido, seguindo `.claude/agents/product/module-detailer.md` como roteiro — o detalhamento e conversa (perguntas por dimensao, fechamento de duvidas) e subagente nao conversa (`.claude/praxis/rules.md`). O scaffolding do `init` pode ir ao `@module-detailer` como subagente.
 4. Ao final de cada sessao, recomendar `/clear` antes da proxima
 
 ## Governanca documental (no freeze)

@@ -1,0 +1,13 @@
+agent: check-security-frontend
+regra: "Armazenamento de token — token de autenticacao em localStorage"
+descricao: Access token gravado em localStorage, acessivel a qualquer XSS
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: sessao.ts
+    linha: 14
+    sinal: localStorage
+
+nao_deve_detectar:
+  - dangerouslySetInnerHTML
+  - innerHTML

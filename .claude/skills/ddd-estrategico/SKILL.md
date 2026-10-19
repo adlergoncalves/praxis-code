@@ -1,6 +1,6 @@
 ---
 name: ddd-estrategico
-description: "Fase 3 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes."
+description: "Fase 2 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes."
 user-invocable: true
 depends:
   - .claude/agents/architecture/ddd-estrategico.md
@@ -43,8 +43,8 @@ O DDD estrategico entra **antes** do `/architect` — as ADRs serao mais precisa
 
 1. Verificar se `docs/project/discovery.md` existe
    - Se nao: pedir para rodar `/discovery` primeiro
-2. Delegar ao agent `@ddd-estrategico`
-3. O agent conduz 7 camadas: negocio → subdominios → classificacao → linguagem ubiqua → fronteiras → bounded contexts → context map
+2. Conduzir **nesta sessao** as 7 camadas, usando `.claude/agents/architecture/ddd-estrategico.md` como roteiro (perguntas e clarificacoes sao conversa — `.claude/praxis/rules.md`); a redacao final pode ir ao `@ddd-estrategico` com as respostas
+3. As 7 camadas: negocio → subdominios → classificacao → linguagem ubiqua → fronteiras → bounded contexts → context map
 4. Ao final, salvar `docs/project/ddd-estrategico.md` e `docs/project/context-map.md`
 5. Atualizar glossario em `docs/project/glossary.md` com termos identificados
 

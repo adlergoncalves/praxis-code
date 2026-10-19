@@ -31,6 +31,7 @@ Ao ser ativado, leia:
 3. Navigation config do design-system — componentes ja documentados
 4. Verificar se o componente ja existe no projeto (`components/ui/`, `components/`)
 5. **`docs/project/ux-charter.md`** — personalidade do produto (se existe, usar para decidir variants)
+5b. **`docs/design-system/system.md`** — memoria de design: padroes de componente e tokens ja decididos (o que esta la e decisao; componente novo usado 2+ vezes entra la)
 6. **`docs/project/motion.md`** — motion grammar (se existe, usar para microinteracoes do componente)
 
 **REGRA — Personalidade guia escolha de variants**:

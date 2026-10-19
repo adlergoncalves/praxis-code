@@ -6,8 +6,8 @@
 2. [Como iniciar um projeto](#2-como-iniciar-um-projeto)
 3. [Pipeline de fases](#3-pipeline-de-fases)
 4. [Fase 1 — Discovery](#4-fase-1--discovery)
-5. [Fase 2 — Definição](#5-fase-2--definição)
-6. [Fase 3 — Arquitetura](#6-fase-3--arquitetura)
+5. [Fase 2 — Arquitetura](#5-fase-2--arquitetura)
+6. [Fase 3 — Definição](#6-fase-3--definição)
 7. [Fase 4 — Governança](#7-fase-4--governança)
 8. [Fase 5 — Implementação](#8-fase-5--implementação)
 9. [Fase 6 — Validação](#9-fase-6--validação)
@@ -34,10 +34,10 @@ O Praxis é um **kit de engenharia assistida por IA** que guia você desde o ent
 | **Adotar Projeto** | Trazer projeto existente para o kit | `/start` → `/adopt` → usar kit normalmente |
 
 O kit inclui:
-- **45 agents** especializados, organizados em 8 domínios (Praxis, Discovery, Planner, Executor, Strategy, UX, engenharia reversa, module detailer, validação, scaffolding e mais)
-- **39 skills** de orquestração — a única forma de invocar workflows via `/`
+- **45 agents** especializados, organizados em 8 domínios (Praxis, Discovery, Planner, Strategy, UX, engenharia reversa, module detailer, validação, scaffolding e mais)
+- **41 skills** de orquestração — a única forma de invocar workflows via `/`
 - **13 ADR templates** baseados em boas práticas de mercado
-- **4 templates de artefatos** (spec, plan, tasks, checklist)
+- **7 templates de artefatos** (spec, plan, tasks, checklist, guia de validação, doctor.json, memória de design)
 - **Sistema de learnings** por domínio — o kit aprende e melhora com o uso
 - **Team scope** (`--team front|back|db|full`) para trabalho focado por área
 - **Hooks de aprendizado** — registram decisões e correções no instante em que acontecem
@@ -48,16 +48,18 @@ Tudo roda dentro do **Claude Code** (CLI, VS Code ou desktop app).
 
 ## 2. Como iniciar um projeto
 
-### Passo 1 — Criar o projeto a partir do template
+### Passo 1 — Instalar a semente
+
+O kit se monta dentro do projeto (ADR-0009): você instala uma semente pequena e as ferramentas entram na hora do uso.
 
 ```bash
-# Opção A: Clone direto
-git clone <url-do-template> meu-projeto
-cd meu-projeto
-rm -rf .git && git init
+# Projeto novo
+npx degit adlergoncalves/praxis-code/seed meu-projeto
+cd meu-projeto && git init
 
-# Opção B: GitHub "Use this template"
-# Clique em "Use this template" no GitHub
+# Projeto existente: copiar a semente por cima, sem sobrescrever
+npx degit adlergoncalves/praxis-code/seed /tmp/praxis
+cp -rn /tmp/praxis/. .
 ```
 
 ### Passo 2 — Abrir no Claude Code
@@ -69,27 +71,19 @@ claude
 # Ou abra no VS Code com a extensão Claude Code
 ```
 
-### Passo 3 — Rodar o Setup
-
-```
-/setup
-```
-
-O skill faz perguntas sobre a stack do projeto (frontend, backend, banco, infra) e gera um `CLAUDE.md` personalizado com os módulos corretos ativados.
-
-### Passo 4 — Iniciar pelo ponto de entrada
+### Passo 3 — Iniciar pelo ponto de entrada
 
 ```
 /start
 ```
 
-O `/start` identifica sua situação (novo, legado, adotar projeto) e guia para o pipeline correto:
+O `/start` monta o núcleo do kit, identifica sua situação (novo, legado, adotar projeto), chama o `/setup` — que pergunta a stack e puxa os módulos que se aplicam — e guia para o pipeline correto:
 
 - **Novo software** → `/discovery` → `/architect` → `/define` → `/implement`
 - **Modernizar legado** → `/reverse-engineer` → `/discovery` → `/architect` → `/define` → `/implement`
 - **Adotar projeto existente** → `/adopt` (mapeia, cria ADRs, gera baseline) → usar kit normalmente
 
-### Passo 5 — Seguir o pipeline
+### Passo 4 — Seguir o pipeline
 
 ```
 /discovery     # Entender o projeto
@@ -112,7 +106,19 @@ Para trabalho focado em uma área, use `--team`:
 /validate --team front            # Valida só frontend
 ```
 
-Se detectar dependência cross-team, o kit pausa e pergunta como prosseguir.
+Fatia que depende de trabalho de outro team ainda não feito fica `BLOCKED` (motivo + o que destrava) e o loop segue com as liberadas.
+
+### Trilha mínima
+
+O Praxis vem ligado (`/mode praxis off` desliga): ele lê o estado do projeto, diz onde você está e propõe o próximo passo. Para o dia a dia, cinco comandos bastam — o resto ele propõe quando o estado pede, ou você pede em linguagem natural:
+
+| Comando | Para quê |
+|---|---|
+| `/start` | Entrada única: linha de trabalho e próximo passo |
+| `/define` | Da ideia ao PRD e à spec da feature |
+| `/implement` | Da spec ao pacote aprovado e ao loop autônomo por fatia |
+| `/quickfix` | Ajuste trivial, sem cerimônia |
+| `/debug` | Investigação de bug |
 
 ---
 
@@ -128,9 +134,9 @@ Se detectar dependência cross-team, o kit pausa e pergunta como prosseguir.
 |  /strategy  → Valida ideia, modelo de negócio, decisões         |
 |  /ux        → Decisões de experiência do usuário                |
 |                                                                  |
-|  Fase 1        Fase 2        Fase 3                              |
-|  /discovery → /define    → /ddd-estrategico (opcional)          |
-|  Entender     PRDs, specs    /architect → ADRs                   |
+|  Fase 1        Fase 2                          Fase 3            |
+|  /discovery → /ddd-estrategico (opcional)  →  /define           |
+|  Entender     /architect → ADRs               PRDs, specs        |
 |                                                                  |
 |  Fase 5                      Fase 6        Fase 7                |
 |  /plan → /tasks → /execute  /validate  → /revalidate            |
@@ -144,7 +150,7 @@ Você não precisa seguir todas as fases em ordem. Use o que faz sentido para o 
 - Projeto novo do zero? → Comece pela Fase 1
 - Refatorar legado? → Comece pela Fase 0 (`/reverse-engineer`)
 - Já tem código e quer validar? → Vá direto para Fase 6
-- Quer adicionar uma feature? → Fases 2 + 5 + 6
+- Quer adicionar uma feature? → Fases 3 + 5 + 6
 - Bug rápido? → `/quickfix`
 - Bug complexo? → `/debug`
 
@@ -200,91 +206,7 @@ Esse agent identifica Bounded Contexts, classifica subdomínios (Core/Supporting
 
 ---
 
-## 5. Fase 2 — Definição
-
-**Skill**: `/define`  
-**Sub-skills**: `/prd-create`, `/prd-validate`, `/detail` (opcional), `/prd-decompose`, `/prd-coverage`, `/spec-from-prd`
-
-### Fluxo completo
-
-```
-/define
-   |
-   +-- 1. Briefing do módulo (absorvido no próprio /define)
-   |        +-- docs/prds/briefings/briefing-{modulo}.md
-   |
-   +-- 2. PRD Create → cria PRD estratégico e/ou tático
-   |        +-- docs/prds/prd-{nome}-estrategico.md
-   |        +-- docs/prds/prd-{nome}.md
-   |
-   +-- 3. PRD Validate → valida contra template canônico
-   |        +-- Relatório: aprovado ou reprovado
-   |
-   +-- 4. Detail (opcional) → workspace pré-SDD para módulos grandes/ambíguos
-   |        +-- docs/prds/{modulo}/ (11+ arquivos canônicos)
-   |        +-- Ver ADR-006
-   |
-   +-- 5. PRD Decompose → quebra em specs independentes
-   |        +-- detecta workspace /detail se existir
-   |        +-- docs/prds/decomposicoes/decomposicao-{modulo}.md
-   |
-   +-- 6. Spec from PRD → gera spec técnica por feature
-            +-- docs/specs/{NNN}-{nome}/spec.md
-```
-
-### Quando usar /detail
-
-O workspace pré-SDD é recomendado quando o módulo atende **>= 2 sinais**:
-- >= 3 fronteiras com outros módulos/contextos
-- PRD desatualizado ou conflitante com entendimento atual
-- Múltiplas partes funcionais independentes (CRUD, importação, visualização, etc.)
-- Decisões abertas que não fecham em uma sessão
-- Implementação dividida em várias iterações SDD
-- Vocabulário novo ou colidindo entre módulos
-
-O workspace cria ~11 arquivos curtos (visão, fronteiras, 8 dimensões por parte funcional, glossário, regras, dúvidas, histórico), rastreia decisões e dúvidas com IDs estáveis (`D-<COD>-##`, `Q-<COD>-##`) e fecha a intenção antes de gerar specs. Método canônico em `docs/adr/0006-workspace-detalhamento-modulo.md`.
-
-### Tipos de PRD
-
-**Estratégico** (para liderança):
-- 11 seções obrigatórias
-- Foco no "por que": problema, proposta de valor, KPIs
-- Formato narrativo
-
-**Tático** (para o dev):
-- Hierarquia ÉPICO → FEATURE → USER STORY
-- Formato: "Como [persona], quero [ação], para [benefício]"
-- Critérios de aceite em tabela: `| Cenário | Comportamento esperado |`
-
-### Usando sub-skills diretamente
-
-```bash
-/prd-create pedidos strategic          # PRD estratégico
-/prd-create pedidos tactical           # PRD tático
-/prd-validate pedidos                  # Valida PRD existente
-/detail pedidos                        # init ou continue workspace
-/detail pedidos --action freeze        # Encerrar e escolher governança
-/prd-decompose pedidos                 # Decompõe em specs (detecta workspace)
-/prd-coverage pedidos                  # Ver cobertura
-/spec-from-prd prd-pedidos.md FEATURE:1.3   # Spec de feature específica
-```
-
-### Formato da spec gerada
-
-**Obrigatório**:
-- **Clarifications**: Decisões do PRD como Q&A
-- **User Stories**: Com prioridade P1/P2/P3, Given/When/Then
-- **Functional Requirements**: FR-001 numerados, testáveis
-- **Success Criteria**: Métricas concretas
-
-**Opcional**:
-- **Edge Cases**: Cenários de erro e fronteira
-- **Assumptions**: Com fallbacks
-- **Out of Scope**: Alinhado com PRD
-
----
-
-## 6. Fase 3 — Arquitetura
+## 5. Fase 2 — Arquitetura
 
 **Skill**: `/architect`  
 **Agent**: `@adr-creator`
@@ -355,11 +277,97 @@ A seção **"Regras para Validação"** é o que os agents de checagem leem. Cad
 
 ---
 
+## 6. Fase 3 — Definição
+
+**Skill**: `/define`  
+**Sub-skills**: `/prd-create`, `/prd-validate`, `/detail` (opcional), `/prd-decompose`, `/prd-coverage`, `/spec-from-prd`
+
+### Fluxo completo
+
+```
+/define
+   |
+   +-- 1. Briefing do módulo (absorvido no próprio /define)
+   |        +-- docs/prds/briefings/briefing-{modulo}.md
+   |
+   +-- 2. PRD Create → cria PRD estratégico e/ou tático
+   |        +-- docs/prds/prd-{nome}-estrategico.md
+   |        +-- docs/prds/prd-{nome}.md
+   |
+   +-- 3. PRD Validate → valida contra template canônico
+   |        +-- Relatório: aprovado ou reprovado
+   |
+   +-- 4. Detail (opcional) → workspace pré-SDD para módulos grandes/ambíguos
+   |        +-- docs/prds/{modulo}/ (11+ arquivos canônicos)
+   |        +-- Ver ADR-006
+   |
+   +-- 5. PRD Decompose → quebra em specs independentes
+   |        +-- detecta workspace /detail se existir
+   |        +-- docs/prds/decomposicoes/decomposicao-{modulo}.md
+   |
+   +-- 6. Spec from PRD → gera spec técnica por feature
+            +-- docs/specs/{NNN}-{nome}/spec.md
+```
+
+### Quando usar /detail
+
+O workspace pré-SDD é recomendado quando o módulo atende **>= 2 sinais**:
+- >= 3 fronteiras com outros módulos/contextos
+- PRD desatualizado ou conflitante com entendimento atual
+- Múltiplas partes funcionais independentes (CRUD, importação, visualização, etc.)
+- Decisões abertas que não fecham em uma sessão
+- Implementação dividida em várias iterações SDD
+- Vocabulário novo ou colidindo entre módulos
+
+O workspace cria ~11 arquivos curtos (visão, fronteiras, 8 dimensões por parte funcional, glossário, regras, dúvidas, histórico), rastreia decisões e dúvidas com IDs estáveis (`D-<COD>-##`, `Q-<COD>-##`) e fecha a intenção antes de gerar specs. Método canônico em `docs/adr/0006-workspace-detalhamento-modulo.md`.
+
+### Tipos de PRD
+
+**Estratégico** (para liderança):
+- 11 seções obrigatórias
+- Foco no "por que": problema, proposta de valor, KPIs
+- Formato narrativo
+
+**Tático** (para o dev):
+- Hierarquia ÉPICO → FEATURE → USER STORY
+- Formato: "Como [persona], quero [ação], para [benefício]"
+- Critérios de aceite em tabela: `| Cenário | Comportamento esperado |`
+
+### Usando sub-skills diretamente
+
+```bash
+/prd-create pedidos strategic          # PRD estratégico
+/prd-create pedidos tactical           # PRD tático
+/prd-validate pedidos                  # Valida PRD existente
+/detail pedidos                        # init ou continue workspace
+/detail pedidos --action freeze        # Encerrar e escolher governança
+/prd-decompose pedidos                 # Decompõe em specs (detecta workspace)
+/prd-coverage pedidos                  # Ver cobertura
+/spec-from-prd prd-pedidos.md FEATURE:1.3   # Spec de feature específica
+```
+
+### Formato da spec gerada
+
+**Obrigatório** (`docs/templates/spec-template.md`):
+- **Escopo**: o que entra e o que fica fora
+- **Personas e Permissões**
+- **Regras de Negócio** canônicas (RN-NN)
+- **Decisões Fechadas (gate)**: toda ambiguidade de negócio resolvida antes do plan
+- **User Scenarios & Testing**: User Stories P1/P2/P3 com Given/When/Then
+- **Requirements**: FR-001 numerados, testáveis
+- **Edge Cases**: cenários de erro e fronteira
+
+**Condicional / opcional**:
+- **Armadilhas da Demanda** (se houver) · **Anatomia da Tela** (se UI, com a Régua de Fidelidade quando há protótipo)
+- **Success Criteria** e **Assumptions** (opcionais)
+
+---
+
 ## 7. Fase 4 — Governança
 
 Essa fase é **automática** — não tem comando.
 
-Quando você cria ADRs na Fase 3, os agents de validação da Fase 6 já passam a usar essas regras. A "governança" é o conjunto de ADRs aceitas + a constitution.
+Quando você cria ADRs na Fase 2, os agents de validação da Fase 6 já passam a usar essas regras. A "governança" é o conjunto de ADRs aceitas + a constitution.
 
 ---
 
@@ -379,7 +387,6 @@ O agent lê a spec + ADRs e gera:
 - `plan.md` — Plano técnico (Technical Context, design decisions)
 - `data-model.md` — Entidades e relacionamentos
 - `contracts/` — Contratos de API
-- `quickstart.md` — Guia de setup local
 
 **O usuário revisa o plan antes de prosseguir.**
 
@@ -404,19 +411,27 @@ para um comportamento completo, com critério de PRONTO file-level e verificaç�
 passos). Fundação (U0) é exceção declarada. As tasks horizontais (`[T00N]`) viram sub-tasks
 DENTRO da fatia. (Loop Engineering, ADR-0007.)
 
-**O usuário revisa as fatias (e o grafo de dependências) antes de prosseguir.**
+**Portão final — aprovação do pacote.** Antes do loop, numa só conversa: consistência spec ↔ plan ↔ tasks
+(`@analyzer`), **paradas prováveis** levantadas e eliminadas (o que depende de você vira pergunta aqui),
+**cobertura de entendimento** e **índice de execução autônoma**, **Preflight** (branch, commit, push, modo) e o
+**guia de validação** — um resumo técnico derivado do pacote, publicado como página quando a sessão tem essa
+ferramenta. Você lê o guia e dá o de-acordo; é o único portão humano entre o pacote e o fim da implementação.
 
 ### 5c — Execução em loop (`/execute`)
 
-**Skill**: `/execute {spec} [--auto [N]]`
+**Skill**: `/execute {spec} [--max N] [--checkpoint] [--driver]` — roda **na sessão principal**, não num subagente
 
-- Roda o **portão pré-execução** e verifica branch antes de começar
-- **Loop por fatia**: implementa uma fatia → roda os gates → **conserta até verde** (micro-loop)
-- Test-first quando aplicável (RED→GREEN); **nunca marca DONE com gate vermelho**
-- Marca a fatia **DONE no Loop Log** (o tasks.md é a fonte única — sem STATUS.md concorrente)
-- Apresenta o **relatório de verificação** e **PARA** para revisão humana (checkpoint).
-  `--auto [N]` encadeia N fatias com guardrails (teto, sem-progresso, BLOCKED)
-- Quando encontra divergências, atualiza a spec com "Implementation Notes"
+- Exige o **pacote aprovado** no portão final do `/tasks` (Preflight já respondido)
+- **Loop autônomo por fatia**: implementa uma fatia → roda os gates → **conserta até verde** (micro-loop) → **verificador independente** (check agents sobre os arquivos da fatia — quem implementa não é quem confere) → commit/push conforme o Preflight → **próxima fatia**, sem pedir ok
+- Test-first quando aplicável: o **RED aparece** antes da produção; **nunca marca DONE com gate vermelho**
+- Marca a fatia **DONE no Loop Log** e registra a iteração no **Log de iterações** (o tasks.md é a fonte única — sem STATUS.md concorrente)
+- **Só para no realmente bloqueante**: nenhuma fatia liberada, watchdog (3ª tentativa sem progresso: abandonar · BLOCKED · tentar mais N), decisão de negócio não fechada que bloqueia, ação destrutiva ou fora do escopo. Fatia `BLOCKED` não para a corrida
+- Divergência com default claro no escopo aprovado → aplica, registra em "Implementation Notes" e segue
+- `--checkpoint` para a cada fatia (opt-in); `--max N` limita a corrida
+
+**Uma fatia por sessão nova** (opcional): `node .claude/scripts/loop-driver.mjs --feature {feature}` abre um
+`claude -p` por fatia, com contexto vazio, e para em fatia sem progresso, em pedido de decisão sua ou no
+`--max`. O Preflight precisa estar respondido (portão final do `/tasks`); `--max 1` é o ensaio.
 
 ### Usando /implement como orquestrador
 
@@ -496,8 +511,8 @@ Gera checklists com 9 dimensões de qualidade: completude, clareza, consistênci
 
 ```bash
 /validate geral              # usa perfil standard
-/validate geral minimal      # só ADR validator
-/validate geral full         # todos os agents
+/validate geral --profile minimal      # só ADR validator
+/validate geral --profile full         # todos os agents
 ```
 
 ### O que executa (perfil standard)
@@ -522,9 +537,9 @@ Gera checklists com 9 dimensões de qualidade: completude, clareza, consistênci
 | `@check-errors` | Error handling | Se tem backend |
 | `@check-security` | Segurança | Se tem backend |
 
-### Validação sequencial (frontend e backend)
+### Validação por stack (frontend e backend)
 
-O `/frontend-validate` e o `/backend-validate` executam os agents **um de cada vez**. Ao concluir cada agent, o skill sugere o próximo. Isso permite corrigir problemas de um agent antes de rodar o próximo.
+O `/frontend-validate` e o `/backend-validate` rodam os agents **em paralelo por padrão** (todos são read-only e independentes). Com `--mode sequential`, rodam um de cada vez e o skill sugere o próximo — útil para corrigir os problemas de um agent antes de rodar o próximo.
 
 ### Como funciona o ADR Validator
 
@@ -637,7 +652,7 @@ O kit é **modular** — você usa só o que precisa.
 
 ### Frontend (se o projeto tem frontend web)
 
-10 agents de validação: structure, typescript, react, forms, i18n, routing, responsiveness, design, ux, security-frontend.
+13 agents de validação: os 11 do `/frontend-validate` (structure, typescript, react, forms, i18n, routing, responsiveness, design, ux, security-frontend, web-guidelines) + ai-cliches e visual-consistency, usados pelo `/design` sobre a tela renderizada.
 
 ### Backend (se o projeto tem backend OO)
 
@@ -648,7 +663,7 @@ Agents de scaffolding: aggregate.
 
 ## 12. ADR Templates pré-definidos
 
-Em `docs/adr/templates/` estão 11 ADRs baseadas em boas práticas:
+Em `docs/adr/templates/` estão 13 ADRs baseadas em boas práticas:
 
 ### Universal (3)
 
@@ -667,7 +682,7 @@ Em `docs/adr/templates/` estão 11 ADRs baseadas em boas práticas:
 | Exception Propagation | Propagação e tratamento de exceções |
 | Unit Testing Strategy | Estratégia e cobertura de testes |
 
-### Frontend Patterns (4)
+### Frontend Patterns (6)
 
 | Template | Regra principal |
 |----------|----------------|
@@ -675,6 +690,8 @@ Em `docs/adr/templates/` estão 11 ADRs baseadas em boas práticas:
 | Forms Stack | Stack de formulários (validação, estado) |
 | i18n Lazy Loading | Internacionalização com carregamento lazy |
 | Loading Strategy | Estratégia de loading (skeleton, suspense) |
+| Design System | Tokens, componentes e onde o DS vive no projeto |
+| Visual Identity | Âncora de design (Charter ou memória de design) aplicada às telas |
 
 O `/architect` usa esses templates como ponto de partida e customiza com as suas respostas.
 
@@ -695,14 +712,14 @@ Todas as interações com o pipeline são feitas via skills (invocados com `/`).
 | `/reverse-engineer` | 0 | Engenharia reversa completa de legado (lógica, fluxos, telas) |
 | `/adopt` | 1 | Adota projeto existente para o kit sem modificar código |
 | `/discovery` | 1 | Entendimento completo do projeto |
-| `/define` | 2 | Orquestra PRD workflow completo |
-| `/ddd-estrategico` | 3 | Modelagem de domínio — Bounded Contexts, Context Map (opcional) |
-| `/architect` | 3 | Cria ADRs interativamente |
+| `/ddd-estrategico` | 2 | Modelagem de domínio — Bounded Contexts, Context Map (opcional) |
+| `/architect` | 2 | Cria ADRs interativamente |
+| `/define` | 3 | Orquestra PRD workflow completo |
 | `/spec-review` | 5 | Valida spec antes de implementar |
 | `/implement` | 5 | Orquestra Plan + Tasks + Execute |
 | `/plan` | 5a | Planejamento técnico (gera plan.md) |
 | `/tasks` | 5b | Quebra plan em fatias verticais (U0…Un = User Stories) com contrato + DoD + BDD |
-| `/execute` | 5c | Executa em loop por fatia (micro-loop até verde, checkpoint, `--auto`) |
+| `/execute` | 5c | Executa o pacote aprovado em loop autônomo por fatia (micro-loop até verde, verificador independente; `--checkpoint`, `--driver`) |
 | `/validate` | 6 | Validação de conformidade |
 | `/revalidate` | 7 | Revalidação cirúrgica |
 
@@ -730,8 +747,8 @@ Todas as interações com o pipeline são feitas via skills (invocados com `/`).
 
 | Skill | O que faz |
 |-------|-----------|
-| `/frontend-validate` | Validação sequencial dos 10 agents frontend |
-| `/backend-validate` | Validação sequencial dos 6 agents backend |
+| `/frontend-validate` | 11 agents frontend (paralelo por padrão; `--mode sequential`) |
+| `/backend-validate` | 6 agents backend (paralelo por padrão; `--mode sequential`) |
 | `/backend-scaffold` | Gera Aggregate Root + testes |
 
 ### Utilitários
@@ -775,9 +792,9 @@ O Claude Code tem um limite de contexto. Para manter a qualidade das respostas, 
 ```
 /discovery        # Fase 1
 /clear            # Limpar contexto
-/architect        # Fase 3
+/architect        # Fase 2
 /clear            # Limpar contexto
-/define           # Fase 2
+/define           # Fase 3
 /clear            # Limpar contexto
 /plan             # Fase 5a
 /clear            # Limpar contexto
@@ -790,9 +807,7 @@ O Claude Code tem um limite de contexto. Para manter a qualidade das respostas, 
 
 ### Handoff entre sessões (state.md)
 
-O arquivo `docs/project/state.md` rastreia a fase atual e o progresso do projeto entre sessões. Quando você fecha o Claude Code e abre novamente, o agent lê o `state.md` para saber onde parou.
-
-O `state.md` é atualizado automaticamente pelos skills e contém:
+A fonte de "onde estamos" é o `docs/project/manifest.md` (projeto) e o Loop Log do `tasks.md` (feature em execução). O `docs/project/state.md` é um **snapshot local** (gitignored), reescrito pelo hook `capture.mjs` a cada turno e injetado como contexto pelo `reconcile.mjs` no início da sessão. Contém:
 - Fase atual do pipeline
 - Último artefato gerado
 - Próxima ação recomendada
@@ -810,11 +825,11 @@ meu-projeto/
 |   |   +-- discovery/      # 4 agents (discovery, strategy, codebase-mapper, legacy-analyzer)
 |   |   +-- product/        # 6 agents (prd-*, spec-from-prd, clarifier, module-detailer)
 |   |   +-- architecture/   # 3 agents (adr-creator, adr-validator, ddd-estrategico)
-|   |   +-- delivery/       # 3 agents (planner, task-breaker, executor)
+|   |   +-- delivery/       # 2 agents (planner, task-breaker)
 |   |   +-- quality/        # 4 agents (spec-review, analyzer, solid-review, revalidator)
-|   |   +-- frontend/       # 17 agents (ux, design, DS, prototype + 12 de validação)
+|   |   +-- frontend/       # 18 agents (ux, design, DS, prototype + 13 de validação)
 |   |   +-- backend/        # 7 agents (6 de validação + scaffold-aggregate)
-|   +-- skills/          # 39 skills de orquestração
+|   +-- skills/          # 41 skills de orquestração
 |   +-- hooks/           # hooks de aprendizado
 |   +-- scripts/         # gates determinísticos
 |   +-- settings.json    # permissões + registro dos hooks
@@ -837,7 +852,7 @@ meu-projeto/
 |   +-- validation-reports/  # Relatórios de validação
 |   +-- project/
 |   |   +-- discovery.md     # Output do /discovery
-|   |   +-- constitution.md  # Princípios (Fase 3)
+|   |   +-- constitution.md  # Princípios (Fase 2)
 |   |   +-- glossary.md      # Linguagem ubíqua
 |   |   +-- manifest.md      # Estado vivo do pipeline
 |   |   +-- learnings/       # Memória evolutiva por domínio
@@ -860,7 +875,7 @@ meu-projeto/
 ### Cenário 1 — Projeto novo do zero
 
 ```
-/setup                                  # Configurar stack e módulos
+/start                                  # Monta o kit, configura stack e módulos
 /clear
 /discovery                              # Entender o projeto
 /clear
@@ -885,9 +900,9 @@ meu-projeto/
 /clear
 /discovery                              # Fase 1: Discovery do NOVO projeto
 /clear
-/architect                              # Fase 3: ADRs para o novo sistema
+/architect                              # Fase 2: ADRs para o novo sistema
 /clear
-/define                                 # Fase 2: PRDs por módulo
+/define                                 # Fase 3: PRDs por módulo
 /clear
 /plan                                   # Planejar módulo
 /tasks                                  # Quebrar em tasks
@@ -963,7 +978,7 @@ meu-projeto/
 ## 18. Dicas e boas práticas
 
 ### Sobre Setup
-- **Rode `/setup` antes de tudo** se for um projeto novo. Ele configura o CLAUDE.md correto para a sua stack.
+- **Comece pelo `/start`**: ele monta o kit e chama o `/setup`, que configura o CLAUDE.md e puxa os módulos da sua stack.
 
 ### Sobre Contexto
 - **Use `/clear` entre fases.** Cada fase gera artefatos em disco — a próxima fase os lê. O contexto da conversa não precisa acumular.
@@ -980,7 +995,7 @@ meu-projeto/
 
 ### Sobre PRDs
 - Comece pelo estratégico (visão) e depois crie o tático (backlog).
-- Cada User Story deve ter no mínimo 3 critérios de aceite concretos.
+- Cada User Story do PRD deve ter no mínimo 3 critérios de aceite concretos (o `/prd-create` cobra 3; na spec, o `/spec-review` aceita 2).
 - Use `/prd-coverage` para acompanhar o progresso.
 
 ### Sobre Implementação

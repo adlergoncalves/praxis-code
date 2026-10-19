@@ -6,14 +6,14 @@
 
 ```
         VOCÊ
-         ↕   (100% do tempo)
-       PRAXIS        ← único agent com quem você conversa (orquestrador/maestro)
+         ↕   (ligado por padrão; `/mode praxis off` desliga)
+       PRAXIS        ← orquestrador, na sessão principal: com quem você conversa
          │  lê o manifesto + a conversa e escolhe o comando certo
          ▼
        SKILL (/discovery, /implement, /validate…)   ← o comando/playbook
          │  quando o trabalho é pesado, dispara…
          ▼
-  SUBAGENTES (@discovery, @executor, @check-*, …)   ← trabalhadores isolados
+  SUBAGENTES (@discovery, @planner, @check-*, …)   ← trabalhadores isolados
          │  fazem o pesado em janela própria e devolvem o resultado
          ▲
          └──────────►  volta pro Praxis  ──►  Praxis fala com VOCÊ
@@ -41,9 +41,9 @@
 - **discovery/**: discovery, codebase-mapper, legacy-analyzer, strategy
 - **product/**: clarifier, module-detailer, prd-create, prd-validate, prd-decompose, spec-from-prd
 - **architecture/**: adr-creator, adr-validator, ddd-estrategico `[optional]`
-- **delivery/**: planner, task-breaker, executor
+- **delivery/**: planner, task-breaker (o loop do `/execute` roda na sessão principal — ADR-0007)
 - **quality/**: analyzer, solid-review, spec-review, revalidator
-- **frontend/**: ux, design, paper-prototype, ds-foundation, ds-component, check-{design, forms, i18n, react, responsiveness, routing, structure, typescript, ux, ai-cliches, visual-consistency}
+- **frontend/**: ux, design, paper-prototype, ds-foundation, ds-component, check-{design, forms, i18n, react, responsiveness, routing, structure, typescript, ux, ai-cliches, visual-consistency, security-frontend, web-guidelines}
 - **backend/**: scaffold-aggregate, check-{architecture, ddd, errors, naming, security, tests}
 
 ### Skills por domínio (flat, campo `domain:`)
@@ -53,23 +53,23 @@
 - **product**: define, prd-create, prd-validate, prd-decompose, prd-coverage, detail, spec-from-prd
 - **architecture**: architect, ddd-estrategico `[optional]`
 - **delivery**: implement, plan, tasks, execute, debug, quickfix
-- **quality**: validate, revalidate, review, spec-review, analyze, clarify, checklist, frontend-validate, backend-validate
+- **quality**: validate, revalidate, review, spec-review, analyze, clarify, checklist, verify-all, agent-eval, frontend-validate, backend-validate
 - **frontend**: ux, design, prototype, ds-init, ds-component
 - **backend**: backend-scaffold
 
 > **Os módulos de stack são sub-projetos.** `frontend/` e `backend/` contêm tudo da sua stack — construção, design system e validadores. O `/setup` remove o módulo inteiro quando a stack não se aplica. Os 6 domínios de núcleo nunca são removidos.
 
-### Módulos de stack — núcleo agnóstico + adapter (Fase 3)
+### Módulos de stack — núcleo agnóstico + adapter
 
 Os módulos `frontend/` e `backend/` operam com **núcleo agnóstico de stack + adapters plugáveis**. A stack vem do `discovery`/`manifest`, **nunca é assumida**. Adicionar uma nova stack = criar um adapter, sem mexer no núcleo.
 
-No frontend (Fase 3):
+No frontend:
 
 - **Conhecimento agnóstico (núcleo)** em `.claude/reference/frontend/`: 9 reference files (motion-design, cognitive-load, personas, patterns, heuristics, register-product, register-brand, anti-patterns, design-system-anatomy).
 - **Adapters por stack** em `.claude/reference/frontend/adapter-*.md`: react-vite-shadcn, react-next-shadcn, angular-material, vue-vuetify. Cada um carrega o `stack-profile.json` seed.
 - **`stack-profile.json`** (em `docs/design-system/`, no projeto cliente): materializa "o que é token nesta stack" — lido pelo detector para aplicar a regra `tokens/hardcoded-color` agnóstica.
 - **Scripts Node** em `.claude/scripts/frontend/`: `detect-cliches.mjs` (detector determinístico de clichês de IA) e `screenshot.mjs` (captura para o loop visual via Playwright dinâmico — degrada gracioso).
-- **Gates de intenção→implementação**: `/ux charter` (identidade do produto) → `/ux shape <feature>` (brief da feature) → `/prototype` (mock-gate visual) → `/execute` (com gate enforcement no `@executor`).
+- **Gates de intenção→implementação**: âncora de design (Charter ou memória de design) → `/ux shape <feature>` (brief da feature) → `/prototype` (opcional; Paper, Artifact ou HTML) → `/execute` (com gate enforcement na própria skill).
 
 ## Learnings espelham os domínios
 

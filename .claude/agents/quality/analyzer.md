@@ -44,7 +44,7 @@ Ao ser ativado, leia:
 - Adjetivos vagos ("rapido", "seguro", "intuitivo") sem metrica
 - Placeholders nao resolvidos (`TBD`, `a definir`, `TODO`, `[A PREENCHER]`)
 - Requisitos nao-testaveis (sem criterio de aceite mensuravel)
-- `[NEEDS CLARIFICATION]` ainda presentes
+- `[REQUER RESPOSTA DO PM]` ainda presentes em Decisoes Fechadas
 
 ### Pass 3 — Sub-especificacao
 - Objetos referenciados mas nao definidos (entidade mencionada sem modelo)

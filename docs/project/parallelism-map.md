@@ -32,17 +32,16 @@
  SINC     SINC     SINC
 ```
 
-**Motivo**: plan.md → lido pelo task-breaker → tasks.md lido pelo executor
+**Motivo**: plan.md → lido pelo task-breaker → tasks.md lido pelo `/execute`
 
-### Dentro de /execute (entre fases de tasks)
+### Dentro de /execute (entre fatias)
 
 ```
-Fase 1 (Setup)       → SINCRONO (bloqueia tudo)
-Fase 2 (Foundational)→ SINCRONO (bloqueia stories)
-Fase 3 (US P1)       → tasks [P] sao PARALELAS dentro da fase
-Fase 4 (US P2)       → tasks [P] sao PARALELAS dentro da fase
-Fase 5 (US P3)       → tasks [P] sao PARALELAS dentro da fase
-Fase 6 (Polish)      → SINCRONO (depende de tudo anterior)
+Fatias (U0…Un)       → em sequencia, na ordem do grafo de dependencias do tasks.md
+Grupos G«n»          → multi-agente SO se o Preflight liberar: um subagente por fatia do
+                       grupo, pontos de colisao declarados; integracao e verificacao
+                       independente na sessao principal
+Sub-tasks [P]        → paralelizaveis dentro da fatia
 ```
 
 ### Implementacao cross-team
@@ -53,7 +52,7 @@ Fase 6 (Polish)      → SINCRONO (depende de tudo anterior)
         SINCRONO (se front depende de endpoint do back)
 ```
 
-**Regra**: Detectar dependencia e perguntar ao usuario.
+**Regra**: fatia que depende de trabalho de outro team ainda nao feito fica `BLOCKED` (motivo + o que destrava) e o loop segue com as liberadas.
 
 ---
 

@@ -1,6 +1,8 @@
 ---
 description: "Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas."
 user-invocable: true
+depends:
+  - .claude/agents/product/prd-create.md
 ---
 
 # /prd-create
@@ -54,26 +56,33 @@ Perguntar 5 questoes-chave ao PM:
 
 ### Passo 3 — Gerar PRD
 
-Seguir o template canonico correspondente ao tipo.
+Seguir o template canonico correspondente ao tipo. As perguntas ao PM ficam nesta sessao (subagente nao conversa — `.claude/praxis/rules.md`); a redacao de um PRD grande pode ir ao `@prd-create` com as respostas ja coletadas, para nao encher a janela.
 
-#### Template — PRD Estrategico (11 secoes)
+#### Template — PRD Estrategico (11 secoes — as mesmas que o `/prd-validate` cobra)
 
-1. Executive Summary
-2. Problem Statement
-3. Goals & Success Metrics (KPIs com baselines)
-4. Target Users / Personas
-5. User Journeys
-6. Functional Requirements (por modulo)
-7. Non-Functional Requirements
-8. Technical Constraints
-9. Dependencies & Integrations
-10. Risks & Mitigations
-11. Roadmap & Milestones
+Header de metadados: **Tipo**: Estrategico · **Modulo** · **Publico** · **Status** · **Atualizado em**
+
+1. Contexto e Visao de Negocio
+2. Problema / Dor Principal
+3. Objetivos do Produto
+4. Stakeholders e Personas
+5. Proposta de Valor
+6. Escopo Funcional (IN / OUT / FUTURE)
+7. User Stories — Visao Executiva
+8. Requisitos Nao Funcionais (tabela)
+9. Metricas de Sucesso (tabela: Baseline · Meta · Prazo)
+10. Riscos, Premissas e Dependencias (tabela, >= 3 riscos)
+11. Narrativa Final
 
 #### Template — PRD Tatico (Epico → Feature → US)
 
 ```markdown
 ## Epico: {nome}
+**Descricao**: {o que o epico entrega e por que}
+
+| Ator impactado | Como e afetado |
+|----------------|----------------|
+| {persona} | {o que muda para ela} |
 
 ### Feature {X.Y}: {titulo}
 **Descricao**: {o que faz e por que}

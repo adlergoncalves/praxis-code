@@ -1,15 +1,27 @@
 #!/usr/bin/env node
-// generate-index.mjs — Gera docs/kit-index.md e docs/kit-index.json a partir dos frontmatters.
+// generate-index.mjs — Gera docs/kit-index.md, docs/kit-index.json e catalog.json a partir dos
+// frontmatters e do grafo de dependencias (ADR-0009).
 //
 // Uso:
 //   node scripts/generate-index.mjs          # (re)gera os arquivos
 //   node scripts/generate-index.mjs --check  # falha (exit 1) se os arquivos estiverem desatualizados
 import { readFileSync, writeFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { ROOT, collectKit } from './lib/kit.mjs';
+import { ROOT, collectKit, collectCatalog } from './lib/kit.mjs';
 
 const MD_PATH = join(ROOT, 'docs', 'kit-index.md');
 const JSON_PATH = join(ROOT, 'docs', 'kit-index.json');
+const CATALOG_PATH = join(ROOT, 'catalog.json');
+
+function buildCatalog() {
+  const c = collectCatalog();
+  // `cites` e so para o validate-kit; o catalogo publica o que o praxis.mjs precisa
+  const tools = Object.fromEntries(Object.entries(c.tools).map(([p, t]) => {
+    const { cites, ...rest } = t;
+    return [p, rest];
+  }));
+  return JSON.stringify({ ...c, tools }, null, 2) + '\n';
+}
 
 const cell = (s) => String(s ?? '').replace(/\|/g, '\\|').replace(/\r?\n/g, ' ');
 
@@ -65,14 +77,16 @@ function buildJson({ skills, agents }) {
 const kit = collectKit();
 const md = buildMarkdown(kit);
 const json = buildJson(kit);
+const catalog = buildCatalog();
 
 if (process.argv.includes('--check')) {
   const stale = [
     [MD_PATH, md],
     [JSON_PATH, json],
-  ].filter(([p, content]) => !existsSync(p) || readFileSync(p, 'utf8') !== content);
+    [CATALOG_PATH, catalog],
+  ].filter(([p, content]) => !existsSync(p) || readFileSync(p, 'utf8').replace(/\r\n/g, '\n') !== content);
   if (stale.length) {
-    console.error('Indice desatualizado. Rode: node scripts/generate-index.mjs');
+    console.error('Indice/catalogo desatualizado. Rode: node scripts/generate-index.mjs');
     for (const [p] of stale) console.error(`  - ${p.slice(ROOT.length + 1)}`);
     process.exit(1);
   }
@@ -80,5 +94,6 @@ if (process.argv.includes('--check')) {
 } else {
   writeFileSync(MD_PATH, md);
   writeFileSync(JSON_PATH, json);
-  console.log(`Indice gerado: ${kit.skills.length} skills, ${kit.agents.length} agents.`);
+  writeFileSync(CATALOG_PATH, catalog);
+  console.log(`Indice e catalogo gerados: ${kit.skills.length} skills, ${kit.agents.length} agents.`);
 }

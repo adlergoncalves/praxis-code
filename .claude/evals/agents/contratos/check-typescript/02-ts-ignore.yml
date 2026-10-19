@@ -1,0 +1,13 @@
+agent: check-typescript
+regra: "Tipos — proibido @ts-ignore"
+descricao: Erro de tipo silenciado com @ts-ignore
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: desconto.ts
+    linha: 8
+    sinal: ts-ignore
+
+nao_deve_detectar:
+  - as any
+  - strict

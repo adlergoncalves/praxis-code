@@ -1,6 +1,6 @@
 ---
 name: architect
-description: "Fase 3: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns."
+description: "Fase 2: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns."
 user-invocable: true
 depends:
   - .claude/agents/architecture/adr-creator.md
@@ -8,7 +8,7 @@ depends:
 
 # /architect
 
-Cria ADRs do projeto interativamente usando o agent `@adr-creator`.
+Cria ADRs do projeto interativamente. Roda **nesta sessao**, usando `.claude/agents/architecture/adr-creator.md` como roteiro — perguntar por categoria e esperar a resposta e conversa, e subagente nao conversa (`.claude/praxis/rules.md`). A redacao das ADRs com as decisoes fechadas pode ir ao `@adr-creator`.
 
 ## O que faz
 
@@ -28,7 +28,7 @@ Cria ADRs do projeto interativamente usando o agent `@adr-creator`.
 ## Execucao
 
 1. Verificar se `docs/project/discovery.md` existe
-2. Delegar ao agent `@adr-creator`
+2. Seguir o roteiro `.claude/agents/architecture/adr-creator.md` nesta sessao
 3. Para cada categoria de decisao:
    - Apresentar template pre-definido de `docs/adr/templates/`
    - Perguntar se usuario concorda ou quer customizar
@@ -83,18 +83,18 @@ A Constitution deve conter uma **secao curta** "UX Charter" que aponta para o ar
 |---|---|---|
 | ✅ Sim | ✅ Sim | Verificar se a secao reflete o resumo atualizado do charter. Se nao, atualizar |
 | ✅ Sim | ❌ Nao | Adicionar secao curta apontando para o charter (pointer + resumo do arquetipo + lista de atributos) |
-| ❌ Nao | — | Sinal `PROJETO_SEM_UX_CHARTER` — oferecer handoff para `/ux personalidade` |
+| ❌ Nao | — | Sem Charter **e** sem memoria de design (`docs/design-system/system.md` com Register/Direcao/Dominio) → sinal `PROJETO_SEM_ANCORA_DE_DESIGN`. Com memoria de design, apontar a Constitution para ela |
 
-**Sinal `PROJETO_SEM_UX_CHARTER`**: Se o arquivo nao existe, avisar:
+**Sinal `PROJETO_SEM_ANCORA_DE_DESIGN`**: projeto com frontend sem Charter e sem memoria de design. Avisar:
 
-> "A Constitution define stack, padroes e nomenclatura, mas falta a **personalidade do produto** (preciso/elastico/luxuoso/etc.). Isso afeta tokens, motion e copy em todas as telas. Quer rodar `/ux personalidade` agora para definir o UX Charter antes de fechar a Constitution?"
+> "A Constitution define stack, padroes e nomenclatura, mas falta a **ancora de design** — o register e a personalidade do produto, que afetam tokens, motion e copy em todas as telas. Ela pode vir do Charter (`/ux charter`, opcional) ou da memoria de design (`/ux direcao` ou `/ux shape`). Quer definir agora?"
 
-**Se o usuario aceitar**: handoff para `/ux personalidade` que cria o `ux-charter.md`. Quando retornar, adicionar secao curta na Constitution (formato definido no `@adr-creator`).
+**Se o usuario aceitar**: handoff para `/ux charter` (cria o `ux-charter.md`) ou `/ux direcao` (grava a memoria de design). Quando retornar, adicionar secao curta na Constitution apontando para a ancora (formato definido no roteiro do `@adr-creator`).
 
 **Se o usuario recusar**: prosseguir, mas marcar na Constitution:
 ```markdown
 ## UX Charter
-> Pendente — rodar `/ux personalidade` quando a personalidade do produto for definida.
+> Pendente — ancora de design ainda nao definida (`/ux charter` ou `/ux direcao`).
 ```
 
 **Regra critica**: NUNCA copiar o conteudo de `ux-charter.md` para a Constitution. A Constitution e pointer + resumo, charter e conteudo. Mesma logica do `motion.md`.
@@ -147,7 +147,7 @@ Anatomia canonica de uma pagina interna deste projeto. Toda spec de tela interna
 
 > "O projeto tem frontend mas a Constitution nao define o Page Shell — a anatomia canonica de uma pagina interna. Sem isso, cada modulo implementado vai reinventar o layout. Quer definir agora? Vai levar 5-10 min e toda spec daqui pra frente vai referenciar isso."
 
-Se o usuario aceitar, conduzir interativamente: perguntar 4-5 questoes (tipografia do h1, padding default, max-width, posicao da acao primaria) e gerar a secao. Se recusar, marcar como pendente na Constitution.
+Se o usuario aceitar, conduzir interativamente a mini-entrevista de 7 perguntas do roteiro `@adr-creator` (secao Page Shell) e gerar a secao. Se recusar, marcar como pendente na Constitution.
 
 **Regra**: nao bloquear. Apenas alertar e oferecer.
 

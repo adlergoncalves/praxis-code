@@ -25,13 +25,13 @@ Praxis nao e uma skill a mais no pipeline. E uma **camada de orquestracao acima 
 - Pedir orientacao ("o que faco agora?")
 - Descrever uma intencao em linguagem natural ("quero comecar o modulo de vendas")
 
-**Automaticamente** quando o modo `/mode praxis on` estiver ativo:
+**Automaticamente** quando o Praxis esta ativo (padrao do kit; `/mode praxis off` desliga):
 - Na **primeira interacao da sessao**, Praxis se manifesta primeiro (regra global no `CLAUDE.md`) com uma de tres modalidades:
   - **Apresentacao completa** — uma unica vez na vida do projeto (primeira ativacao)
   - **Cumprimento + estado** — primeira sessao do dia
   - **Continuacao direta** — sessoes seguidas no mesmo dia (sem cumprimento)
 - Todo input do usuario passa pelo Praxis antes de qualquer skill ser invocada
-- Toda skill que termina notifica o Praxis e ele propoe proximo passo
+- Ao fim de cada skill, o Praxis propoe o proximo passo
 
 ## Como invocar
 
@@ -53,25 +53,22 @@ Detalhes completos em `docs/project/praxis-design.md`.
 
 ## Execucao
 
-1. Delegar ao agent `@praxis` (em `.claude/agents/orchestration/praxis.md`).
-2. O agent le **obrigatoriamente** antes de qualquer resposta:
+Roda **nesta sessao**, usando `.claude/agents/orchestration/praxis.md` como roteiro: o Praxis
+conversa e dispara skills (ex.: `/start` na Modalidade A), e subagente nao faz nenhuma das duas
+coisas (`.claude/praxis/rules.md`).
+
+1. Ler **obrigatoriamente**, antes de qualquer resposta:
    - `docs/project/manifest.md` — estado do pipeline
    - `docs/project/constitution.md` — regras inegociaveis (se existir)
-3. Identifica a intencao do usuario (se houver) e decide a acao.
-4. Caso manifesto esteja vazio (projeto recem-inicializado), Praxis funciona como onboarding amigavel — **nao despeja Praxis Journal nem cita comandos tecnicos**, segue a Modalidade A da apresentacao (templates em `agents/orchestration/praxis.md`).
+2. Identificar a intencao do usuario (se houver) e decidir a acao pelo playbook do roteiro.
+3. Manifesto vazio (projeto recem-inicializado): onboarding pela Modalidade A — **sem Praxis
+   Journal e sem jargao** (templates no roteiro).
 
-## Como apresentar a resposta (regras estritas para quem executa esta skill)
+## Como apresentar a resposta
 
-O assistente que invoca a skill `/praxis` deve seguir literalmente:
-
-- **NAO escreva nada antes de invocar o agent** — sem "Vou invocar o agente Praxis", sem "Resumindo:", sem cabecalho.
-- **NAO narre a chamada do agent** — o usuario nao precisa ver "Agent: Invocar agente Praxis" nem "IN Usuario invocou /praxis sem argumentos".
-- **NAO escreva nada depois da resposta do agent** — sem "Espero que ajude", sem "Posso fazer mais alguma coisa?".
-- **NAO resuma nem parafraseie** a resposta do agent. O que ele falar e o que aparece pro usuario, verbatim.
-- A leitura silenciosa do manifesto/constitution **nao deve ser narrada** ("Vou ler o manifesto agora..."). E ferramenta interna — o usuario so ve a resposta final do Praxis.
-- Se o agent decidir disparar Modalidade A (apresentacao amigavel da primeira sessao), e isso que o usuario ve. So isso.
-
-A resposta do Praxis tem voz propria. O assistente que invoca a skill desaparece — nao e narrador, e canal.
+- Responder **como o Praxis**, direto: sem preambulo ("Vou consultar o Praxis..."), sem narrar a
+  leitura do manifesto, sem epilogo ("Posso ajudar em mais algo?").
+- Na Modalidade A, o usuario ve so a apresentacao — e o `/start` disparado em seguida.
 
 ## Praxis Journal
 
@@ -99,14 +96,6 @@ RISCOS VISIVEIS
 ═══════════════════════════════
 ```
 
-## Roadmap
-
-A implementacao do Praxis e incremental:
-
-- **v0** (atual): le manifesto, gera Journal, responde "o que fazer a seguir" com contexto real
-- **v1**: playbook de despacho intencao → skill com verificacao de pre-condicoes
-- **v2**: handoff pos-skill + interrupcao proativa quando detecta risco
-- **v3**: `/mode praxis on/off` + regra global de handoff no CLAUDE.md
 
 ## Atualizacao do Manifesto
 

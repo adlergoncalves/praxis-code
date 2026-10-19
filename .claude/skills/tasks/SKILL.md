@@ -1,8 +1,12 @@
 ---
-description: "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato (valor, PRONTO file-level, verificacao manual, refs) + DoD + mapa BDD. Loop Engineering (ADR-0007)."
+description: "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007)."
 user-invocable: true
 depends:
   - .claude/agents/delivery/task-breaker.md
+  - .claude/agents/quality/analyzer.md
+  - docs/templates/guide-template.md
+  - docs/templates/doctor-template.json
+  - docs/templates/tasks-template.md
 ---
 
 # /tasks
@@ -52,25 +56,63 @@ Itens fora do escopo do team vao em `## Tasks Delegadas` (ex: `[D001] [team-back
 
 `docs/specs/{feature}/tasks.md` (conforme `docs/templates/tasks-template.md`)
 
-## Validacao pelo Usuario (OBRIGATORIO)
+## Portao final — aprovacao do pacote (OBRIGATORIO, roda nesta sessao)
 
-Apos gerar, **apresentar ao usuario para validacao**:
+O `/tasks` fecha o pacote (spec + plan + tasks). Este portao e onde a discussao acontece —
+**depois dele o `/execute` roda autonomo** e so para no realmente bloqueante. Por isso, tudo
+o que o loop precisaria perguntar e perguntado **aqui**. Roda na sessao principal (publica o
+guia e conversa com o usuario), apos o `@task-breaker` devolver o `tasks.md`.
 
-1. Exibir as **fatias U0…Un** com seu valor entregavel + grafo de dependencias
-2. Mostrar o resultado do **checker da decomposicao** (toda fatia vertical? verificavel na mao? criterio→teste?)
-3. Mostrar o mapeamento **fatia ↔ user story**
-4. Perguntar: **"As fatias estao corretas? Posso iniciar o loop de execucao? (s/n/ajustar)"**
-5. Se `s` → recomendar `/clear` e depois `/execute`
-6. Se `n` ou `ajustar` → usuario indica o que mudar, ajustar e re-apresentar
-7. **NAO avancar para /execute sem aprovacao explicita do usuario**
+1. **Consistencia** — despachar o `@analyzer` (o mesmo do `/analyze`) sobre spec ↔ plan ↔
+   tasks. Achado de duplicacao, gap ou contradicao → corrigir no pacote antes de seguir.
+2. **Paradas provaveis** — percorrer as fatias e preencher `tasks.md › Prontidao › Paradas
+   provaveis`: decisao diferida sem default, credencial/servico externo, infra que nao existe,
+   fonte de design ausente, dependencia de outro team, ancora de design (Charter ou memoria de design)/Shape faltando em feature de
+   UI. **O que e do agente entra no pacote sem perguntar** (pinar fato, declarar default,
+   sequenciar infra); **o que depende do usuario vira pergunta** neste portao. As pre-condicoes de
+   ambiente que sobram (servico de pe, porta, seed, migration) viram **`docs/specs/{feature}/doctor.json`**
+   (molde `docs/templates/doctor-template.json`, com `fatias` quando so algumas dependem dela) — e o
+   Gate 0 do `/execute` que as confere antes de cada corrida. Rodar `node .claude/scripts/loop-doctor.mjs --feature {feature}`
+   aqui mesmo: Fato Confirmado velho ja aparece antes da aprovacao.
+3. **Metricas** — calcular a **cobertura de entendimento** e o **indice de execucao
+   autonoma** (rubrica do `tasks-template`), com a decomposicao preenchida. O indice e a
+   previsao **depois** de eliminadas as paradas — nunca ajustar o numero sem remover a causa.
+4. **Preflight** — perguntar as definicoes de execucao, todas juntas, com opcoes + implicacao:
+   branch (nome e base), politica de commit (default `commit autonomo`), push, modo de execucao
+   (sequencial ou multi-agente nos grupos com pontos de colisao declarados) e **scan de seguranca**
+   no fechamento (esforco; a resposta aceita o custo do scan, para o loop nao parar depois). Gravar no `tasks.md`.
+5. **Guia de validacao** — gerar a partir de spec/plan/tasks pela estrutura de
+   `docs/templates/guide-template.md` (derivado, nunca fonte). Com publicacao de paginas
+   disponivel na sessao (Artifacts do Claude): publicar como pagina HTML com os diagramas
+   Mermaid e gravar o link + data em `docs/specs/{feature}/guia-de-validacao.md`; sem ela,
+   o guia e o proprio `guia-de-validacao.md`. Republicar = mesmo arquivo, mesmo endereco.
+6. **Apresentar e aguardar o de-acordo** — link (ou caminho) do guia + resumo:
+
+```
+## Pacote — {feature}
+Fatias: {n} (U0…U{n})   Grupos paralelizaveis: {…}
+Consistencia (@analyzer): {ok | n achados corrigidos}
+Cobertura de entendimento: {NN}% ({o que falta, ou "tudo fechado"})
+Indice de execucao autonoma: {NN}% (top riscos: {1–3})
+Paradas eliminadas: {n} — {as principais em poucas palavras}
+Execucao: branch {…} · commit {…} · push {…} · modo {…} · scan de seguranca {…}
+Guia de validacao: {link ou caminho} — leia antes de aprovar (secoes 8 e 9)
+```
+
+7. **De-acordo** → gravar `Pacote aprovado em` no Preflight e seguir para o `/execute` (autonomo).
+   **Ajustar** → mudar o pacote, regenerar o guia, re-apresentar.
+
+**Modo lite**: passos 2–4 em versao curta e resumo no chat, sem guia publicado.
+
+**NAO avancar para o `/execute` sem o de-acordo do usuario** — e o unico portao humano entre
+o pacote e o fim da implementacao.
 
 ## Gestao de Contexto
 
-Ao concluir as tasks **e obter aprovacao**, recomende `/clear` antes de avancar para `/execute`. O tasks.md esta salvo.
+Aprovado o pacote, recomende `/clear` antes do `/execute` (ou rode pelo `loop-driver.mjs`). O tasks.md esta salvo.
 
 ## Handoffs
 
+- → `/execute` (autonomo — so apos o de-acordo)
 - → `/clear` (limpar contexto apos aprovacao)
-- → `/execute` (executar as tasks — so apos aprovacao)
-- → `/analyze` (verificar consistencia spec ↔ plan ↔ tasks)
-- → `/checklist` (gerar quality gates antes de executar)
+- → `/checklist` (quality gates extras antes de executar, se o usuario quiser)

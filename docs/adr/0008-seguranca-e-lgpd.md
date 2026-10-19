@@ -1,7 +1,7 @@
 # ADR-0008: Seguranca da Informacao e Conformidade LGPD
 
 **Status:** Aceito
-**Data:** 2026-07-01
+**Data:** 2026-10-19
 **Decisores:** Adler (dev)
 **Escopo:** Baseline de seguranca — aplicavel a qualquer projeto do kit (frontend e backend), agnostico a stack
 
@@ -9,11 +9,11 @@
 
 ## Contexto e Problema
 
-Ate esta ADR, a seguranca no kit vivia apenas como regras embutidas no agent `@check-security` (backend) — cobrindo os classicos (SQL injection, secrets, auth em endpoints, validacao de input, headers). Faltava:
+Regras de seguranca embutidas so no prompt de um agent cobrem os classicos (SQL injection, secrets, auth em endpoints, validacao de input, headers), mas deixam de fora:
 
-1. **Uma decisao arquitetural explicita** que sirva de fonte unica de verdade para o que o projeto considera "seguro o suficiente" — hoje as regras ficavam so no prompt do agent, sem contexto de "por que".
-2. **Cobertura de seguranca no frontend** — XSS, armazenamento inseguro de token, secrets vazados no bundle nao eram checados por ninguem.
-3. **Conformidade com a LGPD** — mesmo o kit sendo em PT-BR e voltado ao mercado brasileiro, nao havia nenhuma diretriz sobre tratamento de dados pessoais.
+1. **Uma decisao arquitetural explicita** que sirva de fonte unica de verdade para o que o projeto considera "seguro o suficiente" — com o "por que" de cada regra.
+2. **Cobertura de seguranca no frontend** — XSS, armazenamento inseguro de token, secrets vazados no bundle.
+3. **Conformidade com a LGPD** — um kit em PT-BR, voltado ao mercado brasileiro, precisa de diretriz sobre tratamento de dados pessoais.
 4. **Riscos modernos** alinhados ao OWASP Top 10 (2021) e OWASP API Top 10 — IDOR/BOLA, SSRF, criptografia fraca, mass assignment, supply chain.
 
 Esta ADR estabelece o **baseline de seguranca** do projeto. Ela e a "Regras para Validacao" que os agents `@check-security` (backend) e `@check-security-frontend` leem na Fase 6. Decisoes especificas por dominio (estrategia de autenticacao concreta, algoritmo de hash, gestao de chaves, rate limiting) podem gerar ADRs proprias que **complementam** esta.
@@ -143,7 +143,7 @@ Dados pessoais **nunca** em logs, URLs ou ferramentas de terceiros sem base lega
 **Rejeitada para o baseline:** desproporcional para a maioria dos projetos do kit. Esta ADR e o piso pragmatico alinhado a OWASP + LGPD; projetos regulados podem criar ADRs complementares.
 
 ### 3. Gate de seguranca bloqueante no CI (falha build em qualquer finding)
-**Rejeitada como default:** risca travar builds por findings pre-existentes ou falsos positivos das checagens heuristicas. Fica como **oportunidade de evolucao** (scan de dependencias e SAST), decidivel por projeto.
+**Rejeitada como default:** risca travar builds por findings pre-existentes ou falsos positivos das checagens heuristicas. O scan de dependencias e o SAST entram no loop de execucao de forma nao bloqueante (secao abaixo); gate bloqueante no CI fica decidivel por projeto.
 
 ---
 
@@ -152,7 +152,7 @@ Dados pessoais **nunca** em logs, URLs ou ferramentas de terceiros sem base lega
 ### Positivas
 - Fonte unica de verdade sobre seguranca, lida pelos dois agents de validacao.
 - Cobertura ampliada: frontend (XSS, storage, secrets no bundle) e riscos modernos (IDOR/BOLA, SSRF, mass assignment, criptografia).
-- LGPD deixa de ser ponto cego num kit voltado ao Brasil.
+- LGPD coberta desde o inicio num kit voltado ao Brasil.
 - Baseline portavel: qualquer projeto do kit herda o mesmo piso.
 
 ### Negativas
@@ -166,9 +166,35 @@ Dados pessoais **nunca** em logs, URLs ou ferramentas de terceiros sem base lega
 
 ---
 
+## Seguranca dentro do loop de execucao
+
+Com o loop autonomo (ADR-0007), a verificacao de seguranca acontece dentro da execucao, sem
+parar a corrida — nao so na validacao (Fase 6) nem so por heuristica de texto. **Tres
+camadas, do mais barato ao mais profundo:**
+
+1. **Por fatia** — `@check-security` / `@check-security-frontend` entram entre os
+   verificadores independentes do `/execute` sobre os arquivos da fatia. ERRO bloqueia o `DONE`.
+2. **Por manifesto tocado** — `.claude/scripts/deps-audit.mjs` (npm, pnpm, .NET, Python via
+   pip-audit) compara com o baseline versionado `docs/project/security/deps-baseline.json` e
+   so reporta o que **entrou**. Informativo, nao bloqueante (mantem a decisao desta ADR): o
+   loop tenta a versao corrigida; aceitar um achado e decisao humana (`--update-baseline`).
+   Ecossistema nao suportado aparece como NAO VERIFICADO, nunca como limpo.
+3. **No fechamento da feature** — scan das mudancas da branch pelo plugin **Claude Security**,
+   quando o Preflight pede (`Scan de seguranca`, com o esforco; a resposta aceita o custo).
+   CRITICAL/HIGH confirmados recebem o patch verificado do proprio plugin, aplicado pelo loop
+   em commit `fix(security)`; MEDIUM/LOW vao para o relatorio.
+
+**Por que o plugin e declarado e nao copiado.** A licenca do Claude Security e proprietaria e
+proibe redistribuicao. O kit o declara em `.claude/settings.json` (`enabledPlugins` +
+`extraKnownMarketplaces`): quem usa o kit recebe a oferta de instalar pela loja oficial. Exige
+Python 3.9+ e envia contagens de uso pela telemetria do Claude Code (desligavel com
+`DISABLE_TELEMETRY=1`). Sem o plugin, o fechamento declara NAO VERIFICADO e segue.
+
+---
+
 ## Relacionamentos
 
-- **Implementada por:** agents `@check-security` (`.claude/agents/backend/check-security.md`) e `@check-security-frontend` (`.claude/agents/frontend/check-security-frontend.md`).
-- **Orquestrada em:** `/backend-validate`, `/frontend-validate` e `/validate` (Fase 6).
+- **Implementada por:** agents `@check-security` (`.claude/agents/backend/check-security.md`) e `@check-security-frontend` (`.claude/agents/frontend/check-security-frontend.md`), por `.claude/scripts/deps-audit.mjs` e pelo fechamento de seguranca do `/execute` (plugin Claude Security).
+- **Orquestrada em:** verificador independente por fatia do `/execute`; `/backend-validate`, `/frontend-validate` e `/validate` (Fase 6).
 - **Complementada por (quando o projeto crescer):** ADRs proprias de Estrategia de Autenticacao, RBAC/ABAC, Rate Limiting, Audit Trail, Criptografia/Gestao de Chaves, CSP.
 - **Alinhada a:** OWASP Top 10 (2021), OWASP API Security Top 10, Lei 13.709/2018 (LGPD).

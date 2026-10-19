@@ -22,10 +22,10 @@ O Praxis resolve isso com processo. Não burocracia — processo. Cada fase tem 
 │                                                                     │
 │  ┌──────────┐   ┌──────────┐   ┌──────────┐                       │
 │  │ Fase 1   │──►│ Fase 2   │──►│ Fase 3   │                       │
-│  │/discovery│   │ /define  │   │/architect│                       │
+│  │/discovery│   │/architect│   │ /define  │                       │
 │  │          │   │          │   │          │                       │
-│  │Entender  │   │PRDs      │   │ADRs      │                       │
-│  │o projeto │   │Specs     │   │Decisões  │                       │
+│  │Entender  │   │ADRs      │   │PRDs      │                       │
+│  │o projeto │   │Decisões  │   │Specs     │                       │
 │  └──────────┘   └──────────┘   └──────────┘                       │
 │                                     │                              │
 │                                     ▼                              │
@@ -40,7 +40,7 @@ O Praxis resolve isso com processo. Não burocracia — processo. Cada fase tem 
 └─────────────────────────────────────────────────────────────────────┘
 ```
 
-Você não precisa usar todas as fases em todo projeto. Projeto novo do zero? Fase 1 em diante. Refatorar legado? Começa na Fase 0. Já tem código e quer validar? Vai direto pra Fase 6. Feature pontual? Fases 2 + 5 + 6.
+Você não precisa usar todas as fases em todo projeto. Projeto novo do zero? Fase 1 em diante. Refatorar legado? Começa na Fase 0. Já tem código e quer validar? Vai direto pra Fase 6. Feature pontual? Fases 3 + 5 + 6.
 
 ---
 
@@ -52,7 +52,7 @@ O problema clássico de legado: ninguém sabe exatamente o que o sistema faz. As
 
 O `/reverse-engineer` documenta tudo isso antes de qualquer mudança: lógica de negócio, fluxos, telas, regras, dependências. O output é suficiente para entender o sistema sem precisar ler o código original.
 
-**Artefato**: `docs/reverse-engineering/` — documentação completa do legado.
+**Artefato**: `docs/project/legacy/` + `docs/project/codebase-map.md` — documentação completa do legado.
 
 ---
 
@@ -72,7 +72,32 @@ Para projetos com domínio complexo (4+ módulos, regras ricas), o `/discovery` 
 
 ---
 
-## Fase 2 — Definição
+## Fase 2 — Arquitetura
+
+**Skill**: `/architect`
+
+Decisões de arquitetura tomadas sem documentação são uma dívida técnica silenciosa. Meses depois, ninguém lembra por que aquela escolha foi feita, e o time começa a divergir.
+
+O `/architect` cria ADRs (Architecture Decision Records) de forma interativa. Para cada categoria de decisão, ele propõe o padrão de mercado como default e questiona quando você diverge:
+
+> "Zustand é mais adotado para projetos novos — menos boilerplate. Tem motivo para Redux?"  
+> "onChange causa UX ruim. O padrão é onBlur. Quer manter?"
+
+Se você tiver uma boa justificativa, a ADR documenta. Se for fraca, o agent recomenda a alternativa padrão.
+
+A seção **"Regras para Validação"** em cada ADR é o que os agents de checagem leem na Fase 6:
+
+| Tipo | Significado | Violação |
+|------|-------------|---------|
+| `PROIBIDO` | Pattern que NÃO deve existir | ERRO |
+| `OBRIGATÓRIO` | Pattern que DEVE existir | ERRO |
+| `PREFERIDO` | Recomendação | AVISO |
+
+**Artefatos**: `docs/adr/NNNN-titulo.md`, `docs/project/constitution.md`
+
+---
+
+## Fase 3 — Definição
 
 **Skill**: `/define`  
 **Sub-skills**: `/prd-create`, `/prd-validate`, `/prd-decompose`, `/spec-from-prd`
@@ -101,31 +126,6 @@ Spec técnica por feature (requirements, edge cases, success criteria)
 Para módulos grandes ou ambíguos — com muitas fronteiras, decisões em aberto, múltiplas partes funcionais — existe o `/detail`. Ele cria um workspace pré-SDD com ~11 arquivos curtos e propósito único, rastreando decisões e dúvidas com IDs estáveis antes de gerar specs. Evita o erro clássico de forçar uma spec monolítica antes de entender bem o escopo.
 
 **Artefatos**: `docs/prds/`, `docs/specs/NNN-feature/spec.md`
-
----
-
-## Fase 3 — Arquitetura
-
-**Skill**: `/architect`
-
-Decisões de arquitetura tomadas sem documentação são uma dívida técnica silenciosa. Meses depois, ninguém lembra por que aquela escolha foi feita, e o time começa a divergir.
-
-O `/architect` cria ADRs (Architecture Decision Records) de forma interativa. Para cada categoria de decisão, ele propõe o padrão de mercado como default e questiona quando você diverge:
-
-> "Zustand é mais adotado para projetos novos — menos boilerplate. Tem motivo para Redux?"  
-> "onChange causa UX ruim. O padrão é onBlur. Quer manter?"
-
-Se você tiver uma boa justificativa, a ADR documenta. Se for fraca, o agent recomenda a alternativa padrão.
-
-A seção **"Regras para Validação"** em cada ADR é o que os 16 agents de checagem leem na Fase 6:
-
-| Tipo | Significado | Violação |
-|------|-------------|---------|
-| `PROIBIDO` | Pattern que NÃO deve existir | ERRO |
-| `OBRIGATÓRIO` | Pattern que DEVE existir | ERRO |
-| `PREFERIDO` | Recomendação | AVISO |
-
-**Artefatos**: `docs/adr/NNNN-titulo.md`, `docs/project/constitution.md`
 
 ---
 
@@ -165,8 +165,9 @@ O usuário revisa as fatias e aprova antes de avançar.
 ### 5c — Execução em loop (`/execute`)
 
 Roda **em loop por fatia**: implementa uma fatia → roda os gates → **conserta até verde**
-(micro-loop) → marca **DONE no Loop Log** → apresenta o relatório de verificação → **PARA**
-para revisão humana (checkpoint; `--auto [N]` encadeia com guardrails). Quando encontra
+(micro-loop) → verificador independente → marca **DONE no Loop Log** → segue para a próxima
+fatia. Roda autônomo depois que você aprova o pacote no portão final do `/tasks` (guia de
+validação + métricas de prontidão) e só para no realmente bloqueante. Quando encontra
 divergências, atualiza a spec com "Implementation Notes" — mantendo rastreabilidade mesmo
 quando a realidade muda o plano.
 
@@ -178,9 +179,9 @@ quando a realidade muda o plano.
 
 Esta é a fase que fecha o ciclo. O que foi decidido nas ADRs é o que é cobrado aqui.
 
-O `/validate` orquestra até 16 agents especializados dependendo da stack:
+O `/validate` orquestra até 21 agents especializados dependendo da stack:
 
-**Frontend (10 agents)**: estrutura, TypeScript, React, formulários, i18n, roteamento, responsividade, design system, UX patterns, segurança client-side.
+**Frontend (13 agents)**: estrutura, TypeScript, React, formulários, i18n, roteamento, responsividade, design system, UX patterns, segurança client-side, Web Interface Guidelines, clichês de IA e consistência visual.
 
 **Backend (6 agents)**: arquitetura em camadas, DDD, naming, testes, error handling, segurança.
 
@@ -191,7 +192,7 @@ O ADR validator é dinâmico — não tem regras hardcoded. Ele lê todas as ADR
 ```bash
 /validate geral          # todo o projeto
 /validate alteracoes     # só o que mudou (git diff)
-/validate geral full     # todos os agents (antes de release)
+/validate geral --profile full     # todos os agents (antes de release)
 ```
 
 **Artefato**: `docs/validation-reports/YYYY-MM-DD-modulo.md`
@@ -260,7 +261,7 @@ Agents carregam apenas o arquivo relevante ao seu escopo — sem desperdiçar co
 
 Use `/mode` para alternar a qualquer momento. Todos os artefatos existentes são preservados.
 
-### 13. Workspace pré-SDD para módulos grandes e ambíguos
+## Workspace pré-SDD para módulos grandes e ambíguos
 
 Nem todo módulo está pronto para virar spec direto. Quando há múltiplas fronteiras com outros módulos, decisões em aberto, vocabulário ambíguo ou implementação que será dividida em várias iterações, forçar uma spec monolítica gera retrabalho.
 
@@ -276,7 +277,7 @@ Método portável, agnóstico a produto e stack. Útil em qualquer projeto que u
 
 | Situação | Por onde entrar |
 |----------|----------------|
-| Projeto novo | `/setup` → `/discovery` → `/architect` → `/define` → `/implement` |
+| Projeto novo | `/start` → `/discovery` → `/architect` → `/define` → `/implement` |
 | Modernizar legado | `/reverse-engineer` → `/discovery` → `/architect` → `/define` → `/implement` |
 | Adotar projeto existente | `/adopt` (mapeia, cria ADRs, gera baseline) → pipeline normal |
 | Feature nova | `/prd-create` → `/spec-from-prd` → `/implement` → `/validate` |

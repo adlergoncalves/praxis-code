@@ -1,0 +1,13 @@
+agent: check-naming
+regra: "Sufixos obrigatorios — UseCase chamado de Service"
+descricao: Classe que implementa IUseCase com sufixo Service em vez de UseCase (tipo critico)
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: CreateOrderService.cs
+    linha: 3
+    sinal: CreateOrderService
+
+nao_deve_detectar:
+  - Helper
+  - Manager

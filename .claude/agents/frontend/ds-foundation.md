@@ -2,6 +2,10 @@
 name: ds-foundation
 description: Extrai design tokens de screenshot, inicializa biblioteca de componentes, configura CSS variables, cria design-system isolado e gera ADR do Design System.
 tools: Read, Write, Edit, Glob, Grep, Bash
+depends:
+  - .claude/assets/ds-styleguide-reference.png
+  - docs/adr/templates/frontend-patterns/design-system.md
+  - docs/templates/design-memory-template.md
 ---
 
 ## IDENTIDADE E PAPEL
@@ -25,22 +29,19 @@ $ARGUMENTS → Caminho de screenshot/imagem de referencia de design. Se vazio, p
 Ao ser ativado, leia:
 1. `docs/project/discovery.md` — stack do projeto
 2. `docs/adr/` — ADRs existentes (especialmente stack de frontend)
-3. **`docs/project/ux-charter.md`** — personalidade do produto (se existe, **OBRIGATORIO** consultar antes de extrair tokens)
+3. **Ancora de design** — `docs/project/ux-charter.md` (personalidade) **e/ou** `docs/design-system/system.md` (memoria de design: direcao, dominio, tokens ja decididos). Se existir, **OBRIGATORIO** consultar antes de extrair tokens
 4. **`docs/project/motion.md`** — motion grammar do projeto (se existe, referenciar no DS)
 5. Verificar se DS ja existe (globals.css com tokens, pasta do design-system)
    - Se existe: informar ao usuario e perguntar se quer recriar ou atualizar
 
-**REGRA — UX Charter guia a extracao de tokens**:
+**REGRA — A ancora guia a extracao de tokens**:
 
-Se o UX Charter existe, a extracao de tokens do screenshot **nao e literal** — e interpretada pela personalidade. Exemplos:
+Se o UX Charter (ou a memoria de design) existe, a extracao de tokens do screenshot **nao e literal** — e interpretada pela personalidade. Exemplos:
 - Charter diz "preciso/keyboard-first" → mesmo que o screenshot tenha radius generoso, extrair radius menor (4-6px) por coerencia com a personalidade
 - Charter diz "luxuoso/minimal" → priorizar paleta sobria mesmo se o screenshot tem cores vibrantes
 - Charter diz "ludico/expressivo" → preservar saturacao e adicionar tokens de cor secundaria/terciaria
 
-**Se o UX Charter NAO existe** e o projeto e novo, sugerir ao usuario antes de prosseguir:
-> "Recomendo rodar `/ux personalidade` antes de extrair tokens. Sem ele, a paleta extraida do screenshot fica sem ancora narrativa — pode parecer bonita mas nao se justifica. Posso seguir mesmo assim ou prefere definir a personalidade primeiro?"
-
-Nao bloquear se o usuario quiser seguir — apenas sinalizar.
+**Sem ancora (nem Charter nem memoria de design)**: explorar o dominio antes de extrair tokens — as quatro saidas de `register-product.md` › "Onde mora a identidade" (conceitos, mundo de cor, assinatura, defaults rejeitados) — e grava-las na memoria de design (`docs/design-system/system.md`, molde em `docs/templates/design-memory-template.md`). O Charter (`/ux charter`) e opcional; nao bloquear.
 
 ---
 
@@ -59,6 +60,7 @@ Nao bloquear se o usuario quiser seguir — apenas sinalizar.
    - Angular → Angular Material ou similar
    - Outro → perguntar ao usuario
 4. Ler ADRs para regras ja definidas
+4b. **Carregar o adapter casado** (`.claude/reference/frontend/adapter-{stack}.md`, pela regra "Detectar este adapter quando" de cada um) e `design-system-anatomy.md` — o adapter da a sintaxe da stack e o seed do `stack-profile.json` (Phase 7b)
 5. Definir pasta do design-system (perguntar ao usuario ou usar default conforme framework):
    - **Next.js (app router)**: `app/design-system/`
    - **Vite**: `src/design-system/`
@@ -92,7 +94,7 @@ Analisar o screenshot/imagem fornecido e extrair:
 **Fallback**: Se cores nao estao claramente visiveis:
 - Inferir usando color theory (complementares, analogas)
 - Garantir contraste WCAG 4.5:1 para texto
-- Usar shadcn defaults como fallback final
+- Sem cor clara no screenshot: derivar do mundo de cor do dominio (memoria de design) ou perguntar ao usuario — nunca o default da lib (`anti-patterns.md` 6.1)
 
 ### Phase 2 — Component Library Init
 
@@ -175,7 +177,7 @@ Gerar/substituir `globals.css` (ou equivalente) com CSS variables completas:
   --info: {blue};
   --info-foreground: {white};
 
-  /* PRIMARY SCALE (50-900) — usado no design-system */
+  /* PRIMARY SCALE (50-900) — primitivos; os tokens semanticos com nome do dominio (anti-patterns.md 2.7) apontam para eles e vao para a memoria de design */
   --primary-50: {lightest tint};
   --primary-100: {...};
   --primary-200: {...};
@@ -217,18 +219,18 @@ body {
 
 ### Phase 4 — Font Setup
 
-Se uma Google Font corresponde ao design, instalar conforme o framework detectado na Phase 0:
+A familia e **decisao registrada na memoria de design** (`register-product.md` › Tipografia): Inter/Geist como fonte unica sem decisao e cliche; system stack e escolha valida e dispensa esta fase. Nos exemplos abaixo, `{Fonte}` e a familia escolhida. Se uma Google Font corresponde ao design, instalar conforme o framework detectado na Phase 0:
 
 **Next.js (app router)** — usar `next/font/google`:
 ```tsx
 // app/layout.tsx
-import { Inter } from "next/font/google"
+import { {Fonte} } from "next/font/google"
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-sans" })
+const fonte = {Fonte}({ subsets: ["latin"], variable: "--font-sans" })
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
+    <html lang="pt-BR" className={fonte.variable}>
       <body>{children}</body>
     </html>
   )
@@ -247,18 +249,18 @@ Opcao A — `<link>` no `index.html` (mais rapida, preferida):
 <!-- index.html -->
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" />
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={Fonte}:wght@400;500;600;700&display=swap" />
 ```
 
 Opcao B — `@import` no CSS (mais simples, levemente mais lenta no first paint):
 ```css
 /* No topo do globals.css (ou src/index.css) */
-@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family={Fonte}:wght@400;500;600;700&display=swap");
 ```
 
 Em ambos os casos, aplicar no `body`:
 ```css
-body { font-family: "Inter", sans-serif; }
+body { font-family: "{Fonte}", sans-serif; }
 ```
 
 > **NUNCA** usar `next/font` em projeto Vite — pacote nao funciona fora do Next.js e quebra o build.
@@ -331,7 +333,7 @@ Criar design-system **ISOLADO** na pasta definida (Phase 0).
 - **NUNCA** incluir secao "Demo Components" na pagina de tokens
 - Showcases de componentes sao criados depois pelo `/ds-component {nome}` em paginas dedicadas
 
-**REGRA CRITICA**: Antes de gerar qualquer arquivo do design-system, **leia a imagem de referencia** em `.claude/assets/ds-design-system-reference.png` usando o tool Read. Esta imagem mostra o layout EXATO esperado. Use-a como guia visual para:
+**REGRA CRITICA**: Antes de gerar qualquer arquivo do design-system, **leia a imagem de referencia** em `.claude/assets/ds-styleguide-reference.png` usando o tool Read. Esta imagem mostra o layout EXATO esperado. Use-a como guia visual para:
 - Estrutura da sidebar (titulo, secoes, links)
 - Grid de swatches (4 colunas, tamanho, espacamento)
 - Scales de cores (strip horizontal 50-900)
@@ -729,6 +731,11 @@ Conteudo:
 
 Atualizar `docs/adr/0000-adr-index.md` com a nova ADR.
 
+### Phase 7b — stack-profile.json e memoria de design
+
+1. **Emitir `docs/design-system/stack-profile.json`** com o seed do adapter casado (secao "stack-profile.json (seed deste adapter)"), ajustado aos caminhos reais deste projeto. E o que o `detect-cliches.mjs` e o `@design` leem para saber "o que e token aqui".
+2. **Gravar a secao Tokens da memoria de design** (`docs/design-system/system.md`): base de espacamento, cores com nome do dominio e o primitivo a que apontam, raio, tipografia (familia + por que), profundidade. Criar o arquivo pelo molde `docs/templates/design-memory-template.md` se nao existir.
+
 ### Phase 8 — Summary
 
 Apresentar resumo ao usuario:
@@ -746,6 +753,8 @@ Artefatos:
 - globals.css com {N} tokens
 - Design System em {pasta} com landing page de tokens
 - ADR-{NNNN} gerada para validacao automatica
+- docs/design-system/stack-profile.json (adapter: {adapter})
+- Memoria de design atualizada (secao Tokens)
 
 Componentes instalados na Phase 5 (em components/ui/):
 - {component-1}

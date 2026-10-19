@@ -1,12 +1,14 @@
 ---
 description: "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007)."
 user-invocable: true
+depends:
+  - .claude/skills/execute
 ---
 
 # /verify-all
 
 Verificação objetiva de que uma feature está realmente pronta — o gate que autoriza a
-**Completion Promise** (ADR-0007 T4). Não confia no julgamento do modelo: relê o estado
+**Completion Promise** (ADR-0007, seção Completion promise). Não confia no julgamento do modelo: relê o estado
 declarado e o confronta com o **exit code** dos gates reais.
 
 Boris Cherny (Loop Engineering): o fator nº 1 de qualidade é o agente ter como **verificar o
@@ -24,7 +26,7 @@ terminou". Esta skill é esse gate.
 ## O que faz
 
 1. **Lê o Loop Log** em `docs/specs/{feature}/tasks.md` (seção "Estado durável (Loop Log)" —
-   fonte única, ADR-0007 T2). Lista o status de cada fatia (`TODO`/`WIP`/`DONE`/`BLOCKED`).
+   fonte única, ADR-0007 T1). Lista o status de cada fatia (`TODO`/`WIP`/`DONE`/`BLOCKED`/`ABANDONADA`).
 2. **Lê a tabela de Gates** do mesmo `tasks.md` — os comandos literais da stack do projeto
    (o kit é agnóstico; o comando concreto vem daqui).
 3. **Roda os gates objetivos** e captura o **exit code** de cada um:
@@ -32,11 +34,15 @@ terminou". Esta skill é esse gate.
    - `node .claude/scripts/build-gate.mjs .` (se o script existe no projeto);
    - `node .claude/scripts/frontend/check-learnings.mjs <path>` (se existe);
    - os comandos de teste declarados na tabela de Gates (unit sempre; integração/e2e
-     quando o ambiente estiver disponível — senão reporta como NÃO VERIFICADO, sem inventar).
+     quando o ambiente estiver disponível — senão reporta como NÃO VERIFICADO, sem inventar);
+   - `node .claude/scripts/deps-audit.mjs . --dry-run` (dependência vulnerável nova desde o
+     baseline — informativo, não derruba o veredito; `--dry-run` porque esta skill é read-only).
 4. **Confronta**: para cada fatia `DONE`, os gates que a cobrem devem estar **verdes**.
 5. **Anti-gaming (ADR de testes)**: inspeciona o diff/arquivos de teste por sinais de
-   afrouxamento — `.only`/`.skip` deixados, asserts removidos, testes deletados sem ADR que
-   justifique. Reporta como suspeita (não bloqueia sozinho, mas entra no veredito).
+   afrouxamento — `.only`/`.skip` deixados, asserts removidos ou relaxados (`toBe(x)` →
+   `toBeDefined()`), testes deletados sem fonte que justifique, mudança de teste classificada como
+   `ajuste-para-passar` nas Notas do Loop Log. Reporta como suspeita (não bloqueia sozinho, mas
+   entra no veredito).
 
 ## Saída — veredito binário
 
@@ -45,17 +51,17 @@ terminou". Esta skill é esse gate.
 - **🔴 VERMELHO** — ao menos um gate com exit != 0, ou fatia `DONE` sem gate que a cubra, ou
   gaming detectado. Lista o que falhou com o exit code real. **Bloqueia a promessa.**
 - **⚠️ NÃO VERIFICADO** — gate que não pôde rodar (ex.: integração sem Docker). Declarado como
-  tal, nunca contado como verde (honestidade epistêmica — ADR-0007 T4).
+  tal, nunca contado como verde (honestidade epistêmica — ADR-0007, seção Completion promise).
 
 O veredito é **declarado com os exit codes reais**, não com adjetivos. Ex.:
 `check: exit 0 · build-gate: exit 0 · test:integration: NÃO VERIFICADO (Docker down)`.
 
 ## Quando usar
 
-- Pelo `@executor`/`/execute` **antes de marcar a última fatia `DONE`** e emitir a Completion
-  Promise (pré-condição — ver `executor.md`).
+- Pelo `/execute` **no fechamento**, depois de todas as fatias liberadas fechadas e antes da
+  Completion Promise (pré-condição — ver `.claude/skills/execute/SKILL.md`).
 - Manualmente, para auditar se uma feature marcada como pronta realmente passa nos gates.
-- Antes de um merge/PR de uma feature que rodou em `--auto`.
+- Antes de um merge/PR de uma feature que rodou no modo autônomo.
 
 ## Regras
 

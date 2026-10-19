@@ -1,8 +1,9 @@
 # Register: Product — reference canônico (agnóstico)
 
 > Defaults de design para **superfícies de produto** — interfaces task-focused onde o objetivo do usuário é produtividade, não persuasão.
-> **Lido por**: `@ux`, `@ds-foundation`, `@ds-component`, `@design`, `@paper-prototype`, `@check-*` quando o Charter declara `register: product`.
+> **Lido por**: `@ux`, `@ds-foundation`, `@ds-component`, `@design`, `@paper-prototype`, `@check-*` e a revisão visual do `/execute` quando o Charter ou a memória de design (`docs/design-system/system.md`) declaram `register: product`.
 > **Par**: ver `register-brand.md` para superfícies de marketing/identidade.
+> **Método detalhado** (exploração de domínio, hierarquia, superfícies, polish): `third-party/interface-design/interface-design.md`. Este arquivo é a versão curta e a regra do kit; em conflito, este arquivo vence.
 
 ---
 
@@ -19,13 +20,32 @@ Pergunta-chave: *o usuário precisa **terminar uma tarefa** rapidamente ou preci
 
 ## Princípio central
 
-> **A interface some na tarefa.**
+> **A interface some na tarefa — e ainda assim só poderia ser deste produto.**
 
-Em produto, beleza não é decoração — é **previsibilidade**. Usuário experiente quer reconhecer padrões instantaneamente (Jakob's Law) e atravessar a interface sem pensar nela. Estranheza inexplicada custa caro: cada elemento "criativo" sem motivo é micro-atrito.
+Duas metades, e o kit falhava na segunda. **Previsibilidade**: o usuário experiente reconhece padrões na hora (Jakob's Law) e atravessa a interface sem pensar nela; estranheza inexplicada custa caro. **Identidade**: previsível não é genérico. Linear, Stripe e Vercel são previsíveis e inconfundíveis — porque cada decisão foi *tomada*, a hierarquia é inequívoca e cem detalhes estão certos ao mesmo tempo.
 
-**O teste**: um especialista em ferramentas de categoria líder (Linear, Figma, Stripe, Notion) confiaria nessa interface imediatamente, ou notaria detalhes esquisitos?
+**O teste**: tire o nome do produto da tela. Dá para saber para que ela serve e de quem é? Se outra IA, com um pedido parecido, entregaria substancialmente a mesma tela, ela defaultou.
 
-O modo de falha **não é minimalismo** — é **estranheza inexplicada**: botões super-decorados, controles de formulário inconsistentes entre si, motion gratuito, display font onde label deveria estar, acento de cor em estado inativo.
+---
+
+## Onde mora a identidade em produto
+
+Produto não ganha identidade com ornamento. Ganha com decisões que o default não toma:
+
+1. **Domínio antes de visual** — antes de qualquer layout: 5+ conceitos do mundo do produto, 5+ cores que existem nesse mundo, **uma assinatura** (elemento visual, estrutural ou de interação que só existiria aqui) e 3 defaults nomeados e rejeitados. Sem os quatro, a proposta não sai.
+2. **Um ponto focal por tela** — a coisa que o usuário veio fazer domina (tamanho, peso, contraste ou espaço em volta). Promover sem rebaixar o resto não é hierarquia.
+3. **O dado conta a história** — um número na tela não é design. "3 de 10" pode ser anel de progresso, delta, sparkline, linha do tempo, quadro. Escolher a expressão pelo significado para quem olha.
+4. **Densidade decidida em px** — o mesmo número repetido em toda a superfície (painel de ferramenta 12–16px; respiro maior só onde o conteúdo pede). Ritmo desigual de propósito: zonas densas de controle cedem a zonas abertas de conteúdo.
+5. **Tokens com nome do domínio** — quem lê só os tokens deveria adivinhar o produto (`--tinta`, `--pergaminho` × `--gray-700`, `--surface-2`).
+6. **Cor que vem de algum lugar** — a paleta sai do mundo de cor do domínio, não de um tema aplicado por cima.
+
+Antes de **cada** componente, declarar (curto): intenção · ponto focal e como vence · paleta e por quê · profundidade · superfícies · tipografia · espaçamento. Sem o porquê de cada item, é default.
+
+**Os quatro testes antes de mostrar** (do método de origem):
+- **Swap** — trocar a fonte pela de sempre e o layout por um template muda alguma coisa? Onde não mudaria, defaultou.
+- **Squint** — com os olhos semicerrados, a hierarquia sobrevive? Nada salta com aspereza?
+- **Assinatura** — apontar 5 lugares onde a assinatura aparece. "A sensação geral" não conta.
+- **Token** — ler os tokens em voz alta: pertencem a este produto ou a qualquer um?
 
 ---
 
@@ -33,65 +53,73 @@ O modo de falha **não é minimalismo** — é **estranheza inexplicada**: botõ
 
 ### Tipografia
 
-- **Família**: system font stacks são preferidos (`-apple-system`, `Segoe UI`, `Inter`, `Roboto`). Uma sans-serif única para todos os níveis.
-- **Escala**: modesta (1.125 — 1.2). Layouts densos exigem diferenças pequenas entre níveis; escalas grandes (1.333+) introduzem ruído.
-- **Display fonts**: proibido em labels, valores, dados. Reservado pra hero de landing (e isso é register brand, não product).
-- **Hierarquia**: peso + cor + posição. Tamanho é o último recurso (ver `heuristics.md` #2).
+- **Família escolhida por decisão, registrada na memória de design.** System stack (`-apple-system`, `Segoe UI`, `Roboto`) é escolha válida quando declarada como decisão ("ferramenta nativa"). Inter/Geist como única fonte **sem decisão registrada** é o clichê 1.1 do `anti-patterns.md`.
+- **Escala por razão, não por gosto**: ~1.2 para UI densa/calma, ~1.25 para a maioria dos produtos. De um corpo de 14px a 1.25: `11 · 14 · 16 · 18 · 22 · 28 · 44+`.
+- **Peso e cor fazem mais hierarquia que tamanho.** Um mesmo 14px sustenta três níveis: valor 600/primário, rótulo 500/secundário, meta 400/apagado. Rampa de texto em **4 níveis** (primário, secundário, terciário, apagado).
+- **Números que mudam** em `tabular-nums`. Tracking negativo em títulos grandes.
+- **Display fonts**: proibido em labels, valores, dados.
 
 ### Cor
 
-- **Paleta restrained**. Neutros tintados (não cinza puro, ver `heuristics.md` #1) + 1 cor de acento.
-- **Acento reservado** para: ação primária, item selecionado, link, foco. Acento em decoração ou em estado inativo = ruído.
-- **Vocabulário semântico rico de estados**:
-  - `hover`, `focus`, `active`, `disabled`, `selected`, `loading`, `error`, `warning`, `success`, `info`
-  - **Toda interativa precisa cobrir TODOS os estados aplicáveis**. Faltar um estado = bug de UX.
-- **Cor = significado funcional**: vermelho = erro/destrutivo; verde = sucesso; amarelo = aviso; primária = ação. Não usar verde só "porque combina".
+- **~60/30/10**: superfície neutra dominante, um tom secundário, ~10% de acento.
+- Neutros **tingidos** com um matiz só em todas as superfícies (muda a luminosidade, não o matiz).
+- **Acento reservado** para ação primária, selecionado, link, foco. Acento em decoração ou em estado inativo = ruído.
+- **Vocabulário semântico de estados**: `hover`, `focus`, `active`, `disabled`, `selected`, `loading`, `error`, `warning`, `success`, `info` — toda interativa cobre os estados aplicáveis. Faltar um estado = bug de UX.
+- **Cor = significado funcional**: vermelho = erro/destrutivo; verde = sucesso; amarelo = aviso; primária = ação.
+
+### Superfícies e profundidade
+
+- **Uma estratégia de profundidade**, comprometida: só bordas (ferramenta densa), sombras sutis, sombras em camadas ou degraus de superfície. Misturar é o tell.
+- **Elevação sussurrada**: poucos pontos percentuais de luminosidade por degrau. Bordas de baixa opacidade, encontráveis mas não gritantes.
+- Sidebar no mesmo fundo do canvas, com borda sutil — não um "mundo da sidebar" de outra cor. Inputs levemente mais escuros que o entorno.
+- **Raio concêntrico**: `externo = interno + padding`.
 
 ### Layout & Componentes
 
-- **Grids previsíveis**. Padrões standard (top nav, sidebar fixa, breadcrumbs, tabs) são **features, não restrições**.
-- **Estado pleno**: todo interativo (botão, input, card clicável) tem default + hover + focus + active + disabled + loading + error visualmente distintos.
-- **Componentes consistentes entre telas**: o mesmo `Button` na tela A e na tela B se comporta e parece igual. Inconsistência entre telas é o sintoma #1 de drift visual.
-- **Sem reinventar affordances**: scrollbar custom, cursor custom, dropdown que abre pra cima sem motivo = atrito sem retorno.
+- **Padrões standard** (top nav, sidebar, breadcrumbs, tabs) são features — mas cada padrão tem expressões infinitas: a mesma largura de sidebar e o mesmo grid de cards em toda tela é o que denuncia geração automática.
+- **Proporções dizem algo**: 280px de sidebar diz "a navegação serve o conteúdo"; 360px diz "são pares". Escolher a largura pelo que ela afirma.
+- **Componentes consistentes entre telas** — o mesmo `Button` se comporta e parece igual. **Usar o que existe**: HTML nativo → primitivo acessível (headless) → componente do DS; nunca `<div onClick>` no lugar de `<button>`.
+- **Sem reinventar affordances**: scrollbar custom, cursor custom, dropdown que abre pra cima sem motivo.
 
 ### Motion
 
-- **150-250ms** para microinterações. `ease-out` default.
-- Motion **comunica estado**, não decora. Cada animação responde "o que mudou?" ou "o que causou o quê?".
-- **Zero orquestração de carregamento**. Stagger de KPI cards entrando em sequência é register brand, não product.
-- `bounce`, `dramatic` (>500ms), animações em hover prolongadas → proibido em product.
+- **< 300ms** em UI: press 100–160ms, tooltip/popover 125–200ms, dropdown 150–250ms, modal/drawer 200–300ms.
+- **Ease-out customizado** (ex.: `cubic-bezier(0.23, 1, 0.32, 1)`); nunca `ease-in` em entrada. Só `transform` e `opacity`; nunca `transition: all`.
+- Ação repetida 100+×/dia (atalho, command palette) **não anima**. Press feedback `scale(0.97)`. Popover nasce do gatilho.
+- Motion **comunica estado**. Zero orquestração de carregamento; `bounce` e >300ms em microinteração → proibido neste register (o detector acusa acima de 600ms em qualquer register — `anti-patterns.md` 5.2).
 
 ### Densidade
 
-- **Média-alta densidade**. Espaço em branco serve hierarquia, não decoração. Cards com muito padding interno em dashboard = telas precisam de mais scroll.
-- Tabelas: linha compacta (40-48px), padding interno modesto, separação por `border` sutil ou zebra muito leve.
+- **Média-alta**, decidida e repetida. Espaço em branco serve hierarquia, não decoração.
+- Tabelas: linha compacta (40-48px), padding modesto, separação por borda sutil ou zebra muito leve.
 
 ### Copy
 
-- Direto, declarativo, terceira pessoa ou imperativo.
-- Sem emoji em UI funcional. Sem "Oi! 👋" em onboarding de ferramenta.
-- Erros: específicos e acionáveis ("CPF inválido — use formato 000.000.000-00"), não vagos ("Erro ao salvar").
-- Labels: substantivo concreto ("Nome", "E-mail"), não pergunta ("Qual o seu nome?").
+- Do ponto de vista do usuário: ele gerencia "notificações", não "configuração de webhook".
+- Voz ativa; o botão diz o que acontece ("Salvar alterações", não "Enviar") e a ação mantém o nome no fluxo inteiro ("Publicar" → "Publicado").
+- Erros: específicos e acionáveis ("CPF inválido — use 000.000.000-00"), sem pedir desculpas, nunca vagos. Tela vazia é convite para agir.
+- **Sentence case** em títulos e botões (Title Case só se o projeto decidir). Sem emoji em UI funcional.
 
 ---
 
 ## Proibido neste register
 
+- Tela sem ponto focal; hierarquia só por tamanho
+- Layout monótono (mesmo card, mesmo gap, mesma densidade de ponta a ponta)
+- Estratégias de profundidade misturadas; bordas sólidas ásperas
 - Motion decorativo (sem comunicar estado)
-- Componentes inconsistentes entre telas
+- Componentes inconsistentes entre telas; controle feito à mão onde um primitivo acessível existe
 - Display fonts em labels/valores
 - Affordances reinventadas (scrollbar custom, cursor custom sem motivo)
-- Cor forte em estado inativo
+- Cor forte em estado inativo; mais de um acento
 - Hero metrics rows (4 KPI cards em linha como decoração)
-- Gradientes em fundo de tela ou cards
-- Glassmorphism decorativo
-- Sombras excessivas em flat UI
+- Gradientes em fundo de tela ou cards; glassmorphism decorativo
 - Ícones decorativos antes de cada heading (rounded square tile)
 
 ---
 
 ## Como usar este reference
 
-Quando o Charter do projeto declara `register: product` (ou quando a *surface* específica é product mesmo num projeto híbrido), **todo agent de front carrega este arquivo antes de propor ou validar**. Os defaults aqui **são a baseline** — só são contradiabolizados se houver justificativa explícita no Charter.
+Quando o Charter ou a memória de design do projeto declaram `register: product` (ou quando a *surface* específica é product mesmo num projeto híbrido), **todo agent de front carrega este arquivo antes de propor ou validar**, junto com `docs/design-system/system.md` (memória de design do projeto). Os defaults aqui **são a baseline**; a memória de design e o Charter podem decidir diferente, e o que eles decidem é decisão, não desvio.
 
 Se o produto é híbrido (ex.: SaaS com landing brand + app product), declarar register **por superfície** no Charter.

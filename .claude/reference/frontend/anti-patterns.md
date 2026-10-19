@@ -1,7 +1,7 @@
 # Anti-patterns / AI Slop — reference canônico (agnóstico)
 
 > Catálogo de clichês recorrentes em UI gerada por IA. **Conhecimento que alimenta o detector** (`detect-cliches.mjs`).
-> **Lido por**: `@check-ai-cliches` (interpreta findings), `@check-design`, `@check-visual-consistency`, `@ux` (modo critique), `@design` (modo distill, polish).
+> **Lido por**: `@check-ai-cliches` (interpreta findings), `@check-visual-consistency`, `@ux` (interface, direção), `@design` (critique, deslop, distill, polish), revisão visual do `/execute`.
 > **Implementado em código** por `.claude/scripts/frontend/detect-cliches.mjs` (regras determinísticas) — este arquivo é a **base de conhecimento** que justifica cada regra.
 
 ---
@@ -25,7 +25,7 @@ Cada anti-pattern tem:
 ### 1.1 Inter (ou Geist / Söhne) para tudo, sem pairing
 - **Sintoma**: stack tipográfica única do projeto inteiro é `Inter, sans-serif`.
 - **Por que é slop**: é a fonte que toda IA escolhe quando não tem ordem em contrário. Não comunica identidade.
-- **Detecção**: determinística — única `font-family` declarada no projeto E é Inter/Geist/Söhne SEM display font pareada, em surface brand.
+- **Detecção**: determinística (info) — `font-family` com Inter/Geist/Söhne (`typography/overused-font`). Julgamento: é clichê quando é a única fonte **sem decisão registrada** na memória de design, em qualquer register.
 - **Substituto**: pairing display+workhorse em brand; em product, system stack (`-apple-system, BlinkMacSystemFont, ...`) é até melhor — comunica "ferramenta nativa".
 
 ### 1.2 Display font em label/valor/dado
@@ -39,6 +39,12 @@ Cada anti-pattern tem:
 - **Por que é slop**: tamanho é a ferramenta menos refinada de hierarquia (ver `heuristics.md` #2 e #5).
 - **Detecção**: heurístico (julgamento via output-level — pesos uniformes em níveis múltiplos).
 - **Substituto**: peso + cor + posição + tamanho. Tamanho é o último recurso.
+
+### 1.4 Tratamentos tipográficos de template
+- **Sintoma**: uma palavra do título em itálico/negrito/outra cor; rótulo em CAIXA-ALTA espaçada acima de cada heading (eyebrow); rótulos supérfluos sobre o conteúdo; numeração `01 / 02 / 03` em conteúdo que não é sequência; meta-strings com ponto médio (`A · B · C`); `→` colado em todo link e botão.
+- **Por que é slop**: são os marcadores mais frequentes de página gerada — aparecem qualquer que seja o assunto. Estrutura visual é informação: borda, numeração, eyebrow e divisor só entram quando codificam algo do conteúdo.
+- **Detecção**: julgamento (`@check-ai-cliches`, revisão visual).
+- **Substituto**: a ênfase vem das palavras e da hierarquia; numeração só em sequência real (passo a passo, linha do tempo). Fonte: `third-party/frontend-design/frontend-design.md`.
 
 ---
 
@@ -59,7 +65,7 @@ Cada anti-pattern tem:
 ### 2.3 Cinza neutro absoluto sem tonalidade
 - **Sintoma**: neutros em `hsl(0, 0%, X%)` — zero saturação.
 - **Por que é slop**: neutros tintados (com saturação muito baixa do primary) fazem a paleta coesa.
-- **Detecção**: **determinística** — regex de neutros sem saturação em paleta com primary não-neutro.
+- **Detecção**: julgamento (`@check-design`, revisão visual) — o detector ainda não tem regra para neutro sem saturação.
 - **Substituto**: neutros com 2-4% de saturação do primary.
 
 ### 2.4 Gradient text via `background-clip`
@@ -79,6 +85,20 @@ Cada anti-pattern tem:
 - **Por que é slop**: outro clichê de "futurista" genérico.
 - **Detecção**: heurístico — `box-shadow` com cor não-neutra em blur >20px.
 - **Substituto**: sombras neutras escaladas por elevação.
+
+---
+
+### 2.7 Tokens com nome de template
+- **Sintoma**: `--gray-700`, `--surface-2`, `--primary-500` como vocabulário inteiro do produto; ou literais (`bg-white`, `border-gray-200`, `#fff`) onde o sistema tem tokens.
+- **Por que é slop**: nomes de template produzem decisões de template. Quem lê só os tokens não consegue adivinhar o produto.
+- **Detecção**: julgamento (teste do token — `register-product.md`); literais já são `tokens/hardcoded-color` no detector.
+- **Substituto**: tokens semânticos com nome do domínio, mapeados a primitivos.
+
+### 2.8 Paleta de assistente
+- **Sintoma**: fundo creme (perto de `#F4F1EA`) com serifa de alto contraste e acento terracota/argila (perto de `#D97757`); ou fundo quase preto com um único acento verde-ácido ou vermelhão.
+- **Por que é slop**: são as duas paletas para onde a geração por IA converge hoje. A terracota `#D97757` é a cor de interação do próprio Claude — num projeto de cliente, denuncia a origem.
+- **Detecção**: **determinística** para os dois hex (`color/assistant-palette`, info); o resto é julgamento.
+- **Substituto**: paleta tirada do mundo de cor do domínio (`register-product.md` › "Onde mora a identidade").
 
 ---
 
@@ -116,18 +136,32 @@ Cada anti-pattern tem:
 
 ---
 
+### 3.6 Tela sem ponto focal
+- **Sintoma**: tudo do mesmo tamanho, peso e espaçamento; o olho não tem onde pousar ("estacionamento").
+- **Por que é slop**: é o maior separador entre "parece projetado" e "parece gerado" — e não aparece em nenhuma linha de CSS isolada, só na tela renderizada.
+- **Detecção**: julgamento sobre a tela renderizada (teste squint na revisão visual do `/execute` e no `/design`).
+- **Substituto**: nomear o elemento focal antes de construir e fazê-lo vencer; rebaixar o resto de propósito.
+
+### 3.7 Profundidade misturada / bordas fazendo o trabalho do espaço
+- **Sintoma**: bordas sólidas de 1px em tudo + sombras pesadas avulsas; estrutura desenhada com linhas em vez de espaço e degrau de superfície; sidebar de outra cor criando "dois mundos".
+- **Por que é slop**: estrutura que grita; nenhuma estratégia de profundidade foi escolhida.
+- **Detecção**: julgamento (lente "Surfaces & depth" do design review).
+- **Substituto**: uma estratégia de profundidade só; bordas de baixa opacidade; espaço e tom antes de linha.
+
+---
+
 ## 4. Acessibilidade
 
 ### 4.1 Texto colado na borda (sem padding lateral)
 - **Sintoma**: texto encosta na borda do card / da viewport em mobile.
 - **Por que é slop**: indica zero atenção ao detalhe.
-- **Detecção**: **determinística** — output-level, computed `padding-left/right` < 12px em container de texto.
+- **Detecção**: heurístico (output-level) — revisão visual na tela renderizada; o detector de código não mede padding computado.
 - **Substituto**: padding mínimo 16px em mobile, 24px+ em desktop.
 
 ### 4.2 Contraste <4.5:1 em texto
 - **Sintoma**: cinza claro sobre fundo claro; cinza médio sobre cinza médio.
 - **Por que é slop**: viola WCAG AA. Frequente em "muted text" exagerado.
-- **Detecção**: **determinística** — output-level (cor rendered + bg rendered, cálculo de razão).
+- **Detecção**: heurístico (output-level) — revisão visual e `@check-web-guidelines`; o detector de código não calcula contraste renderizado.
 - **Substituto**: muted-foreground com contraste mínimo 4.5:1 (AA) ou 7:1 (AAA) sobre seu bg.
 
 ### 4.3 Touch target <44x44px
@@ -151,6 +185,7 @@ Cada anti-pattern tem:
 - **Por que é slop**: motion lento em microinteração trava a percepção de responsividade (Doherty Threshold).
 - **Detecção**: **determinística** — `transition-duration: >600ms` em hover/focus/active.
 - **Substituto**: respeitar `motion-design.md` buckets (150-300ms para interações).
+- **Limiar por register**: 600ms é o limite universal que o detector acusa; em register **product** o teto é 300ms (`register-product.md`) — conferido no julgamento (revisão visual, `@check-design`).
 
 ### 5.3 Modal como primeira solução
 - **Sintoma**: tudo abre em modal — edição rápida, confirmação, formulário longo, info contextual.
@@ -162,11 +197,11 @@ Cada anti-pattern tem:
 
 ## 6. Comportamentais (detectáveis ao revisar features)
 
-### 6.1 Decisão default sem justificativa do Charter
-- **Sintoma**: toda escolha de UI é "o default da lib" (shadcn-blue, Inter, radius 8px) sem ancoragem no Charter.
-- **Por que é slop**: é o sintoma raiz — sem Charter, tudo cai no template estatístico.
-- **Detecção**: validação do gate de uso — features implementadas SEM Charter referenciado.
-- **Substituto**: o Charter conduz; toda decisão visual cita um atributo do arquétipo.
+### 6.1 Decisão default sem âncora
+- **Sintoma**: toda escolha de UI é "o default da lib" (shadcn-blue, Inter, radius 8px) sem ancoragem no Charter nem na memória de design.
+- **Por que é slop**: é o sintoma raiz — sem âncora, tudo cai no template estatístico.
+- **Detecção**: gate de frontend do `/execute` — feature de UI sem âncora de design (Charter ou memória de design).
+- **Substituto**: a âncora conduz; toda decisão visual cita um atributo do Charter ou uma decisão da memória de design.
 
 ### 6.2 Inconsistência entre telas (drift visual)
 - **Sintoma**: `Button` na tela A com `radius 8` e shadow; na tela B com `radius 4` e sem shadow. Mesmo componente, comportamento diferente.
@@ -176,10 +211,27 @@ Cada anti-pattern tem:
 
 ---
 
+## 7. Clusters atuais (calibração)
+
+> Para onde a geração de UI por IA converge **hoje** — atualizar quando as fontes mudarem.
+> Fonte: `third-party/frontend-design/frontend-design.md` (seção "Process"). Todos são
+> legítimos para algum briefing; o problema é aparecer **qualquer que seja o assunto**. Onde o
+> briefing ou a memória de design pede um deles, segue o briefing.
+
+1. **Creme + serifa + terracota** — ver 2.8.
+2. **Quase preto + um acento ácido** — ver 2.8.
+3. **Broadsheet** — fios finos, raio zero, colunas densas de jornal.
+4. **Kit de cards SaaS** — conteúdo picado em cards idênticos, um raio em tudo, a mesma sombra cinza suave, gradiente como decoração (ver 3.5, 3.7).
+5. **Cromo de template** — eyebrows em caixa-alta, meta-strings com ponto médio, monoespaçada em rótulo de dado, `→` em todo link, quase-preto tingido (`#0B0B0B`, `#111`) no lugar do preto (ver 1.4).
+
+O substituto do 2.2 (preto com tom) **não pode virar o novo default**: o tom vem do mundo de cor do domínio, não de um valor fixo.
+
+---
+
 ## Como o detector usa este arquivo
 
 `detect-cliches.mjs` implementa **as regras marcadas como "determinística"** — escritas como código próprio, lendo `docs/design-system/stack-profile.json` para saber "o que é token" e rodar a regra de forma agnóstica.
 
-As regras **heurísticas/julgamento** ficam no `@check-ai-cliches` (agent LLM) e no `@check-design` — pegam o que regex não pega, mas com contexto.
+As regras **heurísticas/julgamento** ficam no `@check-ai-cliches` (agent LLM) e na revisão visual (`/design critique`, `/execute`) — pegam o que regex não pega, mas com contexto.
 
 **Calibração**: começar conservador. Falsos-positivos viram entradas em `frontend-learnings.md`; thresholds ajustam ao longo do tempo. Este arquivo evolui com as descobertas — não é estático.

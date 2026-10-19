@@ -30,14 +30,39 @@ Trazer um projeto em andamento para dentro do ecossistema do kit, sem impacto no
 /start → /adopt → (projeto adotado) → /implement, /debug, /quickfix, /validate...
 ```
 
+## Trilha minima
+
+Depois da linha escolhida, o dia a dia cabe em cinco comandos — e o Praxis (ligado por padrao)
+propoe os demais quando o estado do projeto pede:
+
+| Comando | Para que |
+|---|---|
+| `/start` | Entrada unica: identifica a linha de trabalho e diz o proximo passo |
+| `/define` | Da ideia ao PRD e a spec da feature |
+| `/implement` | Da spec ao pacote aprovado e ao loop autonomo por fatia |
+| `/quickfix` | Ajuste trivial, sem cerimonia |
+| `/debug` | Investigacao de bug |
+
+Ao terminar o `/start`, mostrar esta tabela uma vez (curta) junto do primeiro comando.
+
 ## Execucao
+
+### Passo 0 — Montar o nucleo (ADR-0009)
+
+A semente traz so este comando e o `praxis.mjs`. Se `.claude/agents/orchestration/praxis.md` nao existe, rodar **antes de qualquer pergunta**:
+
+```bash
+node .claude/praxis/praxis.mjs init
+```
+
+Puxa o nucleo (Praxis, `/mode`, `/setup`, hooks de aprendizado) e copia as sementes de projeto (`docs/project/`). Sem anuncio; so avisar se falhar (sem rede, repositorio fora do ar) — com o comando para rodar depois.
 
 ### Passo 1 — Identificar Situacao
 
 Perguntar ao usuario:
 
 ```
-Bem-vindo ao Claude Code Template!
+Bem-vindo ao Praxis!
 
 Qual e a sua situacao?
 
@@ -80,6 +105,18 @@ Antes de direcionar, verificar o que ja existe:
 - `docs/specs/` → Specs existem?
 
 Se ja tem artefatos, mostrar resumo do estado e sugerir retomada do ponto correto.
+
+### Passo 2b — Puxar a trilha da linha
+
+Com a linha escolhida, puxar de uma vez as skills do caminho comum (idempotente, sem anuncio):
+
+| Linha | Comando |
+|---|---|
+| Novo Software | `node .claude/praxis/praxis.mjs add --module linha-novo` |
+| Modernizar Legado | `node .claude/praxis/praxis.mjs add --module linha-legado` |
+| Adotar Projeto | `node .claude/praxis/praxis.mjs add --module linha-adocao` |
+
+Os modulos de stack (frontend, backend, DS, DDD) sao puxados pelo `/setup`. Tudo o mais entra na hora do uso (regra em `.claude/praxis/rules.md`).
 
 ### Passo 3 — Direcionar
 

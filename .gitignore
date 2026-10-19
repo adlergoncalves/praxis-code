@@ -46,6 +46,10 @@ temp/
 # Claude Code local settings (not shared)
 .claude/settings.local.json
 
-# Praxis — estado local gerado pelos hooks (nao versionar)
+# Praxis — estado local gerado pelos hooks e pelo praxis.mjs (nao versionar)
 .claude/hooks/.capture-cursor.json
 docs/project/state.md
+docs/project/learnings/ledger-auto.md
+.claude/praxis.lock
+.claude/praxis.update.json
+.claude/praxis.check.json

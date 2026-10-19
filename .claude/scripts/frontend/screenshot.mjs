@@ -1,8 +1,9 @@
 #!/usr/bin/env node
-// screenshot.mjs — Captura screenshot do app rodando para o loop visual do front (Fase 3, Passo 7).
+// screenshot.mjs — Captura screenshot do app rodando para a critica visual do front.
 //
-// Usado pelo loop "screenshot pos-build" do impeccable-style: @check-visual-consistency e @design critique
-// leem o PNG resultante para validar/criticar contra o brief + Charter.
+// Usado pela critica de qualidade — /design critique, @check-visual-consistency e a revisao visual
+// do /execute —, que leem o PNG resultante para criticar contra o brief e a ancora de design.
+// Print serve a critica, nao a fidelidade (fidelidade e por valores).
 //
 // Uso (direto):
 //   node .claude/scripts/frontend/screenshot.mjs <url> [--viewport WxH] [--out PATH] [--full-page] [--wait SELECTOR]
@@ -179,8 +180,11 @@ async function main() {
 }
 
 // Executa main apenas se chamado direto
-const isDirectRun = import.meta.url === `file://${process.argv[1].replace(/\\/g, '/')}` ||
-                    import.meta.url.endsWith(process.argv[1].split(/[\\/]/).pop());
+const entry = process.argv[1]; // undefined quando importado via `node -e` ou como modulo
+const isDirectRun = !!entry && (
+  import.meta.url === `file://${entry.replace(/\\/g, '/')}` ||
+  import.meta.url.endsWith(entry.split(/[\\/]/).pop())
+);
 if (isDirectRun) {
   main();
 }

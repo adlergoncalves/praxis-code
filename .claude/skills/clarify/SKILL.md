@@ -27,17 +27,19 @@ Deteccao e resolucao de ambiguidades em especificacoes.
 
 ## Execucao
 
-Delegar ao agent `@clarifier` que:
+Roda **nesta sessao**, usando `.claude/agents/product/clarifier.md` como roteiro: perguntar e
+esperar a resposta e conversa, e subagente nao conversa (`.claude/praxis/rules.md`).
 
-1. Le spec completa + constitution + ADRs
+1. Le spec completa + constitution + ADRs (a varredura pesada pode ir ao `@clarifier`, que
+   devolve as ate 5 perguntas priorizadas, cada uma com resposta recomendada — sem perguntar nada)
 2. Para cada secao, aplica taxonomia de 9 categorias
 3. Prioriza por **(Impacto x Incerteza)**
 4. Gera **max 5 perguntas** por sessao
-5. Para cada pergunta:
-   - Apresenta resposta recomendada com raciocinio
-   - Aguarda resposta do usuario
-6. Integra respostas na spec (atualizacoes atomicas)
-7. Registra em secao `## Clarifications` → `### Session {data}`
+5. Pergunta **uma por vez**, com a resposta recomendada e o raciocinio, e espera a resposta
+6. Integra cada resposta na spec (atualizacao atomica da secao afetada)
+7. Registra a decisao em `## Decisões Fechadas (gate)` (`D-NN | Decisão | Resolução | Quando`);
+   decisao de design/implementacao que pode esperar vai para `### Decisões Diferidas`, com
+   opcoes + default + criterio
 
 ## Formato de Pergunta
 
@@ -53,7 +55,7 @@ Delegar ao agent `@clarifier` que:
 - Max 5 perguntas por sessao
 - Se spec nao tem ambiguidades → reportar que esta clara
 - Constitution e fonte de autoridade (regras nao-negociaveis)
-- Marcar items nao resolvidos como `[NEEDS CLARIFICATION: descricao]` (max 3)
+- Item nao resolvido: linha em Decisões Fechadas com `[REQUER RESPOSTA DO PM]` (max 3) — o pacote nao passa do portao final com ela aberta
 
 ## Gestao de Contexto
 

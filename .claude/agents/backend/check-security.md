@@ -2,6 +2,8 @@
 name: check-security
 description: Valida seguranca backend — SQL injection, autenticacao/autorizacao em endpoints, secrets, sanitizacao de input, audit trail e RBAC/ABAC. Detecta vulnerabilidades e oportunidades de evolucao de seguranca.
 tools: Read, Glob, Grep
+depends:
+  - docs/adr/0008-seguranca-e-lgpd.md
 ---
 
 ## ENTRADA

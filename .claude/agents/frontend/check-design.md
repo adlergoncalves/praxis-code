@@ -35,6 +35,7 @@ Ler ADRs em `docs/adr/` sobre Design System, tokens, componentes. Verificar se e
 **Adicionalmente, carregar (se existirem)**:
 - `docs/project/motion.md` — motion grammar do projeto (gerada via `/ux motion`). Define duracoes, easings e microinteracoes padrao. **Toda animacao no codigo deve ser validavel contra este documento**
 - `docs/project/ux-charter.md` — personalidade do produto. Permite validar se decoracoes de UI (sombras, radius, densidade) estao coerentes com os atributos declarados
+- `docs/design-system/system.md` — memoria de design: tokens, profundidade, densidade e padroes de componente decididos. O que esta la e decisao, nao achado
 
 ## EXECUCAO
 
@@ -57,6 +58,10 @@ Ler ADRs em `docs/adr/` sobre Design System, tokens, componentes. Verificar se e
 ### 6. Verificar inline styles para valores fixos
 - Grep `style=\{\{[^}]*:\s*['"][^'"]+['"]` (inline style com valor string fixo, nao variavel) → AVISO
 
+### 6b. Verificar sincronia DS ↔ app
+- Componente em `components/ui/` (ou pasta equivalente do DS) sem pagina de showcase no design-system → AVISO
+- Pagina de showcase de componente que nao existe mais no app → AVISO
+
 ### 7. Verificar se DS existe e e importado
 - Verificar se existe `design-system/` ou `@/design-system` no projeto
 - Se DS existe: verificar se componentes de UI sao importados do DS ou de libs diretas
@@ -70,12 +75,13 @@ Aplicar **apenas se** `docs/project/motion.md` existe.
 - Para cada duracao encontrada, comparar com tabela do motion.md:
   - Duracao fora dos buckets canonicos (instant 100ms, fast 150-200ms, normal 250-300ms, slow 400-500ms, dramatic 600ms+) → **AVISO**: "duracao Xms fora dos buckets definidos no motion.md"
   - Duracao >600ms em microinteracao (hover, focus, click) → **AVISO**: "animacao excessivamente longa para este intent"
+  - Register product (Charter ou memoria de design) e microinteracao >300ms → **AVISO**: "acima do teto de 300ms do register product"
   - Animacao em hover/focus sem easing definido (linear) → **AVISO**: "easing implicito linear — preferir ease-out conforme motion.md"
 - Grep `animation:.*\d+s|transition:.*\d+s` (segundos em vez de ms) → **AVISO**: "usar ms para precisao, conforme motion.md"
 
-### 9. Verificar coerencia com UX Charter (se existe)
+### 9. Verificar coerencia com a ancora (Charter ou memoria de design)
 
-Aplicar **apenas se** `docs/project/ux-charter.md` existe e declara atributos como "preciso", "minimal", "luxuoso".
+Aplicar **apenas se** existe ancora (`docs/project/ux-charter.md` ou `docs/design-system/system.md`) que declara atributos como "preciso", "minimal", "luxuoso".
 
 - Charter "preciso/minimal" + projeto usa `shadow-2xl` ou `shadow-glow` em componentes simples → **AVISO**: "decoracao incompativel com personalidade declarada"
 - Charter "luxuoso/minimal" + projeto usa muitas cores saturadas em componentes funcionais → **AVISO**: "paleta incompativel com personalidade declarada"

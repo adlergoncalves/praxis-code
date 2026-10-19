@@ -86,7 +86,7 @@ Ao final do relatorio, emitir secao separada com sugestoes contextuais baseadas 
 [Se detectado side effects diretos ou ausencia total de domain events em projeto com agregados ricos]
 - **Situacao**: X agregados com side effects diretos (chamadas a servicos externos em metodos de dominio)
 - **Sugestao**: Criar ADR de Domain Events definindo publicacao, contratos e handlers
-- **Como**: `/architect` → escolher template `domain-events` ou criar ADR customizada
+- **Como**: `/architect` → criar ADR customizada de Domain Events (nao ha template pronto)
 - **Beneficio**: Desacopla o dominio de side effects, facilita testes e auditoria
 
 ### CQRS

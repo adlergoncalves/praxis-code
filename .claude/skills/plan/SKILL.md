@@ -26,8 +26,8 @@ Planejamento tecnico de uma feature. Sub-fase 5a do `/implement`.
    confirma a maioria dos fatos sozinho com Grep/Glob.
 1. Delegar ao agent `@planner` que executa:
    - **Phase 0 — Research + Grounding (Loop Engineering, ADR-0007)**:
-     - Resolver itens `[NEEDS CLARIFICATION]` / `[REQUER CONFIRMACAO]`
-     - **Fatos Confirmados no codebase**: confirmar via **Grep/Glob** (ou usando o mapa do passo 0), com `arquivo:linha` real, todo fato que o executor usaria (faixa de error code livre, enums, roles/scopes, códigos HTTP, base config de entidade, projeto de testes, contratos base). Regra dura: **nada de "confirmar depois"** — valor pinado ou vira `[REQUER CONFIRMACAO]`. Fato que exige **execucao** (nao so leitura de fonte) tambem vira `[REQUER CONFIRMACAO]`.
+     - Resolver itens `[REQUER RESPOSTA DO PM]` / `[REQUER CONFIRMACAO]`
+     - **Fatos Confirmados no codebase**: confirmar via **Grep/Glob** (ou usando o mapa do passo 0), com `arquivo:linha` real, todo fato que o `/execute` usaria (faixa de error code livre, enums, roles/scopes, códigos HTTP, base config de entidade, projeto de testes, contratos base). Regra dura: **nada de "confirmar depois"** — valor pinado ou vira `[REQUER CONFIRMACAO]`. Fato que exige **execucao** (nao so leitura de fonte) tambem vira `[REQUER CONFIRMACAO]`.
      - **Módulo de Referência**: escolher o exemplar concreto mais próximo da **forma** da demanda (CRUD? motor de aprovação? wizard?) e pinar os paths. Se não existe, declarar explicitamente.
    - **Phase 1 — Technical Context**: Language, Dependencies, Storage, Testing
    - **Phase 2 — Data Model**: Extrair entidades → `docs/specs/{feature}/data-model.md`

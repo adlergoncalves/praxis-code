@@ -73,12 +73,11 @@ praxis-code/
       praxis/
         SKILL.md          ← ponto de entrada: persona, fluxos, regras gerais
     agents/
-      core/
+      orchestration/
         praxis.md         ← agente principal com lógica de orquestração
                             (inclui playbook, regras proativas e formato do Journal)
 ```
 
-> O design original previa 4 arquivos separados (`skill.md`, `playbook.md`, `proactive.md`, `journal.md`) numa subpasta `praxis/`. Foi consolidado em **2 arquivos** seguindo o padrão das outras skills (uma `SKILL.md` por skill) e o padrão de agents (`agents/<categoria>/<nome>.md` — vide `agents/discovery/discovery.md`, `agents/discovery/strategy.md`, `agents/frontend/ux.md`).
 
 ### Integração com CLAUDE.md do projeto
 
@@ -109,7 +108,7 @@ Praxis segue o mesmo padrão da skill `/mode` (lite/full) — um eixo configurá
 | `/mode praxis off` | Desativa — skills funcionam diretamente, sem orquestração |
 | `/praxis <mensagem>` | Invoca Praxis pontualmente, independente do modo |
 
-**Padrão recomendado**: `praxis on` para projetos novos ou usuários que não dominam o pipeline. `praxis off` para usuários avançados que preferem invocar skills diretamente.
+**Padrão do kit**: `praxis on` — é a porta única de quem começa. `praxis off` para quem prefere invocar skills diretamente.
 
 O estado é salvo no `CLAUDE.md` e persiste entre sessões.
 
@@ -158,7 +157,7 @@ dependência e avança?
 
 ### 4. Modo apresentação — "Jarvis do dev"
 
-Quando `/mode praxis on` está ativo, Praxis **se manifesta primeiro** na primeira interação de cada sessão. Não espera o dev pedir.
+Com o Praxis ativo (padrão do kit), ele **se manifesta primeiro** na primeira interação de cada sessão. Não espera o dev pedir. Roda na sessão principal: conversa e dispara skills, o que um subagente não faz.
 
 O agente decide qual das três modalidades aplicar consultando dois marcadores no manifesto:
 
@@ -175,11 +174,11 @@ Após qualquer manifestação, Praxis atualiza os marcadores do manifesto.
 
 Os templates concretos de cada modalidade vivem em `.claude/agents/orchestration/praxis.md` na seção `## APRESENTACAO E CONTINUIDADE`. Princípios:
 
-- **Modalidade A pensa no usuário primeira vez**: zero jargão do kit (não fala "skill", "manifesto", "ADR", "spec"), zero comandos despejados, 2-4 linhas, termina com pergunta aberta tipo "o que você quer construir?". Não menciona "projeto vazio" — isso assusta quem está começando.
+- **Modalidade A pensa no usuário primeira vez**: zero jargão do kit (não fala "skill", "manifesto", "ADR", "spec"), nenhum comando além do que vai disparar, 2-4 linhas, termina **disparando o próximo passo** (`/start` no caso vazio) — nunca em pergunta aberta. Não menciona "projeto vazio" — isso assusta quem está começando.
 - **Modalidade B já pode usar termos do projeto** (nome de spec, módulo, validação) porque o dev já está dentro do contexto. Ainda assim 3-4 linhas, sem ensinar o kit.
 - **Sem servilismo**: nunca "senhor", "às ordens", "pode contar comigo"
 - **Sem cumprimentos vazios**: nada de "Olá! Como posso ajudar?"
-- **Termina em pergunta aberta**, nunca em tabela/lista/Praxis Journal
+- **Termina em ação ou em UMA pergunta específica**, nunca em tabela/lista/Praxis Journal
 - **Saudação por hora local** quando possível; "De volta" como fallback
 
 ### 5. Modo interruptivo — detectar riscos
@@ -285,33 +284,6 @@ A fonte de verdade é o projeto:
 - Learnings → `docs/project/learnings/{dominio}-learnings.md`
 
 Isso significa que Praxis funciona **igual em qualquer sessão**, com ou sem histórico de conversa. Reiniciar o Claude Code não perde contexto — porque o contexto está nos artefatos, não no chat.
-
----
-
-## Roadmap de implementação
-
-O Praxis pode ser implementado incrementalmente. Cada versão entrega valor real.
-
-### v0 — Praxis básico (menor esforço, maior impacto imediato)
-- Skill `/praxis` que lê manifesto e responde com estado atual do projeto
-- Responde "o que fazer a seguir" com contexto real
-- Sem interrupção proativa, sem despacho automático
-- Trata graciosamente o caso de manifesto vazio (projeto recém-inicializado)
-
-### v1 — Playbook de despacho
-- Praxis identifica intenção na mensagem do usuário
-- Verifica pré-condições e despacha para a skill correta
-- Informa o usuário quando pré-condições falham e propõe resolver primeiro
-
-### v2 — Comportamento proativo
-- Handoff pós-skill: Praxis assume ao final de cada skill e propõe próximo passo
-- Interrupção proativa: detecta as condições de risco do playbook
-- Praxis Journal gerado sob demanda
-
-### v3 — Integração com `/mode` e persistência
-- `/mode praxis on/off` salvo no `CLAUDE.md`
-- Estado do modo respeitado por todas as skills (via regra global no `CLAUDE.md`, não edição skill-a-skill)
-- Documentação de onboarding para novos projetos
 
 ---
 

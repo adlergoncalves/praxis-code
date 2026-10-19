@@ -6,7 +6,7 @@
 **Atualizado em**: —
 **Linha de trabalho**: — (Novo Software | Modernizar Legado | Adotar Projeto)
 **Modo**: — (lite | full)
-**Praxis**: — (on | off) — agente orquestrador acima das skills
+**Praxis**: on (on | off — padrao on) — agente orquestrador acima das skills
 **Praxis — Primeira sessao**: —
 **Praxis — Ultima saudacao**: —
 
@@ -67,6 +67,7 @@
 ### Design System
 | Artefato | Path | Existe |
 |----------|------|--------|
+| Memória de design (decisões visuais) | docs/design-system/system.md | — |
 | Tokens (globals.css) | — | — |
 | Design System page | — | — |
 | DS ADR | — | — |
@@ -86,8 +87,8 @@
 | — | — | — | — |
 
 ### Prototipos
-| Tela | Artboard | Link Paper | Data |
-|------|----------|-----------|------|
+| Tela | Fonte (Paper / Artifact / HTML) | Link ou caminho | Data |
+|------|---------------------------------|-----------------|------|
 | — | — | — | — |
 
 ### Validacao
@@ -102,7 +103,18 @@
 | MCP | Status | Usado por |
 |-----|--------|-----------|
 | shadcn | — | /ds-component |
-| Paper | — | /prototype |
+| Paper (opcional) | — | /prototype |
+
+---
+
+## Ferramentas do Projeto
+
+> Criadas pelo `/forge` para este projeto (ADR-0009): sao do projeto, o catalogo do kit nunca as toca.
+> As do kit ficam no lock (`.claude/praxis.json`; `node .claude/praxis/praxis.mjs status`).
+
+| Ferramenta | Tipo | Origem (learning / ADR) | Data |
+|------------|------|-------------------------|------|
+| — | — | — | — |
 
 ---
 

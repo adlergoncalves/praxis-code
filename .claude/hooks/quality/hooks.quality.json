@@ -1,0 +1,31 @@
+{
+  "description": "Hooks OPT-IN de qualidade do kit Praxis. NAO vem ligado: o /setup pergunta e, com o aceite, faz o merge do bloco `hooks` abaixo no .claude/settings.local.json de quem aceitou. Os comandos vem de .claude/quality.json do projeto (molde em .claude/hooks/quality/quality.example.json).",
+  "scripts": ["quality-on-edit.mjs", "critical-paths-gate.mjs"],
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit|NotebookEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality/critical-paths-gate.mjs\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/.claude/hooks/quality/quality-on-edit.mjs\"",
+            "timeout": 300,
+            "statusMessage": "Praxis: formatando, lintando e testando o arquivo editado"
+          }
+        ]
+      }
+    ]
+  }
+}

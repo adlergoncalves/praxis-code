@@ -5,7 +5,7 @@
 **Status**: Draft
 
 > **Loop Engineering (ADR-0007).** Este plan carrega o **grounding no código** que
-> impede o executor de re-adivinhar: **Fatos Confirmados (`arquivo:linha`)** e
+> impede o `/execute` de re-adivinhar: **Fatos Confirmados (`arquivo:linha`)** e
 > **Módulo de Referência**. Quando a demanda tem e2e, carrega também a **Infra de
 > Verificação** como pré-condição. Regra dura: **nada de "confirmar depois"** — todo
 > fato é pinado com referência real (confirmado via grep / `@codebase-mapper`).
@@ -42,10 +42,10 @@
 
 | Fato | Valor real | Referência (`arquivo:linha`) |
 |---|---|---|
-| Faixa de `ErrorCode`/código de erro livre do módulo | {ex: E11-07-*} | {*Errors.cs:NN} |
+| Faixa de código de erro livre do módulo | {ex: ORD-1xx} | {arquivo de códigos de erro:NN} |
 | Código HTTP de validação/erro (422 vs 400; not-found 204 vs 404) | {...} | {middleware / módulo de ref} |
 | Valores reais dos enums relevantes | {X=1, Y=2...} | {arquivo:linha} |
-| Tipo de regra RBAC + nomes de role/scope | {...} | {RulesSeeder.cs:NN} |
+| Tipo de regra RBAC + nomes de role/scope | {...} | {arquivo de seed de permissões:NN} |
 | Base config de entidade (soft delete/auditoria já aplicados?) | {sim/não} | {arquivo:linha} |
 | Projeto de testes onde os testes desta demanda entram | {existe? path} | {tests/.../} |
 | Interface/contrato base (ex: `IUseCase<,>`, hook pattern) | {assinatura} | {arquivo:linha} |

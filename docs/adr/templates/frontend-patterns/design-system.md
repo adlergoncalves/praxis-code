@@ -1,7 +1,7 @@
 # ADR-{NNNN}: Design System
 
 ## Status
-Accepted
+Template (nao adotada — personalizar via /architect)
 
 ## Contexto
 {Por que o projeto precisa de um design system — consistencia visual, produtividade, manutencao}
@@ -18,7 +18,7 @@ Accepted
 - **Tailwind**: Integrado via `@theme inline`
 
 ### Design System
-- **Localizacao**: {/design-system/ | /design-system/}
+- **Localizacao**: {app/design-system/ | src/design-system/}
 - **Proposito**: Documentacao viva de tokens e componentes — artefato interno, nao vai pra producao
 
 ## Alternativas Consideradas

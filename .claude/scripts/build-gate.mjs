@@ -1,14 +1,15 @@
 #!/usr/bin/env node
-// build-gate.mjs — Gate de build/typecheck do kit Praxis (TEMA 2: "pronto" sem verificacao).
+// build-gate.mjs — Gate de build/typecheck do kit Praxis ("pronto" exige verificacao).
 //
-// Motivacao: build quebrado foi descoberto so no deploy (Vercel) 2x. Este gate roda ANTES de
-// declarar uma task concluida e ANTES de commit. E o passo objetivo que substitui "acho que ta ok".
+// Motivacao: build quebrado descoberto so no deploy. Este gate roda ANTES de declarar uma fatia
+// concluida e ANTES de commit. E o passo objetivo que substitui "acho que ta ok".
 //
 // O que faz:
 //   1. Le package.json do projeto e DESCOBRE o comando de verificacao (nao assume nenhum):
-//      preferencia: "typecheck" > "type-check" > "tsc" > "build". Para projetos sem package.json
-//      (ex.: backend .NET/Go/Python), tenta heuristicas conhecidas. Se nada for encontrado, sai 0
-//      com aviso (nao bloqueia projeto sem build step).
+//      preferencia: "typecheck" > "type-check" > "tsc" > "check" > "lint:types" > "build".
+//      Sem package.json, tenta heuristicas por stack: go.mod (Go), Cargo.toml (Rust),
+//      *.csproj/*.fsproj/*.sln/*.slnx na raiz (.NET). Outras stacks: passar --cmd. Se nada for
+//      encontrado, sai 0 com aviso (nao bloqueia projeto sem build step).
 //   2. Executa o comando. stdout/stderr sao repassados.
 //   3. Exit 1 se o comando falhar (gate FECHADO), 0 se passar (gate ABERTO).
 //
@@ -20,11 +21,11 @@
 //   1 — gate fechado (build/typecheck falhou)
 //   2 — falha de execucao do proprio gate (path invalido)
 //
-// NOTA: este gate NAO faz pos-migration (supabase db push / gen types). Isso e responsabilidade do
-// executor (instrucao na skill /execute), porque depende de credenciais e estado do banco que o
-// script nao deve assumir. O gate apenas garante que o codigo COMPILA depois da migration.
+// NOTA: este gate NAO aplica migration nem gera tipos do banco: isso e passo da fatia, conforme a
+// tabela de Gates do tasks.md, porque depende de credenciais e estado do banco que o script nao
+// deve assumir. O gate apenas garante que o codigo COMPILA depois da migration.
 
-import { readFileSync, existsSync } from 'node:fs';
+import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { spawnSync } from 'node:child_process';
 
@@ -59,8 +60,11 @@ function discoverCommand(root) {
   // Sem package.json: heuristicas por stack.
   if (existsSync(join(root, 'go.mod'))) return { cmd: 'go build ./...', kind: 'go', why: 'go.mod presente' };
   if (existsSync(join(root, 'Cargo.toml'))) return { cmd: 'cargo check', kind: 'rust', why: 'Cargo.toml presente' };
-  const csproj = ['*.csproj', '*.sln'].some((g) => existsSync(join(root, g.replace('*', 'app'))));
-  if (csproj) return { cmd: 'dotnet build', kind: 'dotnet', why: 'projeto .NET' };
+  let entries = [];
+  try { entries = readdirSync(root); } catch { /* ignore */ }
+  if (entries.some((f) => /\.(csproj|fsproj|sln|slnx)$/i.test(f))) {
+    return { cmd: 'dotnet build', kind: 'dotnet', why: 'projeto/solucao .NET na raiz' };
+  }
   return null;
 }
 

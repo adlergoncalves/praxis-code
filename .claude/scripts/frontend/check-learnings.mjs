@@ -1,14 +1,15 @@
 #!/usr/bin/env node
 // check-learnings.mjs — Checks DETERMINISTICOS dos learnings que mais regrediram (kit Praxis).
 //
-// Motivacao (docs de melhorias, TEMA 1): learnings documentados regridem porque dependem de o
-// agente "lembrar de ler". Este script transforma os 3 learnings de maior reincidencia em checks
-// mecanicos, executados no /execute (pre-finalizacao) e no /review.
+// Motivacao: learnings documentados regridem porque dependem de o agente "lembrar de ler". Este
+// script transforma tres regressoes recorrentes de frontend em checks mecanicos, executados no
+// /execute (gates da fatia) e no /verify-all.
 //
 // Checks implementados (todos CROSS-REFERENCIA, nao regex isolado):
 //   1. navigate-route   — navigate('/x') / <Link to="/x"> apontando para rota que NAO existe no
-//                         roteador (App.tsx / routes.tsx). Era o "404 silencioso" reintroduzido.
-//   2. css-var          — var(--token) usado no codigo SEM definicao em index.css (ou *.css de tema).
+//                         roteador (App.tsx / routes.tsx) — o "404 silencioso".
+//   2. css-var          — var(--token) usado no codigo SEM definicao em nenhum .css/.scss do projeto
+//                         (as definicoes sao coletadas da raiz do projeto, nao so do alvo).
 //   3. select-id        — <Combobox/Select> de entidade de dominio renderizando o ID em vez do nome
 //                         (heuristico: value={x.id} sem label/children/getOptionLabel usando nome).
 //
@@ -16,6 +17,7 @@
 //   node .claude/scripts/frontend/check-learnings.mjs <path>
 //   node .claude/scripts/frontend/check-learnings.mjs <path> --json
 //   node .claude/scripts/frontend/check-learnings.mjs <path> --only navigate-route,css-var
+//   node .claude/scripts/frontend/check-learnings.mjs <path> --root <raiz>   (default: cwd)
 //
 // Exit codes (iguais a detect-cliches.mjs):
 //   0 — nenhum erro (warnings nao bloqueiam)
@@ -28,7 +30,7 @@
 //   do que bloquear trabalho legitimo: por isso `select-id` nasce como WARN, nao ERROR.
 
 import { readFile, readdir, stat } from 'node:fs/promises';
-import { join, extname, relative, basename } from 'node:path';
+import { join, extname, relative, basename, resolve, dirname, isAbsolute } from 'node:path';
 import { existsSync } from 'node:fs';
 
 // ---------------------------------------------------------------------------
@@ -138,15 +140,18 @@ function routeMatches(target, declared) {
   return false;
 }
 
-// 2) CSS vars definidas: --x: ... em qualquer .css/.scss do projeto.
-async function collectDefinedCssVars(targetPath, rootPath) {
+// 2) CSS vars definidas: --x: ... em qualquer .css/.scss do projeto. Varre a raiz do projeto (e o
+// alvo, se estiver fora dela): o tema costuma viver em src/index.css, fora da pasta validada.
+async function collectDefinedCssVars(dirs) {
   const defined = new Set();
   const CSS_EXT = new Set(['.css', '.scss', '.sass', '.less']);
   const DEF_RE = /(--[A-Za-z0-9-_]+)\s*:/g;
-  for await (const file of walkExt(targetPath, CSS_EXT)) {
-    const content = await readSafe(file);
-    let m;
-    while ((m = DEF_RE.exec(content)) !== null) defined.add(m[1]);
+  for (const dir of dirs) {
+    for await (const file of walkExt(dir, CSS_EXT)) {
+      const content = await readSafe(file);
+      let m;
+      while ((m = DEF_RE.exec(content)) !== null) defined.add(m[1]);
+    }
   }
   return defined;
 }
@@ -197,7 +202,7 @@ function checkNavigateRoutes(files, declared, routerFound) {
             file: rel, line, column: col,
             match: m[0].length > 80 ? m[0].slice(0, 77) + '...' : m[0],
             description: `Navegacao para "${target}" que nao casa com nenhuma rota declarada no roteador.`,
-            suggestion: 'Declare a rota no App.tsx/routes.tsx ou corrija o destino. Era o "404 silencioso" (frontend-learnings).',
+            suggestion: 'Declare a rota no App.tsx/routes.tsx ou corrija o destino.',
           });
         }
         if (m.index === r.lastIndex) r.lastIndex++;
@@ -249,7 +254,7 @@ function checkSelectId(files) {
         file: rel, line, column: col,
         match: m[0].length > 80 ? m[0].slice(0, 77) + '...' : m[0],
         description: `Item de select renderizando "${m[2]}.id" como texto visivel — provavel ID exibido em vez do nome.`,
-        suggestion: 'Renderize o nome/label da entidade (ex.: {x.nome}). Learning recorrente em 3 modulos.',
+        suggestion: 'Renderize o nome/label da entidade (ex.: {x.nome}).',
       });
       if (m.index === ITEM_RE.lastIndex) ITEM_RE.lastIndex++;
     }
@@ -287,7 +292,11 @@ export async function check(targetPath, options = {}) {
     findings.push(...checkNavigateRoutes(files, routes, routerFound));
   }
   if (enabled('css-var')) {
-    const defined = await collectDefinedCssVars(targetPath, rootPath);
+    const projectRoot = resolve(options.root || process.cwd());
+    const targetDir = resolve(st.isDirectory() ? targetPath : dirname(targetPath));
+    const relToRoot = relative(projectRoot, targetDir);
+    const inside = !relToRoot.startsWith('..') && !isAbsolute(relToRoot);
+    const defined = await collectDefinedCssVars(inside ? [projectRoot] : [projectRoot, targetDir]);
     findings.push(...checkCssVars(files, defined));
   }
   if (enabled('select-id')) {
@@ -342,17 +351,18 @@ function flagValue(args, name) {
 async function main() {
   const args = process.argv.slice(2);
   if (args.length === 0 || args.includes('--help') || args.includes('-h')) {
-    console.log('Uso: node check-learnings.mjs <path> [--json] [--only navigate-route,css-var,select-id]');
+    console.log('Uso: node check-learnings.mjs <path> [--json] [--only navigate-route,css-var,select-id] [--root <raiz>]');
     process.exit(args.length === 0 ? 2 : 0);
   }
   const wantJson = args.includes('--json');
   const onlyRaw = flagValue(args, '--only');
+  const rootRaw = flagValue(args, '--root');
   const only = onlyRaw ? onlyRaw.split(',').map((s) => s.trim()).filter(Boolean) : null;
-  const targetPath = args.find((a) => !a.startsWith('-') && a !== onlyRaw);
+  const targetPath = args.find((a) => !a.startsWith('-') && a !== onlyRaw && a !== rootRaw);
   if (!targetPath) { console.error('ERRO: path nao informado.'); process.exit(2); }
 
   let report;
-  try { report = await check(targetPath, { only }); }
+  try { report = await check(targetPath, { only, root: rootRaw }); }
   catch (err) { console.error(`ERRO: ${err.message}`); process.exit(2); }
 
   console.log(wantJson ? JSON.stringify(report, null, 2) : formatText(report));

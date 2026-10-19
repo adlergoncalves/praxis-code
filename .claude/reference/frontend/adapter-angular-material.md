@@ -118,4 +118,4 @@ Quando `stack-profile.json` desta stack esta presente:
 6. Phase 6.0: cria `DesignSystemModule` + roteamento via `AppRoutingModule`.
 7. Phase 6.2/6.3: components Angular com template separado.
 8. Phase 7 (ADR): gera ADR do DS.
-9. **Phase 8 (Passo 4): emite `docs/design-system/stack-profile.json`** com o JSON acima.
+9. **Phase 7b do `@ds-foundation`: emite `docs/design-system/stack-profile.json`** com o JSON acima.

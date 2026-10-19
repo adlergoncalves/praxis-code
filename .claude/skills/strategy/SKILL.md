@@ -70,7 +70,7 @@ O `/strategy` nao substitui nenhuma fase — ele alimenta todas elas com melhore
    > - **Modelo de negocio** — como o produto vai crescer e gerar valor
    > - **Simular cenarios** — testar uma decisao antes de tomar"
 
-3. Delegar ao agent `@strategy` com o modo e contexto identificados
+3. Conduzir o modo **nesta sessao**, usando `.claude/agents/discovery/strategy.md` como roteiro — e conversa em rodadas, e subagente nao conversa (`.claude/praxis/rules.md`)
 
 4. Ao final da sessao, perguntar se quer salvar resumo em `docs/project/`
 

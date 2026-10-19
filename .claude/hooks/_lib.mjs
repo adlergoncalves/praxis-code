@@ -28,6 +28,7 @@ export function getRoot(input) {
 // --- paths -----------------------------------------------------------------
 
 export const ledgerPath    = (root) => join(root, 'docs', 'project', 'learnings', 'ledger.md');
+export const ledgerAutoPath = (root) => join(root, 'docs', 'project', 'learnings', 'ledger-auto.md');
 export const ledgerArchive = (root) => join(root, 'docs', 'project', 'learnings', 'ledger-archive');
 export const statePath     = (root) => join(root, 'docs', 'project', 'state.md');
 export const learningsDir   = (root) => join(root, 'docs', 'project', 'learnings');
@@ -53,8 +54,11 @@ export function nowISO() {
 
 const LEDGER_MARK = '<!-- LEDGER:START -->';
 
-export function readLedgerEvents(root) {
-  const p = ledgerPath(root);
+// Dois arquivos de proposito:
+//  - ledger.md (VERSIONADO): so as linhas semanticas (llm) — decisao, correcao, descoberta.
+//  - ledger-auto.md (GITIGNORED): as linhas (auto) do capture, uma por turno com arquivo alterado.
+// Com as (auto) no arquivo versionado, todo commit do projeto carregava uma alteracao de ledger.
+function readEventsFrom(p) {
   if (!existsSync(p)) return [];
   const txt = readFileSync(p, 'utf8');
   const idx = txt.indexOf(LEDGER_MARK);
@@ -62,27 +66,46 @@ export function readLedgerEvents(root) {
   return body.split(/\r?\n/).map((l) => l.trim()).filter((l) => l && l.includes(' | '));
 }
 
-// Self-heal: garante que o ledger exista (cliente pode nao ter o seed). Sem isso, a captura
-// faria no-op silencioso e a Fase 2 nao funcionaria no projeto cliente.
-export function ensureLedger(root) {
-  const p = ledgerPath(root);
-  if (existsSync(p)) return;
-  mkdirSync(dirname(p), { recursive: true });
-  writeFileSync(p, `# Ledger de Aprendizado (caixa-preta append-only)\n\n> Gravado no instante; nao editar manualmente abaixo da marca.\n\n${LEDGER_MARK}\n`, 'utf8');
+// Eventos dos dois arquivos numa linha do tempo so, pelo timestamp do inicio da linha. Linha sem
+// timestamp legivel herda o do evento anterior do proprio arquivo (fica junto dele).
+export function readLedgerEvents(root) {
+  const tagged = [];
+  for (const [p, src] of [[ledgerPath(root), 0], [ledgerAutoPath(root), 1]]) {
+    let last = 0;
+    readEventsFrom(p).forEach((line, i) => {
+      const t = Date.parse(line.split(' | ')[0].trim());
+      if (!Number.isNaN(t)) last = t;
+      tagged.push({ line, t: last, src, i });
+    });
+  }
+  return tagged.sort((a, b) => a.t - b.t || a.src - b.src || a.i - b.i).map((e) => e.line);
 }
 
-export function appendLedger(root, line) {
-  ensureLedger(root);
-  const p = ledgerPath(root);
+// Linha (auto) do capture: arquivo local, gitignored. Guarda as ultimas ~250 linhas (o nag so olha
+// os turnos desde a ultima linha semantica); o historico duravel e o do ledger.md.
+export function appendAutoLedger(root, line, limit = 500) {
+  const p = ledgerAutoPath(root);
+  if (!existsSync(p)) {
+    mkdirSync(dirname(p), { recursive: true });
+    writeFileSync(p, `# Ledger automatico (local, gitignored)\n\n> Uma linha (auto) por turno com arquivo alterado, gravada pelo hook capture.mjs.\n> As linhas semanticas (llm) ficam no ledger.md versionado.\n\n${LEDGER_MARK}\n`, 'utf8');
+  }
   let txt = readFileSync(p, 'utf8');
   if (!txt.includes(LEDGER_MARK)) txt += `\n${LEDGER_MARK}\n`;
   txt = txt.replace(/\s*$/, '') + '\n' + line + '\n';
+  const events = readEventsFrom(p).concat(line);
+  if (events.length > limit) {
+    const head = txt.slice(0, txt.indexOf(LEDGER_MARK) + LEDGER_MARK.length);
+    txt = `${head}\n${events.slice(-Math.floor(limit / 2)).join('\n')}\n`;
+  }
   writeFileSync(p, txt, 'utf8');
-  rotateLedgerIfNeeded(root);
 }
 
-function rotateLedgerIfNeeded(root, limit = 500) {
-  const events = readLedgerEvents(root);
+// Rotacao do ledger.md versionado (as linhas (llm) que o assistente grava): passou de `limit`
+// linhas, arquiva as mais antigas em ledger-archive/AAAA-MM.md. Chamada pelo capture.mjs a cada
+// checkpoint — no-op enquanto o ledger esta abaixo do limite ou nao existe.
+export function rotateLedgerIfNeeded(root, limit = 500) {
+  if (!existsSync(ledgerPath(root))) return;
+  const events = readEventsFrom(ledgerPath(root));
   if (events.length <= limit) return;
   try {
     const dir = ledgerArchive(root);

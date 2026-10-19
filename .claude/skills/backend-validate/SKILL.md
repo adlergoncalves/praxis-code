@@ -21,6 +21,8 @@ Executa agents de checagem backend.
 - `--mode parallel` — Roda todos os agents em paralelo (rapido, menos tokens). **Default.**
 - `--mode sequential` — Roda um por vez, perguntando entre cada (interativo, mais controle)
 
+**Fora do escopo, sempre**: `.claude/` (as fixtures de `.claude/evals/` sao codigo propositalmente errado), `node_modules/`, `bin/`, `obj/`, `dist/`. Passar essa exclusao aos agents despachados.
+
 ## Agents Disponiveis
 
 1. `@check-architecture` — Camadas e dependencias

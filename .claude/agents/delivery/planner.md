@@ -35,14 +35,14 @@ $ARGUMENTS → Caminho da spec ou nome da feature (buscara em `docs/specs/{nome}
 ### Phase 0 — Research + Grounding (Loop Engineering, ADR-0007)
 
 1. Ler spec completa
-2. Identificar items marcados `[NEEDS CLARIFICATION]` / `[REQUER CONFIRMACAO]`
+2. Identificar items marcados `[REQUER RESPOSTA DO PM]` / `[REQUER CONFIRMACAO]`
 3. Se encontrar ambiguidade de negocio: listar e perguntar ao usuario antes de continuar
 4. Ler ADRs relevantes (filtrar por stack/dominio da feature)
 5. Ler constitution para regras OBRIGATORIAS/PROIBIDAS
 6. **Modulo de Referencia**: escolher o exemplar concreto mais proximo da **forma** da
    demanda (CRUD? motor de aprovacao? wizard? lista+detalhe?). Usar Glob/Grep para
    localizar e **pinar os paths**. Se nao existe exemplar proximo, declarar.
-7. **Fatos Confirmados no codebase**: para cada fato que o executor usaria, confirmar o
+7. **Fatos Confirmados no codebase**: para cada fato que o `/execute` usaria, confirmar o
    **valor real + `arquivo:linha`** via Grep/Glob — NUNCA "confirmar depois". Candidatos:
    faixa de error code livre, valores de enum, nomes de role/scope RBAC, codigos HTTP
    (validacao 422 vs 400, not-found 204 vs 404), base config de entidade (soft

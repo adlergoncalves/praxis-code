@@ -1,64 +1,60 @@
 ---
-description: "Gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System real do projeto."
+description: "Gera prototipo hi-fi de uma tela (ou 2-3 direcoes para escolher) no destino que a sessao tiver: ferramenta de prototipo do projeto (ex.: Paper MCP), pagina publicada (Artifact) ou HTML local. Usa o Design System e a memoria de design do projeto. Nenhum destino e obrigatorio."
 user-invocable: true
 depends:
   - .claude/agents/frontend/paper-prototype.md
+  - .claude/reference/frontend/third-party/interface-design/interface-design.md
+  - .claude/reference/frontend/third-party/frontend-design/frontend-design.md
+  - .claude/scripts/frontend/screenshot.mjs
 ---
 
 # /prototype
 
-Gera prototipos hi-fi diretamente no canvas do Paper usando as Paper MCP tools, seguindo fielmente o Design System e a estrutura real do projeto.
-
-**NAO amarrada ao pipeline** — o usuario chama quando precisa, sem ser obrigatorio.
+Gera o prototipo de uma tela antes do codigo. **Nao amarrado ao pipeline**: chamado quando ajuda —
+tela nova e ambigua, direcao visual em aberto, aprovacao do usuario antes do `/execute`. Projeto
+que desenvolve sem prototipo segue sem prototipo; a fonte de design da tela passa a ser o DS + a
+memoria de design.
 
 ## Input
 
-`/prototype {prd-path-ou-descricao}`
+`/prototype {prd-path-ou-descricao} [--direcoes N] [--destino paper|artifact|html]`
 
-- Se `$ARGUMENTS` apontar para um arquivo `.md` → le como PRD/spec
-- Se for texto livre → usa como descricao direta da tela
-- Se vazio → pergunta ao usuario
+- Arquivo `.md` → le como PRD/spec; texto livre → descricao da tela; vazio → pergunta
+- `--direcoes N` (2-3) → em vez de uma tela, N direcoes distintas para o usuario escolher (metodo do `/ux direcao`)
+- `--destino` → forca o destino; sem ele, o `/prototype` escolhe pelo que existe (abaixo)
 
-## Pre-requisitos
+## Onde roda
 
-1. **Paper MCP** deve estar configurado
-2. `docs/project/discovery.md` deve existir (para contexto do projeto)
-3. DS inicializado e recomendado mas nao obrigatorio (se nao existe, usa tokens padrao)
+**Nesta sessao.** Desenhar no Paper usa as ferramentas do MCP, publicar pagina usa a ferramenta de
+Artifacts e escolher entre direcoes e conversa — nada disso existe dentro de um subagente.
+`.claude/agents/frontend/paper-prototype.md` e o **roteiro** (contexto do projeto, regras de
+construcao, padroes por tipo de tela, multi-artboard).
 
-## Verificacao de MCP (OBRIGATORIO)
+## Destino — o primeiro que existir (ou o de `--destino`)
 
-Antes de delegar ao agent, verificar se o Paper MCP esta disponivel:
+| Destino | Quando | Como |
+|---|---|---|
+| **Ferramenta de prototipo do projeto** (ex.: Paper MCP) | O projeto usa e o MCP responde (`get_basic_info`) | Seguir o roteiro do `paper-prototype.md` (Blocos A-C) |
+| **Pagina publicada** (Artifacts do Claude) | A sessao publica paginas | HTML auto-contido da tela, com os tokens do projeto; publicar e guardar o link |
+| **HTML local** | Sempre disponivel | `docs/design-system/prototypes/{slug}/index.html` (ou `{slug}-{direcao}.html`) + prints em 1440 e 390 com `node .claude/scripts/frontend/screenshot.mjs` |
 
-1. Tentar chamar `get_basic_info` do Paper MCP
-2. **Se funcionar** → prosseguir normalmente
-3. **Se falhar** → informar ao usuario e NAO prosseguir:
-
-```
-O Paper MCP nao esta configurado. Para usar /prototype:
-
-1. Instale o Paper MCP seguindo a documentacao oficial
-2. Adicione a configuracao ao seu settings.json ou mcp.json
-3. Reinicie o Claude Code
-
-Apos configurar, rode /prototype novamente.
-```
+Ferramenta indisponivel **nao bloqueia**: cai para o proximo destino e diz qual usou.
 
 ## Execucao
 
-Delegar ao agent `@paper-prototype` que:
-
-1. **Carrega contexto do projeto**: tokens do DS (globals.css), ADRs, componentes existentes, layout do app
-2. **Interpreta input**: tipo de tela, campos, secoes, hierarquia
-3. **Pergunta o link do projeto Paper** ao usuario
-4. **Constroi no Paper**: App Shell → Conteudo → Review → Finalizar
-5. **Apresenta resultado**: screenshot + resumo das secoes construidas
+1. **Contexto do projeto** — Bloco A do roteiro (tokens do DS, shell do app, ADRs de UI, componentes, navegacao) + `docs/design-system/system.md` (memoria de design). Tela de um tipo que ja tem "Tela aprovada" na memoria parte dela.
+2. **Ancora** — sem Charter e sem memoria de design: explorar o dominio (as quatro saidas de `register-product.md` › "Onde mora a identidade") antes de desenhar. Nao travar pedindo a entrevista do Charter.
+3. **Construir** — conteudo real do dominio (nada de "Lorem", "John Doe", numeros redondos), estados relevantes (vazio, erro, carregando quando a tela tiver), desktop e mobile. No HTML: tokens como CSS custom properties com os valores do projeto, so `transform`/`opacity` em motion, foco visivel.
+4. **`--direcoes N`** — N direcoes **distintas** (nao variacoes de cor da mesma), cada uma revisada contra o default antes de construir (plano em duas passadas de `third-party/frontend-design/frontend-design.md`). Apresentar lado a lado, recomendar uma, aguardar a escolha.
+5. **Olhar o resultado** — print/screenshot do que foi construido e os testes swap/squint/assinatura/token (`register-product.md`). Corrigir o que falhar antes de mostrar.
+6. **Registrar** — o prototipo aprovado vira a **fonte de design** da tela: link/caminho na spec (`Anatomia da Tela › Fonte de design`) e no Shape brief (se houver); a tela entra em "Telas aprovadas" da memoria de design; direcoes descartadas entram em "Recusas" com o motivo.
 
 ## Gestao de Contexto
 
-O agent le muitos arquivos do projeto. Recomende `/clear` apos gerar o prototipo.
+O roteiro le muitos arquivos do projeto. Recomende `/clear` apos gerar o prototipo.
 
 ## Handoffs
 
 - → `/clear` (limpar contexto)
-- → `/implement --team front` (implementar o que foi prototipado)
+- → `/tasks` (o portao final usa a fonte de design registrada) ou `/implement --team front`
 - → `/ds-component` (se precisar adicionar componente ao DS antes)

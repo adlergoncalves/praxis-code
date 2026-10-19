@@ -12,7 +12,7 @@ Inicia ou retoma o processo de Discovery do projeto.
 
 ## O que faz
 
-1. Ativa o agent `@discovery` que faz perguntas estruturadas sobre o projeto
+1. Conduz **nesta sessao** a entrevista estruturada, usando `.claude/agents/discovery/discovery.md` como roteiro (subagente nao conversa — `.claude/praxis/rules.md`)
 2. Para legados: le codigo existente e mapeia estrutura
 3. Para novos: entende problema de negocio, stakeholders, restricoes
 4. **NAO avanca sem entendimento completo** — se detectar gaps, faz mais perguntas
@@ -28,7 +28,7 @@ Inicia ou retoma o processo de Discovery do projeto.
 ```
 /discovery → perguntas → respostas → mais perguntas → discovery.md completo
                                                             ↓
-                                                    Proximo: /define ou /architect
+                                                    Proximo: /architect (ou /ddd-estrategico antes, se dominio complexo)
 ```
 
 ## Execucao
@@ -37,19 +37,24 @@ Inicia ou retoma o processo de Discovery do projeto.
    - Se sim: retomar de onde parou, mostrar o que ja sabemos
    - Se nao: iniciar do zero
 
-2. Delegar ao agent `@discovery` que segue 6 etapas:
+2. Conduzir **nesta sessao** as 7 etapas do roteiro `.claude/agents/discovery/discovery.md`,
+   uma por vez, esperando a resposta:
    - Natureza do projeto
    - Negocio
    - Stack tecnica
    - Time e processo
    - Restricoes
    - Modulos e dominios
+   - Decisoes transversais (locale, criar/editar, soft delete, auditoria, multi-tenancy)
+
+   Legado: antes da Etapa 2, despachar o `@codebase-mapper` (leitura de codigo, sem conversa) e
+   usar o `docs/project/codebase-map.md` que ele grava.
 
 3. Ao final, salvar `docs/project/discovery.md` completo
 
 4. Sugerir proximos passos:
-   - Se dominio complexo: `/architect` para DDD estrategico + ADRs
-   - Se dominio simples: `/define` para criar PRDs diretamente
+   - Se dominio complexo: `/ddd-estrategico` e depois `/architect`
+   - Se dominio simples: `/architect` (ADRs default, rapido) e depois `/define`
 
 ## Gestao de Contexto
 
@@ -110,4 +115,4 @@ Ao final do discovery, antes de sugerir proximo passo, avaliar os seguintes sina
 - → `/strategy` (quando sinais de risco de negocio detectados)
 - → `/ddd-estrategico` (quando dominio complexo detectado — antes do /architect)
 - → `/architect` (quando discovery completo)
-- → `/define` (quando discovery completo e dominio simples, sem necessidade de ADRs)
+- → `/define` (depois do `/architect` — o gate do `/define` le as ADRs)

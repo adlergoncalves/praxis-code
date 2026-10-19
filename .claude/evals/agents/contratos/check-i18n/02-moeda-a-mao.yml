@@ -1,0 +1,12 @@
+agent: check-i18n
+regra: "Formatacao — moeda montada a mao em vez de Intl"
+descricao: Valor monetario com "R$" fixo e toFixed(2)
+
+deve_detectar:
+  - severidade: AVISO
+    arquivo: OrderTotal.tsx
+    linha: 9
+    sinal: R$
+
+nao_deve_detectar:
+  - Pedidos em aberto

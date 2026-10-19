@@ -114,4 +114,4 @@ Identico ao react-vite-shadcn — Tailwind classes sao iguais. A diferenca esta 
 6. Phase 6.2: `DesignSystemLayout` recebe `"use client"` (usa `usePathname`).
 7. Phase 6.3: `page.tsx` recebe `"use client"` se usar `useState` (toggle dark mode).
 8. Phase 7 (ADR): gera ADR do DS.
-9. **Phase 8 (Passo 4): emite `docs/design-system/stack-profile.json`** com o JSON acima.
+9. **Phase 7b do `@ds-foundation`: emite `docs/design-system/stack-profile.json`** com o JSON acima.

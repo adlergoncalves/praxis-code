@@ -1,0 +1,13 @@
+agent: check-i18n
+regra: "Strings hardcoded — texto user-facing fixo no JSX"
+descricao: Titulo da tela escrito direto no JSX, com a chave ja existindo no namespace
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: OrdersHeader.tsx
+    linha: 9
+    sinal: Pedidos em aberto
+
+nao_deve_detectar:
+  - R$
+  - Intl

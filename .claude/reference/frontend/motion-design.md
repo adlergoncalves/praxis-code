@@ -1,7 +1,7 @@
 # Motion Design — reference canônico (agnóstico)
 
 > Vocabulário estável de motion do kit Praxis. Conhecimento de design, sem stack.
-> **Lido por**: `@ux` (modo motion, direção, critique), `@check-design`, `@check-ai-cliches`, `@check-visual-consistency`, `@design`, `@paper-prototype`.
+> **Lido por**: `@ux` (modo motion, direção), `@check-design`, `@check-ai-cliches`, `@check-visual-consistency`, `@design`, `@paper-prototype`.
 > **Materializado por projeto** em `docs/project/motion.md` (gerado por `/ux motion`), que pode customizar/restringir o aqui contido.
 
 ---
@@ -25,7 +25,7 @@ Motion sem motivo é ruído. Motion decorativo em `product` register é anti-pat
 | `instant` | 100ms | Feedback imediato de input (button press, toggle, checkbox) |
 | `fast` | 150-200ms | Micro state change (hover, focus, ripple) |
 | `normal` | 250-300ms | Overlay aparecendo (tooltip, popover, dropdown) |
-| `slow` | 400-500ms | Page transition, modal open/close, sheet slide |
+| `slow` | 400-500ms | Page transition, sheet de tela cheia — **em register product o teto é 300ms** (`register-product.md`) |
 | `dramatic` | 600ms+ | Large transition, hero animation, celebration (use com moderação) |
 
 ---
@@ -54,8 +54,8 @@ Motion sem motivo é ruído. Motion decorativo em `product` register é anti-pat
 | Modal close | fade out | fast + ease-in |
 | Toast aparecer | slide up + fade | normal + ease-out |
 | Page transition | fade through | slow + ease-in-out |
-| Success state | check icon + bounce | normal + bounce |
-| Error shake | shake horizontal | fast + spring |
+| Success state | check icon + fade (product) · bounce só em brand/arquétipo lúdico | normal + ease-out (product) · bounce (brand) |
+| Error state | realce de borda + mensagem (product) · shake horizontal só em brand | fast + ease-out (product) · spring (brand) |
 | Skeleton pulse | opacity loop | normal + ease-in-out (loop infinito) |
 
 ---

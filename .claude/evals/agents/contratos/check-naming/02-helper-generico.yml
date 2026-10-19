@@ -1,0 +1,12 @@
+agent: check-naming
+regra: "Nomes proibidos — Helper com metodos sem coesao"
+descricao: Classe estatica OrderHelper juntando desconto, protocolo e calendario
+
+deve_detectar:
+  - severidade: AVISO
+    arquivo: OrderHelper.cs
+    linha: 3
+    sinal: Helper
+
+nao_deve_detectar:
+  - UseCase

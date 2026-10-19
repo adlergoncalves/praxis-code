@@ -1,0 +1,13 @@
+agent: check-web-guidelines
+regra: "Accessibility — botao so com icone precisa de aria-label"
+descricao: Botao de excluir sem texto nem nome acessivel (o svg e aria-hidden)
+
+deve_detectar:
+  - severidade: ERRO
+    arquivo: BarraFerramentas.tsx
+    linha: 8
+    sinal: aria-label
+
+nao_deve_detectar:
+  - div onClick
+  - Title Case

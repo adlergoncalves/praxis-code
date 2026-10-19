@@ -24,21 +24,21 @@ Exemplo: `/spec-from-prd prd-pessoa.md FEATURE:1.3`
 5. Specs existentes (referencia de formato): `docs/specs/*/spec.md`
 6. Learnings: `docs/project/learnings/business-learnings.md`
 7. **Gate report**: `docs/prds/gate-reports/gate-{modulo}-*.md` (se existe — usar o **mais recente**). Importante para:
-   - **Decisoes em aberto** do Gate viram `[REQUER RESPOSTA DO PM]` ou Clarifications na spec (ex: "Pagamento adiado — gateway sera escolhido depois" vira clarification pendente)
+   - **Decisoes em aberto** do Gate viram linhas `[REQUER RESPOSTA DO PM]` em Decisoes Fechadas (ex: "Pagamento adiado — gateway sera escolhido depois")
    - **Dependencias futuras** sinalizam aspectos da spec que dependem de modulos nao definidos ainda
-8. **UX Charter**: `docs/project/ux-charter.md` (se existe) — personalidade aplicavel a esta spec
+8. **Ancora de design**: `docs/project/ux-charter.md` (`## Register`) ou `docs/design-system/system.md` (Register, Direcao, Dominio) — o que existir
 9. **Motion grammar**: `docs/project/motion.md` (se existe) — microinteracoes referenciaveis
 
 ## Workflow
 
-1. **Carrega dependencias** (PRD + ADRs + glossario + learnings + UX Charter + motion.md + Constitution Page Shell)
+1. **Carrega dependencias** (PRD + ADRs + glossario + learnings + ancora de design + motion.md + Constitution Page Shell)
 2. **Le TODAS as ADRs do projeto** — necessario para gerar a secao "Armadilhas ADR" com base real, nao generica
 3. **Determina tipo da spec** inferindo do PRD: `UI` | `Feature` | `Form` | `Modal` | `Backend-only` | `Integration` | `Scaffold`. O tipo decide quais secoes condicionais incluir:
    - `UI` ou `Feature` com tela → inclui **Anatomia da Tela**
    - `Form` ou `Modal` → inclui **Padrao de Campo**
    - `Backend-only` / `Integration` → pula Anatomia e Padrao de Campo
 4. Determina numero da spec (proximo disponivel em `docs/specs/`) e nome (kebab-case)
-5. Gera spec completa seguindo o formato abaixo
+5. Gera spec completa seguindo o formato abaixo (spec grande: pode despachar o `@spec-from-prd`, que segue este mesmo formato, para gerar em janela propria)
 6. Cria checklist de rastreabilidade PRD → spec
 7. Salva em `docs/specs/{NNN}-{nome}/`
 
@@ -170,7 +170,7 @@ E o **contrato estrutural minimo** da tela — nao um mockup detalhado. Garante 
 
 #### Corpo da tela
 - **Layout principal**: {1 coluna | 2 colunas | grid | bento | lista | tabela}
-- **Densidade**: {compacta | normal | confortavel} — coerente com UX Charter (atributo X)
+- **Densidade**: {compacta | normal | confortavel} — coerente com a ancora de design (atributo X)
 - **Pattern principal**: {pattern do catalogo /ux, ex: "Inline Edit", "Optimistic UI", "Skeleton + lista"}
 
 #### Estados
@@ -194,13 +194,16 @@ Para cada elemento de tela, classificar e definir a barra de entrega:
 
 | Caso | Regra | Barra |
 |---|---|---|
-| **Novo + tem protótipo** | pixel-perfect ao frame | divergiu → NÃO entrega |
+| **Novo + tem protótipo** | idêntico à fonte de design | divergiu → NÃO entrega |
 | **Novo + sem protótipo** | seguir o Design System | conformidade DS |
 | **Reaproveita tela existente** | seguir a existente (sem re-skin); **AVISA** se ela divergir do protótipo | igual à existente |
 
-- Quando há protótipo de elemento novo, **embutir na spec** o frame + os **valores
-  exatos** (cores, cor de ícone, posição, tipografia, espaçamento) — para o gate de
-  fidelidade comparar sem depender da ferramenta de design conectada na hora.
+- **Fonte de design**: ferramenta de protótipo (link + IDs dos frames) · página publicada
+  (Artifact) · HTML local · imagem · ou DS + memória de design (sem protótipo).
+- Quando há protótipo de elemento novo, **embutir na spec** a referência + os **valores
+  exatos** que a fonte expõe (cores, cor de ícone, posição, tipografia, espaçamento) — para
+  o gate de fidelidade comparar sem depender da ferramenta conectada na hora. Fonte só em
+  imagem → conferência visual na revisão visual do `/execute`.
 - **Degradação honesta**: se o projeto não tem ferramenta de protótipo / Playwright,
   a fidelidade vira verificação estrutural (`check-design`), declarada como
   "auditoria parcial". Não prometer pixel-perfect sem o tooling.
@@ -245,7 +248,7 @@ Para cada elemento de tela, classificar e definir a barra de entrega:
 
 ### Microinteracoes (se UI / Feature)
 
-Se o UX Charter e o motion.md existem no projeto, listar microinteracoes principais da tela referenciando o motion.md:
+Se a ancora de design e o motion.md existem no projeto, listar microinteracoes principais da tela referenciando o motion.md:
 
 ```markdown
 - **Botao primario click**: scale 0.97 + bg darken — fast + ease-out (ver motion.md)
@@ -255,9 +258,9 @@ Se o UX Charter e o motion.md existem no projeto, listar microinteracoes princip
 
 Nao re-especificar duracoes/easings — apenas referenciar `motion.md`. Se a tela tem microinteracao **fora do padrao**, justificar.
 
-### Aplicacao da personalidade (UX Charter)
+### Aplicacao da ancora de design
 
-Se o UX Charter existe, citar 1-2 atributos da personalidade que esta tela materializa:
+Se ha ancora de design (Charter ou memoria de design), citar 1-2 atributos da personalidade ou da Direcao que esta tela materializa:
 
 ```markdown
 - **Atributo "Preciso"**: hierarquia tipografica com peso (nao tamanho); spacing apertado

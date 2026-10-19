@@ -1,6 +1,6 @@
 # Catálogo de Patterns — reference canônico (agnóstico)
 
-> 30 patterns modernos de UI categorizados. Vocabulário estável do kit Praxis.
+> 33 patterns modernos de UI categorizados. Vocabulário estável do kit Praxis.
 > **Lido por**: `@ux` (modo consultoria, decisão de componente, direção), `@design` (critique, layout), `@paper-prototype`, `@check-ux`.
 
 ---

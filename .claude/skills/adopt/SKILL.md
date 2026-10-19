@@ -36,7 +36,19 @@ Adota um projeto existente para dentro do ecossistema do kit. Cria todo o contex
 
 Se nao especificado, assume o diretorio atual.
 
-## Pipeline de Adocao (5 etapas)
+## Pipeline de Adocao (Etapa 0 + 5 etapas)
+
+### Etapa 0 — Instalacao do kit no projeto (conferencia)
+
+A semente e copiada por cima de um projeto existente sem sobrescrever (README › Instalacao), e e
+facil ficar algo pela metade. Antes de mapear o projeto, conferir e completar — mostrando ao
+usuario o que mudou:
+
+1. **Lock do catalogo** (`.claude/praxis.json`) — existe e aponta para o repositorio e a versao; sem ele o `praxis.mjs` nao puxa nada. Se o nucleo ainda nao foi puxado (`.claude/agents/orchestration/praxis.md` ausente), rodar `node .claude/praxis/praxis.mjs init` — ele tambem completa o `.gitignore` com o estado local (`state.md`, `ledger-auto.md`, cursor, marcadores do `praxis.mjs`).
+2. **`.claude/settings.json`** — tem o bloco `hooks` do kit (igual ao de `hooks.manifest.json`), a permissao do `praxis.mjs` e a declaracao do plugin de seguranca (`enabledPlugins` + `extraKnownMarketplaces`). Projeto que ja tinha settings proprio → fazer o merge preservando o que existe (o arquivo passa a ser personalizado: o catalogo nao o atualiza mais).
+3. **`CLAUDE.md`** — tem o import `@.claude/praxis/rules.md` e a secao `## Projeto`. Projeto que ja tinha `CLAUDE.md`: acrescentar o import e a secao, sem reescrever o texto do dono. Se o total passar de ~4KB, **perguntar** antes de mover qualquer coisa para o manifesto.
+4. **Colisao de nomes** — skill ou agent do projeto com o mesmo caminho de um do kit fica na versao do projeto (o `praxis.mjs add` nunca sobrescreve arquivo que nao esta no lock): listar para o usuario revisar.
+
 
 ### Etapa 1 — Mapeamento Estrutural
 
@@ -53,7 +65,7 @@ Delegar ao agent `@codebase-mapper`:
 
 ### Etapa 2 — Discovery Adaptado
 
-Delegar ao agent `@discovery` em **modo adocao** (nao modo projeto novo):
+Conduzir **nesta sessao** o roteiro `.claude/agents/discovery/discovery.md` em **modo adocao** (nao modo projeto novo) — e entrevista, e subagente nao conversa:
 
 Diferenca do discovery normal:
 - Etapa 1 (Natureza): Ja se sabe que e projeto existente — pular
@@ -62,6 +74,7 @@ Diferenca do discovery normal:
 - Etapa 4 (Time): Perguntar normalmente
 - Etapa 5 (Restricoes): Perguntar normalmente + "Quais areas do codigo nao devem ser tocadas?"
 - Etapa 6 (Modulos): **Inferir do codebase-map** + confirmar com usuario
+- Etapa 7 (Transversais): **Inferir do codigo** (soft delete, auditoria, locale, criar/editar) + confirmar com usuario
 
 **Output**: `docs/project/discovery.md`
 
@@ -69,7 +82,7 @@ Diferenca do discovery normal:
 
 ### Etapa 3 — ADRs por Inferencia
 
-Delegar ao agent `@adr-creator` em **modo inferencia**:
+Conduzir **nesta sessao** o roteiro `.claude/agents/architecture/adr-creator.md` em **modo inferencia** (as perguntas "intencional ou historico?" sao feitas aqui; a redacao das ADRs pode ir ao `@adr-creator` com as respostas):
 
 Em vez de propor boas praticas do zero, o agent:
 1. Le o `codebase-map.md` e identifica os padroes JA usados no projeto
@@ -154,7 +167,7 @@ Projeto adotado com sucesso!
 Artefatos criados:
 - docs/project/codebase-map.md    — Mapeamento estrutural
 - docs/project/discovery.md       — Contexto do projeto
-- docs/adr/0001-*.md ... 000N-*.md — {N} ADRs criadas
+- docs/adr/{NNNN}-*.md            — {N} ADRs criadas (a partir do proximo numero livre)
 - docs/project/constitution.md    — Regras consolidadas
 - docs/validation-reports/{data}-baseline.md — Estado atual
 
@@ -178,10 +191,10 @@ Agora que o projeto esta adotado, o que voce precisa fazer?
 
 3. **Nova feature** → /define → /spec-from-prd → /implement
    Cria PRD e spec da feature, depois implementa com o pipeline completo.
-   (Ou se for feature simples, pode ir direto para /implement com spec leve.)
+   (Feature trivial → /quickfix. Descricao livre direto no /implement so em `/mode lite`.)
 
-4. **Refatorar parte do codigo** → /implement {descricao} --team {scope}
-   Crie uma spec descrevendo o que quer refatorar e por que.
+4. **Refatorar parte do codigo** → spec da refatoracao + /implement {spec} --team {scope}
+   Escreva a spec descrevendo o que quer refatorar e por que.
    O kit planeja, quebra em tasks e executa respeitando as ADRs.
 
 5. **Validar qualidade do codigo atual** → /validate

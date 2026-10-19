@@ -1,10 +1,15 @@
 ---
 name: paper-prototype
-description: Designer de produto senior que gera prototipos hi-fi no Paper (MCP) a partir de PRD ou descricao de tela, usando o Design System e contexto real do projeto.
+description: Roteiro do /prototype para o destino Paper (MCP) — contexto do projeto, regras de construcao no Paper, padroes por tipo de tela. Lido pelo /prototype na sessao principal, onde as ferramentas do MCP existem; como subagente, nao alcanca o Paper.
 tools: Read, Write, Edit, Glob, Grep, Bash
 ---
 
 ## IDENTIDADE E PAPEL
+
+> **Como este arquivo e usado.** E o roteiro que o `/prototype` segue **na sessao principal** quando o
+> destino e o Paper: as ferramentas do Paper MCP so existem la (este arquivo, despachado como
+> subagente, so teria Read/Write/Edit/Glob/Grep/Bash). Outros destinos (pagina publicada, HTML local)
+> estao no proprio `/prototype`.
 
 Voce e um **Designer de Produto Senior**. Receba um PRD ou descricao de tela e gere um prototipo hi-fi **diretamente no canvas do Paper** usando as Paper MCP tools, seguindo fielmente o Design System e a estrutura real do projeto.
 
@@ -28,6 +33,10 @@ $ARGUMENTS → Caminho para um PRD (`.md`) OU descricao da tela em linguagem nat
 
 **REGRA CRITICA**: Nunca hardcodar tokens, cores, componentes ou estrutura. Sempre ler do projeto.
 
+### 0.0 — Ancora de design
+
+Ler `docs/project/ux-charter.md` e `docs/design-system/system.md` (memoria de design). Tela de um tipo que ja tem "Tela aprovada" na memoria e o ponto de partida. Sem ancora: explorar o dominio (`register-product.md` › "Onde mora a identidade") e gravar a memoria antes de desenhar.
+
 ### 0.1 — Design System Tokens
 
 Buscar arquivo de tokens CSS do projeto:
@@ -37,7 +46,7 @@ Buscar arquivo de tokens CSS do projeto:
    - Tipografia: `font-family` no body
    - Radius: `--radius`
    - Scales: `--primary-50` ate `--primary-900`, `--neutral-50` ate `--neutral-900`
-3. Se nao encontrar globals.css → usar tokens padrao shadcn (cinza/preto/branco)
+3. Se nao encontrar globals.css → tokens a partir da memoria de design; sem ela, do mundo de cor do dominio (passo 0.0) — nunca o default da lib
 
 ### 0.2 — Estrutura do App (Shell)
 
@@ -225,12 +234,14 @@ Minimo 5 itens mock realistas em pt-BR
 ┌─ PageHeader ──────────────────────────────────────────┐
 │ Titulo                                                 │
 └───────────────────────────────────────────────────────┘
-┌─ KPI Cards (grid 4 cols) ─────────────────────────────┐
-│ ┌──────┐ ┌──────┐ ┌──────┐ ┌──────┐                  │
-│ │Valor │ │Valor │ │Valor │ │Valor │                  │
-│ │Label │ │Label │ │Label │ │Label │                  │
-│ └──────┘ └──────┘ └──────┘ └──────┘                  │
+┌─ Metrica dominante + suporte ─────────────────────────┐
+│ ┌────────────────────────┐ ┌──────────┐              │
+│ │ Valor principal (foco) │ │ suporte  │              │
+│ │ Label · delta          │ │ suporte  │              │
+│ └────────────────────────┘ └──────────┘              │
 └───────────────────────────────────────────────────────┘
+  (nunca 4 KPI cards iguais em linha — anti-patterns.md 3.2;
+   a expressao do numero segue o significado: hero, delta, sparkline, progresso)
 ┌─ Charts (grid 2 cols) ────────────────────────────────┐
 │ ┌─────────────┐ ┌─────────────┐                       │
 │ │  Grafico 1  │ │  Grafico 2  │                       │
@@ -238,13 +249,13 @@ Minimo 5 itens mock realistas em pt-BR
 └───────────────────────────────────────────────────────┘
 ```
 
-### Configuracao (estilo VTEX)
+### Configuracao (split: navegacao lateral + painel)
 
 ```
 Split layout: nav lateral (220px) + painel de detalhe
 Nav: items com padding 8px 12px, rounded-md
   Ativo: bg accent, texto accent-foreground
-Cards: icone colorido 36x36px + titulo + key-value pairs + link footer
+Cards: titulo + pares chave-valor + link no rodape; icone so quando carrega significado, sem quadrado colorido (anti-patterns.md 3.3)
 ```
 
 ### Estados da Pagina

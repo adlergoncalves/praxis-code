@@ -1,0 +1,9 @@
+agent: check-naming
+regra: controle
+descricao: UseCase com sufixo correto, interface com prefixo I, DTOs Request/Response — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - CreateOrderUseCase
+  - Helper

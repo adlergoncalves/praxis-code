@@ -11,11 +11,43 @@
 // Saida: JSON { hookSpecificOutput: { hookEventName, additionalContext } } via stdout, exit 0.
 // Falha graciosa: qualquer erro -> exit 0 sem output (a instrucao e a fonte primaria).
 
+import { existsSync, readFileSync } from 'node:fs';
+import { join } from 'node:path';
+import { spawn } from 'node:child_process';
 import {
   readStdin, parseInput, getRoot, nowISO,
   readStateFields, writeStateFields, readLedgerEvents, parseLearnings,
   WORK_PATH_RE, emitContext,
 } from './_lib.mjs';
+
+// --- catalogo (ADR-0009): atualizacao pronta + checagem diaria em background ----------------------
+
+function catalogUpdateLine(root) {
+  const p = join(root, '.claude', 'praxis.update.json');
+  if (!existsSync(p)) return null;
+  try {
+    const u = JSON.parse(readFileSync(p, 'utf8'));
+    return `[Praxis · catalogo] atualizacao ${u.version}${u.major ? ' (MAJOR — so com decisao do usuario: apply --major)' : ''} pronta no cache: `
+      + `${u.replace.length} arquivo(s) a substituir, ${u.keep.length} personalizado(s) mantido(s), ${u.add.length} novo(s). `
+      + (u.major ? 'Avise uma vez, com o changelog, e espere.' : 'Sem fatia WIP em docs/specs/*/tasks.md → `node .claude/praxis/praxis.mjs apply`, commit separado pela politica do projeto, uma linha ao usuario.');
+  } catch { return null; }
+}
+
+/** Dispara `praxis.mjs check` desacoplado, no maximo 1x/dia (o proprio script tambem faz o throttle). */
+function maybeSpawnCheck(root) {
+  if (process.env.PRAXIS_OFFLINE === '1' || process.env.PRAXIS_DRIVER === '1') return;
+  const script = join(root, '.claude', 'praxis', 'praxis.mjs');
+  if (!existsSync(script) || !existsSync(join(root, '.claude', 'praxis.json'))) return;
+  try {
+    const check = join(root, '.claude', 'praxis.check.json');
+    if (existsSync(check)) {
+      const at = JSON.parse(readFileSync(check, 'utf8')).at;
+      if (at && Date.now() - Date.parse(at) < 24 * 3600 * 1000) return;
+    }
+    const child = spawn(process.execPath, [script, 'check'], { cwd: root, detached: true, stdio: 'ignore', windowsHide: true });
+    child.unref();
+  } catch { /* rede e best-effort */ }
+}
 
 function buildSessionContext(root) {
   const st = readStateFields(root);
@@ -52,11 +84,14 @@ function buildSessionContext(root) {
     for (const l of ledger.slice(-4)) lines.push(`- ${l}`);
   }
 
+  const update = catalogUpdateLine(root);
+
   if (!hasState && !corrections.length && !pending.length && !ledger.length) {
     // projeto novo / sem memoria: nao polui — uma linha so.
-    return '[Praxis] Sem memoria de aprendizado registrada ainda neste projeto.';
+    return '[Praxis] Sem memoria de aprendizado registrada ainda neste projeto.' + (update ? `\n${update}` : '');
   }
 
+  if (update) lines.push('', update);
   lines.push('', 'Obs.: contexto de fundo. As regras de saudacao do Praxis (Modalidade A/B/C) continuam valendo.');
   return lines.join('\n');
 }
@@ -104,6 +139,7 @@ async function main() {
 
   if (event === 'SessionStart') {
     emitContext('SessionStart', buildSessionContext(root));
+    maybeSpawnCheck(root);
   } else if (event === 'UserPromptSubmit') {
     const nag = maybeNag(root);
     if (nag) emitContext('UserPromptSubmit', nag);

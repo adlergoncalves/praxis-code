@@ -7,7 +7,9 @@ depends:
 
 # /revalidate
 
-Revalidacao cirurgica usando o agent `@revalidator`.
+Revalidacao cirurgica. Roda **na sessao principal**, usando `.claude/agents/quality/revalidator.md`
+como roteiro: re-despachar os check agents e trabalho da sessao principal (subagente nao despacha
+agents — `.claude/praxis/rules.md`).
 
 ## Input
 

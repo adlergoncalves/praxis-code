@@ -1,7 +1,7 @@
 # Register: Brand — reference canônico (agnóstico)
 
 > Defaults de design para **superfícies de marca** — landing pages, sites institucionais, sequências editoriais onde o objetivo é comunicar identidade e gerar emoção.
-> **Lido por**: `@ux`, `@ds-foundation`, `@ds-component`, `@design`, `@paper-prototype`, `@check-*` quando o Charter declara `register: brand`.
+> **Lido por**: `@ux`, `@ds-foundation`, `@ds-component`, `@design`, `@paper-prototype`, `@check-*` quando o Charter ou a memória de design (`docs/design-system/system.md`) declaram `register: brand`.
 > **Par**: ver `register-product.md` para interfaces task-focused.
 
 ---
@@ -34,10 +34,10 @@ O modo de falha mais comum: **template-saaszão** — purple-blue gradient, Inte
 
 ### Tipografia
 
-- **Voz tipográfica permitida**. Display font como hero (`Fraunces`, `GT Sectra`, `Tiempos`, `Söhne`, custom). Pairing matter — display + workhorse (uma sans neutra).
+- **Voz tipográfica permitida**. Display font como hero (`Fraunces`, `GT Sectra`, `Tiempos`, custom). Pairing matter — display + workhorse (uma sans neutra).
 - **Escala generosa** (1.333 — 1.618). Diferenças grandes entre hero e body criam ritmo editorial.
 - **Tipografia como composição** — hero pode ser dominante na tela, body pode ter line-height alto, smallcaps e ligaduras OpenType são bem-vindos.
-- Anti-default: NÃO Inter+Geist+Söhne pra tudo (clichê de 2024-2026). Se o Charter pede confiante/polido, **escolher um sans com personalidade** (Söhne, Untitled Sans, ABC Diatype) e ter razão pra escolher.
+- Anti-default: NÃO Inter+Geist+Söhne pra tudo (clichê de 2024-2026). Se o Charter pede confiante/polido, **escolher um sans com personalidade** (Untitled Sans, ABC Diatype, ou outra com razão registrada) e ter razão pra escolher.
 
 ### Cor
 
@@ -91,6 +91,14 @@ O modo de falha mais comum: **template-saaszão** — purple-blue gradient, Inte
 
 ## Como usar este reference
 
-Quando o Charter do projeto declara `register: brand` (ou a *surface* específica é brand mesmo num projeto híbrido), **todo agent de front carrega este arquivo antes de propor ou validar**. Os defaults aqui **convidam à expressão**, mas a expressão precisa estar ancorada no Charter (arquétipo, referências, anti-referências).
+Quando o Charter ou a memória de design do projeto declaram `register: brand` (ou a *surface* específica é brand mesmo num projeto híbrido), **todo agent de front carrega este arquivo antes de propor ou validar**. Os defaults aqui **convidam à expressão**, mas a expressão precisa estar ancorada no Charter (arquétipo, referências, anti-referências).
 
-Surface brand SEM Charter → o módulo PARA e conduz `/ux charter`. Brand sem identidade declarada é receita pra SaaS-template genérico.
+Surface brand sem âncora de design (nem Charter nem memória de design) → a sessão começa pelo **inventário do assunto** (8–12 coisas que só este cliente tem: nome e o que significa, lugar, números do briefing, a restrição que o define, materiais, rituais, os impressos do seu mundo) e pela frase da ideia — *"nesta página, [algo do assunto] vira [o recurso de composição]"*, com o teste do concorrente (se a frase servir para o concorrente mais próximo, a ideia é da categoria, não do cliente). Grava na memória de design (`docs/design-system/system.md`). Não trava pedindo a entrevista do Charter. Método: `third-party/frontend-design/frontend-design.md`.
+
+---
+
+## Módulo de marca (opcional)
+
+Projetos com superfície de marca podem instalar, pelo `/setup`, a **taste-skill v2** (`design-taste-frontend`, MIT): direção de arte de páginas públicas com biblioteca de direções estudadas em 247 sites, inspetor no navegador real e o ciclo "olhar os prints e corrigir os 3 piores problemas". Pede Node 22+, Chrome/Edge/Chromium e acesso à rede (busca de imagens em acervos abertos); por isso não vem no kit.
+
+Instalada, ela conduz as páginas de marca. As **house rules** dela (sem gradiente, sem sombra em repouso, sem eyebrow, sem monoespaçada) são mais estritas que este register e valem por padrão nessas páginas; um recurso que este register permite com justificativa no Charter (ex.: gradiente com intenção) continua permitido quando o Charter justifica — precedência em `third-party/README.md`.

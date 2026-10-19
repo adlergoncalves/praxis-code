@@ -9,7 +9,7 @@ Obrigado pelo interesse! Este guia resume como propor mudanças no kit.
 
 ## Preparando o ambiente
 
-Os hooks de aprendizado do kit também rodam quando você edita o próprio kit e gravam no `docs/project/learnings/ledger.md`, que precisa chegar vazio para quem usa o template. Desligue-os localmente:
+O `docs/project/learnings/ledger.md` precisa chegar vazio para quem usa o template: ao editar o kit, não registre linhas `(llm)` nele (as linhas automáticas dos hooks vão para `ledger-auto.md`, gitignored). Para não ter os hooks rodando enquanto edita o kit, desligue-os localmente:
 
 ```bash
 echo '{ "disableAllHooks": true }' > .claude/settings.local.json   # já está no .gitignore
@@ -22,11 +22,18 @@ echo '{ "disableAllHooks": true }' > .claude/settings.local.json   # já está n
 3. Rode as checagens locais (Node.js ≥ 18, sem dependências):
 
    ```bash
-   node scripts/generate-index.mjs   # regenera docs/kit-index.{md,json}
-   node scripts/validate-kit.mjs     # frontmatter, nomes duplicados, depends, hooks
+   node scripts/generate-index.mjs   # regenera docs/kit-index.{md,json} e catalog.json
+   node scripts/build-seed.mjs       # regenera seed/ (a semente que os projetos instalam)
+   node scripts/validate-kit.mjs     # frontmatter, nomes, depends, hooks (aprendizado e qualidade), JSON, evals, caminhos pessoais
    ```
 
 4. Adicione uma entrada em `CHANGELOG.md` na seção `[Unreleased]`.
+
+### Versão do catálogo (ADR-0009)
+
+Os projetos puxam ferramentas da **tag** `v<VERSION>`. Para publicar: atualizar `VERSION` (SemVer — formato lido por script, como `tasks.md`, `doctor.json` ou o lock, só muda em **major**), rodar `generate-index` e `build-seed`, commitar e criar a tag `vX.Y.Z` no mesmo commit. A semente em `main` sempre aponta para uma tag existente.
+
+Para testar uma branch antes da tag, num projeto de teste: `"ref": "<branch>"` e `"repo": "file:///caminho/do/clone"` no `.claude/praxis.json`, e `PRAXIS_CACHE_DIR` apontando para uma pasta temporária.
 5. Abra um Pull Request para `main`.
 
 ## Convenções
@@ -34,10 +41,10 @@ echo '{ "disableAllHooks": true }' > .claude/settings.local.json   # já está n
 ### Commits — [Conventional Commits](https://www.conventionalcommits.org/)
 
 ```
-feat(execute): adiciona guardrail de "sem progresso"
-fix(setup): nao remove agent ux em projetos sem frontend
-docs(readme): corrige contagem de skills
-chore(ci): atualiza actions/checkout
+feat(execute): add "no progress" guardrail
+fix(setup): keep the ux agent in projects without frontend
+docs(readme): fix skill count
+chore(ci): bump actions/checkout
 ```
 
 Tipos: `feat`, `fix`, `docs`, `refactor`, `chore`, `ci`. Escopo = nome da skill, agent ou área.

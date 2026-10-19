@@ -1,7 +1,7 @@
 # Heurísticas Visuais — Refactoring UI (reference canônico, agnóstico)
 
 > 8 heurísticas atemporais para refinar UI. Vocabulário estável do kit Praxis.
-> **Lido por**: `@ux` (modo critique, direção), `@design` (polish, distill, layout, typeset, colorize), `@check-design`, `@check-ai-cliches`.
+> **Lido por**: `@ux` (interface, direção), `@design` (polish, distill, layout, typeset, colorize), `@check-design`, `@check-ai-cliches`.
 
 ---
 
@@ -38,4 +38,4 @@ Ao **criticar** uma tela: percorra as 8 e identifique violações. Cada violaç�
 
 Ao **polir** (modo `/design polish`): aplicar as heurísticas em ordem, do impacto maior pro menor.
 
-Ao **detectar automaticamente**: o detector (`detect-cliches.mjs`) verifica heurísticas que dão pra checar deterministicamente (preto puro, sombras uniformes, escala de spacing linear). As que exigem julgamento (hierarquia por peso) ficam no `@check-design`/`@ux`.
+Ao **detectar automaticamente**: o detector (`detect-cliches.mjs`) verifica o que dá para checar deterministicamente (preto puro); sombras uniformes e escala de spacing linear ficam no julgamento (`@design`, `@check-design`). As que exigem julgamento (hierarquia por peso) ficam no `@check-design`/`@ux`.

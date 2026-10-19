@@ -37,20 +37,20 @@ O `/ux` decide navegação, patterns de interface e jornadas. Feito agora, evita
 
 ---
 
-## Passo 1 — Setup do Template
+## Passo 1 — Instalar e montar o kit
 
-```
-/setup
+```bash
+npx degit adlergoncalves/praxis-code/seed meu-projeto && cd meu-projeto && git init
 ```
 
-O setup configura o kit para a sua stack:
+No Claude Code, `/start`: ele monta o núcleo do kit e chama o `/setup`, que configura o kit para a sua stack:
 
 - Tem frontend? Qual framework?
 - Tem backend? Qual linguagem?
 - Qual banco de dados?
 - Infra e deploy?
 
-**Resultado**: Um `CLAUDE.md` personalizado com os módulos corretos ativados. Se o projeto só tem frontend, os agents de backend não são ativados — e vice-versa.
+**Resultado**: o `CLAUDE.md` com a seção do projeto preenchida e só os módulos da sua stack no projeto. Se o projeto só tem frontend, os agents de backend nem chegam — e vice-versa.
 
 ```
 /clear
@@ -103,7 +103,7 @@ Identifica Bounded Contexts, classifica subdomínios (Core/Supporting/Generic) e
 
 ---
 
-## Passo 3 — Arquitetura (Fase 3)
+## Passo 3 — Arquitetura (Fase 2)
 
 ```
 /architect
@@ -132,7 +132,7 @@ Se você tiver justificativa válida, ele aceita e documenta. Se não, recomenda
 
 ---
 
-## Passo 4 — Definição (Fase 2)
+## Passo 4 — Definição (Fase 3)
 
 ```
 /define
@@ -261,6 +261,16 @@ Unidade = **fatia vertical** (U0…Un, 1 fatia = 1 User Story), com critério de
 e verificação manual; as tasks `[T00N]` viram sub-tasks dentro da fatia. Fundação (U0) é
 exceção declarada. (Loop Engineering, ADR-0007.)
 
+**Quality gates antes de aprovar o pacote** — ambiguidade se fecha aqui, nunca com o loop rodando (o portão final do `/tasks` já roda a análise de consistência; estes são os avulsos):
+
+```bash
+/spec-review docs/specs/001-feature/spec.md  # Validar spec
+/clarify docs/specs/001-feature/spec.md       # Detectar ambiguidades
+/analyze 001-feature                           # Consistência spec <-> plan <-> tasks
+/checklist 001-feature security                # Checklist de segurança
+/checklist 001-feature ux                      # Checklist de UX
+```
+
 **Revise as fatias e o grafo de dependências antes de prosseguir.**
 
 ```
@@ -276,20 +286,11 @@ exceção declarada. (Loop Engineering, ADR-0007.)
 ```
 
 O agent executa **em loop por fatia**: implementa uma fatia → roda os gates → **conserta até
-verde** (micro-loop) → marca **DONE no Loop Log** → apresenta o relatório de verificação →
-**PARA** para você revisar (checkpoint; `--auto [N]` encadeia com guardrails). Quando encontra
+verde** (micro-loop) → verificador independente → marca **DONE no Loop Log** → segue para a
+próxima fatia, sem pedir ok entre elas: a conversa aconteceu antes, no portão final do `/tasks`.
+Só para no realmente bloqueante (`--checkpoint` se você quiser revisar fatia a fatia). Quando encontra
 divergências entre o planejado e o possível, atualiza a spec com "Implementation Notes" —
 mantendo rastreabilidade mesmo quando a realidade muda o plano.
-
-**Quality gates durante a execução**:
-
-```bash
-/spec-review docs/specs/001-feature/spec.md  # Validar spec antes de começar
-/clarify docs/specs/001-feature/spec.md       # Detectar ambiguidades
-/analyze 001-feature                           # Consistência spec <-> plan <-> tasks
-/checklist 001-feature security                # Checklist de segurança
-/checklist 001-feature ux                      # Checklist de UX
-```
 
 ```
 /clear
@@ -313,8 +314,8 @@ O que foi decidido nas ADRs é o que é cobrado aqui. O sistema roda agents de v
 
 ```bash
 /validate geral              # Perfil standard (default)
-/validate geral minimal      # Só ADR validator — check rápido
-/validate geral full         # Todos os agents — antes de release
+/validate geral --profile minimal      # Só ADR validator — check rápido
+/validate geral --profile full         # Todos os agents — antes de release
 ```
 
 **Resultado**: Relatório em `docs/validation-reports/` com ERROs, AVISOs e itens OK.
@@ -353,7 +354,7 @@ Itens `[ACCEPTED]` não são re-checados nas próximas passadas.
 ```
 /strategy       → (opcional) Valida ideia de negócio
 /ux             → (opcional) Mapeia jornadas e patterns de interface
-/setup          → Configura stack e módulos
+/start          → Monta o kit; o /setup configura stack e módulos
 /clear
 /discovery      → Entende o projeto
 /clear

@@ -1,0 +1,10 @@
+agent: check-web-guidelines
+regra: controle
+descricao: Formulario com label associado, botao com texto e submit nativo; UI em portugues (Title Case nao se aplica) — zero ERRO
+
+deve_detectar: []
+
+nao_deve_detectar:
+  - div onClick
+  - aria-label
+  - Title Case

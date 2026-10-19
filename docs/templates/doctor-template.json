@@ -1,0 +1,31 @@
+{
+  "$comment": "Molde de docs/specs/<feature>/doctor.json — checagens de ambiente DA FEATURE, lidas pelo .claude/scripts/loop-doctor.mjs (Gate 0 do /execute). Gerado no portao final do /tasks a partir da Infra de Verificacao do plan. tipo: porta | http | conteudo | comando. severidade: FALHOU (default) | AVISO. fatias: restringe a falha a essas fatias (viram BLOCKED e a corrida segue); sem fatias, a falha para a corrida.",
+  "checks": [
+    {
+      "nome": "API local",
+      "tipo": "porta",
+      "porta": 3000,
+      "descricao": "backend de pe para os testes de integracao",
+      "fatias": ["U2", "U3"]
+    },
+    {
+      "nome": "Health da API",
+      "tipo": "http",
+      "url": "http://localhost:3000/health",
+      "severidade": "AVISO"
+    },
+    {
+      "nome": "Persona de teste semeada",
+      "tipo": "conteudo",
+      "arquivo": "tests/e2e/fixtures/personas.ts",
+      "padrao": "persona-aprovador",
+      "fatias": ["U4"]
+    },
+    {
+      "nome": "Migrations aplicadas",
+      "tipo": "comando",
+      "comando": "npm run db:status",
+      "timeout": 60
+    }
+  ]
+}

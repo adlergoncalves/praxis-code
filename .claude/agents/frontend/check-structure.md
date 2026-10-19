@@ -10,7 +10,7 @@ $ARGUMENTS → Caminho do frontend ou "geral"
 ## REGRAS EMBUTIDAS
 
 ### Estrutura Feature-First
-- Cada feature em `src/features/<name>/` com subdiretorios: `components/`, `hooks/`, `pages/` (ou `views/`), `api.ts` (ou `services/`), `types.ts`, `index.ts`
+- Cada feature em `src/features/<name>/` com: `components/`, `hooks/`, `api.ts` (ou `services/`), `store.ts` (se houver estado), `types.ts`, `index.ts` — `pages/` (ou `views/`) so quando a feature tem rota propria e o projeto decidiu assim
 - Features sao unidades autonomas — sem dependencia cruzada entre features
 - Proibido: `features/<A>` importar de `features/<B>` — comunicacao via shared/ ou state global
 - Barrel exports obrigatorios: cada feature deve ter `index.ts` exportando API publica
@@ -42,7 +42,7 @@ Ler ADRs em `docs/adr/` sobre estrutura de pastas, monorepo, modularizacao. Carr
 - Para cada feature: verificar subdiretorios esperados (components/, hooks/, types.ts, index.ts)
 
 ### 2. Verificar imports cruzados entre features
-- Para cada feature A: grep imports de outras features (`from ['"].*features/(?!A)`)
+- Para cada feature A: grep imports de outras features (`from ['"].*features/(?!A)`) **e** resolver os imports relativos — `'../../<outra>/...'` nao contem a palavra `features/`, mas sai da pasta da feature
 - Import cruzado entre features → ERRO
 
 ### 3. Verificar shared/ com logica de dominio
@@ -63,13 +63,16 @@ Ler ADRs em `docs/adr/` sobre estrutura de pastas, monorepo, modularizacao. Carr
 ### 7. Verificar imports relativos profundos para shared
 - Grep `from ['"]\.\..*shared\/` → AVISO (usar path alias)
 
+### 7b. Verificar uso real de shared/
+- Item de `shared/` importado por menos de 3 features → AVISO (a regra: extrair para shared/ so com 3+ consumidores)
+
 ### 8. Verificar coesao de shared/
 - Verificar se shared/ e subdividido por tipo
 - `shared/` flat sem subdiretorios em projeto com 5+ shared items → AVISO
 
 ## CLASSIFICACAO
 - **ERRO**: Import cruzado entre features, logica de dominio em shared/
-- **AVISO**: Feature sem index.ts, componente em index.tsx, hook fora de hooks/, import relativo para shared, shared/ sem subdivisao
+- **AVISO**: Feature sem index.ts, componente em index.tsx, hook fora de hooks/, import relativo para shared, shared/ sem subdivisao, item de shared/ com menos de 3 consumidores
 
 ## SECAO OBRIGATORIA: Oportunidades de Evolucao
 

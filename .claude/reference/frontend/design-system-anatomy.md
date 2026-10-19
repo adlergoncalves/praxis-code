@@ -168,11 +168,15 @@ A página de tokens documenta **apenas fundamentos**. Componentes (Button, Input
 
 Estrutura canônica (cada componente em rota `/design-system/components/{nome}`):
 
-1. **Header** — Nome do componente + descrição curta.
-2. **Showcase** — variantes do componente em estados: default, hover (se aplicável), focus, active, disabled, loading, error, selected.
-3. **Props / API** — tabela com props, tipos, defaults.
-4. **Uso real** — 1-2 exemplos de uso no contexto do app.
-5. **Code block** — snippet de uso mínimo.
+A anatomia obrigatória é a do `@ds-component` (Phase 4), nesta ordem:
+
+1. **Header** — nome do componente + descrição curta (1 frase).
+2. **Import** — statement de import como code block copiável.
+3. **Variants** — lado a lado, com code block embaixo de cada exemplo.
+4. **Estados** — default, hover, focus, disabled, loading (e error/selected quando aplicável).
+5. **Dark mode** — preview ou nota de que herda o toggle global.
+6. **Uso real** — exemplo no domínio do projeto, nunca "Lorem ipsum".
+7. **Props** — tabela com tipos, defaults e descrição curta.
 
 Detalhes específicos da implementação (sintaxe da stack) vivem no adapter casado.
 
@@ -195,7 +199,7 @@ Detalhes específicos da implementação (sintaxe da stack) vivem no adapter cas
 - Sintaxe de componente (React JSX, Angular template, Vue template).
 - Library de UI base (shadcn install, Angular Material `ng add`, Vuetify plugin, MUI ThemeProvider).
 
-Tudo isso vive nos arquivos `.claude/reference/frontend/adapter-*.md` (criados no Passo 4 do plano-3).
+Tudo isso vive nos arquivos `.claude/reference/frontend/adapter-*.md`.
 
 ---
 

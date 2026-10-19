@@ -1,12 +1,13 @@
 ---
 name: define
-description: "Fase 2: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)"
+description: "Fase 3: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)"
 user-invocable: true
 depends:
   - .claude/skills/prd-create/SKILL.md
   - .claude/skills/prd-validate/SKILL.md
   - .claude/skills/prd-decompose/SKILL.md
   - .claude/skills/spec-from-prd/SKILL.md
+  - docs/adr/0006-workspace-detalhamento-modulo.md
 ---
 
 # /define
@@ -32,7 +33,7 @@ Orquestra o workflow completo de definicao de produto.
 6. **PRD Decompose** → Decompoe em specs independentes (detecta workspace se existir)
 7. **Spec from PRD** → Gera spec tecnica por feature
 
-> **Nota**: o "Module Briefing" antes era um passo separado, mas duplicava trabalho do Gate. Agora o Gate **gera o briefing como output final** — em `docs/prds/briefings/briefing-{modulo}.md` — consumido pelo `/prd-create`.
+> **Nota**: o Gate **gera o Module Briefing como output final** — em `docs/prds/briefings/briefing-{modulo}.md` — consumido pelo `/prd-create`. Nao ha passo separado de briefing.
 
 ## Pre-requisitos
 
@@ -227,7 +228,7 @@ Salvar **antes** de prosseguir para o PRD Create. Sem persistencia, informacao s
 
 ### Output final: Module Briefing
 
-Apos persistir o gate report, o Gate **gera o Module Briefing** consolidado em `docs/prds/briefings/briefing-{modulo}.md`. Esse briefing e o **input do `/prd-create`** — antes era um passo separado que duplicava trabalho. Agora e consequencia natural do Gate.
+Apos persistir o gate report, o Gate **gera o Module Briefing** consolidado em `docs/prds/briefings/briefing-{modulo}.md`. Esse briefing e o **input do `/prd-create`**. Agora e consequencia natural do Gate.
 
 O briefing inclui:
 - **Resumo do modulo**: o que faz, fronteiras com outros modulos, personas envolvidas
