@@ -86,7 +86,7 @@ Cada comando passa pelo pedido de permissao normal do Claude Code. Registrar no 
 ### Passo 3c — Hooks de qualidade (so se aceito no Passo 1)
 
 1. **Gerar `.claude/quality.json`** a partir de `.claude/hooks/quality/quality.example.json`, mantendo so as regras da stack do projeto e so comandos de ferramentas que **ja existem** no projeto (conferir `package.json`/dependencias, `dotnet`, `ruff`...). Nao instalar ferramenta para isso. Mostrar o arquivo ao usuario antes de gravar.
-2. **Ligar os hooks**: fazer o merge do bloco `hooks` de `.claude/hooks/quality/hooks.quality.json` em `.claude/settings.local.json` (criar se nao existir; preservar o que ja houver; acrescentar aos arrays de `PreToolUse`/`PostToolUse`, sem duplicar). **Nunca** no `.claude/settings.json` versionado.
+2. **Ligar os hooks**: fazer o merge do bloco `hooks` de `.claude/hooks/quality/hooks.quality.json` em `.claude/settings.local.json` (criar se nao existir; preservar o que ja houver; acrescentar aos arrays de `PreToolUse`/`PostToolUse`, sem duplicar). **Nunca** no `.claude/settings.json` versionado. Arquivo de settings e permissao: esta escrita **pede confirmacao** ao usuario de proposito (a semente nao a pre-libera).
 3. Registrar no manifesto (Configuracao): hooks de qualidade ligados, data.
 
 ### Passo 4 — Proximos passos

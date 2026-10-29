@@ -2,6 +2,8 @@
 name: check-tests
 description: Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.
 tools: Read, Glob, Grep, Bash
+depends:
+  - .claude/scripts/mutants.mjs
 ---
 
 ## ENTRADA

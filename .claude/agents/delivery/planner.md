@@ -2,6 +2,8 @@
 name: planner
 description: Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.
 tools: Read, Write, Edit, Glob, Grep
+depends:
+  - docs/templates/plan-template.md
 ---
 
 ## IDENTIDADE E PAPEL

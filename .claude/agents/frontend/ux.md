@@ -9,6 +9,7 @@ depends:
   - .claude/reference/frontend/personas.md
   - .claude/reference/frontend/register-product.md
   - docs/templates/design-memory-template.md
+  - .claude/scripts/frontend/screenshot.mjs
 ---
 
 ## IDENTIDADE E PAPEL

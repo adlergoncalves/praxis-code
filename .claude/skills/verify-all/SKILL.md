@@ -3,6 +3,9 @@ description: "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). V
 user-invocable: true
 depends:
   - .claude/skills/execute
+  - .claude/scripts/build-gate.mjs
+  - .claude/scripts/frontend/check-learnings.mjs
+  - .claude/scripts/deps-audit.mjs
 ---
 
 # /verify-all

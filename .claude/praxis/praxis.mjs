@@ -71,7 +71,14 @@ function readLock() {
   lock.pending ??= {};
   return lock;
 }
-const writeLock = (lock) => writeJson(LOCK_PATH, { ...lock, updatedAt: now() });
+// Ordem estavel (chaves ordenadas) e sem carimbo de data: o lock e versionado, e o diff de uma
+// atualizacao tem de mostrar so o que mudou — versao, hashes e pendencias.
+const sortKeys = (o) => Object.fromEntries(Object.entries(o ?? {}).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
+const writeLock = (lock) => {
+  const { updatedAt, ...rest } = lock;
+  const tools = sortKeys(Object.fromEntries(Object.entries(rest.tools ?? {}).map(([p, t]) => [p, { kind: t.kind, files: sortKeys(t.files) }])));
+  writeJson(LOCK_PATH, { repo: rest.repo, version: rest.version, ...(rest.ref ? { ref: rest.ref } : {}), pin: rest.pin ?? null, tools, pending: sortKeys(rest.pending) });
+};
 
 function hashContent(buf, file) {
   const text = !BINARY_EXT.has(extname(file).toLowerCase());
@@ -101,17 +108,23 @@ function withMutex(fn) {
 
 function git(args, opts = {}) {
   const r = spawnSync('git', args, { encoding: 'utf8', timeout: opts.timeout ?? 120000, stdio: ['ignore', 'pipe', 'pipe'] });
-  if (r.error) return { ok: false, out: '', err: r.error.message };
+  if (r.error) return { ok: false, out: '', err: r.error.message, code: r.error.code };
   return { ok: r.status === 0, out: r.stdout || '', err: r.stderr || '' };
 }
 
 const refFor = (lock, version) => (lock.ref && version === lock.version ? lock.ref : `v${version}`);
-const cacheDir = (version, ref) => join(CACHE_ROOT, ref === `v${version}` ? version : `${version}-${ref.replace(/[^A-Za-z0-9._-]/g, '_')}`);
+// cache por repositorio (um fork e o catalogo original na mesma versao nao podem se misturar) e por versao/ref
+const repoKey = (repo) => createHash('sha256').update(String(repo).trim().toLowerCase()).digest('hex').slice(0, 10);
+const cacheDir = (repo, version, ref) => join(CACHE_ROOT, repoKey(repo), ref === `v${version}` ? version : `${version}-${ref.replace(/[^A-Za-z0-9._-]/g, '_')}`);
 
 /** Garante o clone da versao no cache e devolve { dir, catalog }. Offline: so se ja estiver no cache. */
 function ensureCache(lock, version) {
   const ref = refFor(lock, version);
-  const dir = cacheDir(version, ref);
+  const dir = cacheDir(lock.repo, version, ref);
+  // tag no cache com catalogo de outra versao = cache corrompido: descarta e clona de novo
+  if (ref === `v${version}` && existsSync(join(dir, 'catalog.json')) && readJson(join(dir, 'catalog.json'))?.version !== version) {
+    rmSync(dir, { recursive: true, force: true });
+  }
   if (!existsSync(join(dir, 'catalog.json'))) {
     if (process.env.PRAXIS_OFFLINE === '1') { console.error(`praxis: versao ${version} nao esta no cache e PRAXIS_OFFLINE=1.`); process.exit(1); }
     mkdirSync(dirname(dir), { recursive: true });
@@ -120,10 +133,15 @@ function ensureCache(lock, version) {
     const r = git(['-c', 'core.longpaths=true', 'clone', '--quiet', '--depth', '1', '--branch', ref, lock.repo, tmp], { timeout: 180000 });
     if (!r.ok) {
       try { rmSync(tmp, { recursive: true, force: true }); } catch { /* */ }
-      console.error(`praxis: nao consegui clonar ${lock.repo} (${ref}) para o cache.\n${r.err.trim()}\nSem rede? Rode depois: node .claude/praxis/praxis.mjs ${process.argv.slice(2).join(' ')}`);
+      // so o spawn diz se falta o git: o stderr do clone tambem traz "not found" (tag ou repositorio inexistente)
+      const semGit = r.code === 'ENOENT';
+      console.error(semGit
+        ? 'praxis: git nao encontrado no PATH — o catalogo e clonado com git. Instale o git e rode de novo.'
+        : `praxis: nao consegui clonar ${lock.repo} (${ref}) para o cache.\n${r.err.trim()}\nSem rede? Rode depois: node .claude/praxis/praxis.mjs ${process.argv.slice(2).join(' ')}`);
       process.exit(1);
     }
-    renameSync(tmp, dir);
+    if (existsSync(join(dir, 'catalog.json'))) rmSync(tmp, { recursive: true, force: true }); // outra sessao chegou antes
+    else renameSync(tmp, dir);
   }
   const catalog = readJson(join(dir, 'catalog.json'));
   if (!catalog || !catalog.tools) { console.error(`praxis: catalogo invalido no cache (${dir}).`); process.exit(1); }
@@ -192,12 +210,19 @@ function registerAdrInIndex(file) {
   let txt = readFileSync(idx, 'utf8');
   if (txt.includes(`[${m[1]}]`)) return;
   const content = readFileSync(join(ROOT, file), 'utf8');
-  const title = (content.match(/^# ADR-\d{4}:\s*(.+)$/m) || [, m[2]])[1].trim();
-  const date = (content.match(/\*\*Data:\*\*\s*(\S+)/) || [, '—'])[1];
-  const row = `| [${m[1]}](${basename(file)}) | ${title} | Aceito | ${date} |\n`;
-  const marker = '| <!-- NNNN -->';
-  txt = txt.includes(marker) ? txt.replace(marker, row + marker) : txt.replace(/\n*$/, '\n' + row);
-  writeFileSync(idx, txt, 'utf8');
+  const title = (content.match(/^#\s*ADR[- ]?\d{3,4}\s*[:—–-]\s*(.+)$/m) || [, m[2]])[1].trim();
+  const date = (content.match(/\*\*Data\*\*:\s*(\S+)|\*\*Data:\*\*\s*(\S+)/) || []).slice(1).find(Boolean) ?? '—';
+  const row = `| [${m[1]}](${basename(file)}) | ${title} | Aceito | ${date} |`;
+  // insere em ordem numerica entre as linhas `| [NNNN](...)`; sem nenhuma, antes do marcador do template
+  const lines = txt.split('\n');
+  const rowRe = /^\|\s*\[(\d{4})\]\(/;
+  let at = lines.findIndex((l) => { const r = l.match(rowRe); return r && r[1] > m[1]; });
+  if (at === -1) {
+    const last = lines.map((l, i) => (rowRe.test(l) ? i : -1)).filter((i) => i >= 0).pop();
+    at = last !== undefined ? last + 1 : lines.findIndex((l) => l.startsWith('| <!-- NNNN -->'));
+  }
+  if (at === -1) lines.push(row); else lines.splice(at, 0, row);
+  writeFileSync(idx, lines.join('\n'), 'utf8');
 }
 
 /** Puxa as ferramentas (fecho) da versao do lock. Nao sobrescreve arquivo do projeto que nao esta no lock. */
@@ -278,6 +303,14 @@ function cmdInit(lock) {
       if (!existsSync(src)) continue;
       mkdirSync(dirname(dst), { recursive: true });
       copyFileSync(src, dst);
+      // o indice de ADRs vem do catalogo listando as ADRs do kit; no projeto, so as que forem puxadas
+      if (posix(seed) === 'docs/adr/0000-adr-index.md') {
+        const lines = readFileSync(dst, 'utf8').split('\n').filter((l) => {
+          const mm = l.match(/^\|\s*\[(\d{4})\]\(([^)]+)\)/);
+          return !mm || existsSync(join(ROOT, 'docs', 'adr', mm[2]));
+        });
+        writeFileSync(dst, lines.join('\n'), 'utf8');
+      }
     }
     const refs = [...(catalog.core ?? []), ...(catalog.seed ?? [])];
     pull(lock, refs, { quiet: true });
@@ -438,6 +471,9 @@ function cmdApply(lock, args) {
     try { unlinkSync(UPDATE_PATH); } catch { /* */ }
     ledgerAuto(`${now()} | turn | praxis apply: ${lock.version} → ${update.version} (${plan.replace.length + plan.add.length} arquivos; ${plan.keep.length} personalizados mantidos) | (auto)`);
     console.log(`praxis: catalogo ${lock.version} → ${update.version}: ${plan.replace.length} substituido(s), ${plan.add.length} novo(s), ${plan.keep.length} personalizado(s) mantido(s)${plan.removed.length ? `, ${plan.removed.length} apagado(s) no projeto deixados assim` : ''}.`);
+    const changed = [...plan.replace, ...plan.add];
+    for (const f of changed.slice(0, 20)) console.log(`  ${plan.add.includes(f) ? 'novo' : 'substituido'}: ${f}`);
+    if (changed.length > 20) console.log(`  (+${changed.length - 20} — ver o diff do commit)`);
     for (const f of plan.keep) console.log(`  mantido (personalizado): ${f} — diff: node .claude/praxis/praxis.mjs diff ${f}`);
     for (const e of errors) console.error(`  ERRO ${e}`);
     if (errors.length) process.exit(1);
@@ -456,7 +492,8 @@ function cmdDiff(lock, args) {
   for (const f of files) {
     const local = join(ROOT, f);
     if (!existsSync(local)) { console.log(`--- ${f}: nao existe no projeto`); continue; }
-    const r = spawnSync('git', ['diff', '--no-index', '--', local, join(cache, f)], { encoding: 'utf8' });
+    // --ignore-cr-at-eol: o checkout do projeto pode ter CRLF (autocrlf) e o catalogo e LF
+    const r = spawnSync('git', ['diff', '--no-index', '--ignore-cr-at-eol', '--', local, join(cache, f)], { encoding: 'utf8' });
     // o git imprime caminhos absolutos entre aspas, com as barras invertidas dobradas: normaliza para leitura
     const pathRe = (p) => new RegExp(p.split(/[\\/]+/).map((s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('[\\\\/]+'), 'g');
     const out = (r.stdout || '').replace(pathRe(cache), `<catalogo ${version}>`).replace(pathRe(ROOT), '<projeto>');

@@ -4,6 +4,7 @@ Conteudo do kit Praxis consumido pelo Claude Code.
 
 | Pasta | Conteudo |
 |-------|----------|
+| `praxis/` | `praxis.mjs` (puxa e atualiza as ferramentas do catalogo — ADR-0009) e `rules.md` (regras do kit, importadas pelo `CLAUDE.md` do projeto) |
 | `skills/<nome>/SKILL.md` | Skills (comandos `/nome`) — flat, uma pasta por skill |
 | `agents/<dominio>/<nome>.md` | Subagents organizados por dominio (ver `docs/kit-domains.md`) |
 | `hooks/` | Hooks de aprendizado (captura + reconciliacao) — registrados em `settings.json`; em `hooks/quality/`, hooks de qualidade opt-in (ligados pelo `/setup` no `settings.local.json`) |

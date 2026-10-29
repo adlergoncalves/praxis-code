@@ -1,6 +1,8 @@
 ---
 description: "Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos."
 user-invocable: true
+depends:
+  - docs/templates/checklist-template.md
 ---
 
 # /checklist

@@ -31,7 +31,7 @@ O repositório `praxis-code` é um **catálogo**. O projeto recebe uma **semente
 | **Ferramenta** | Unidade que se puxa: `skill`, `agent`, `asset` (template, referência, script, hook, ADR do kit) ou `group` (pasta que só faz sentido inteira, ex.: `third-party/`). | catálogo → projeto |
 | **Semente** | O mínimo para o primeiro `/start`: `CLAUDE.md`, `.claude/praxis/` (`praxis.mjs`, `rules.md`), `.claude/praxis.json`, `.claude/settings.json`, a skill `/start`. Gerada do catálogo por `scripts/build-seed.mjs` e versionada em `seed/`. | `seed/` no catálogo |
 | **Lock** | `.claude/praxis.json`: repo, versão do catálogo, pino opcional, cada ferramenta instalada com seus arquivos e hashes, pendências de atualização. **É a única fonte de "o que é do kit" no projeto.** | projeto, versionado |
-| **Cache** | Clone raso do catálogo por versão, compartilhado entre projetos da máquina. | `~/.claude/praxis/cache/<versão>/` |
+| **Cache** | Clone raso do catálogo por repositório e versão, compartilhado entre projetos da máquina. Tag cujo catálogo não bate com a versão é descartada e clonada de novo. | `~/.claude/praxis/cache/<repo>/<versão>/` |
 | **Do projeto** | Tudo que não está no lock: `CLAUDE.md` (depois da semente), `docs/project/*` exceto `learnings/README.md`, ADRs do projeto, specs, memória de design, ferramentas criadas pelo projeto. **Nunca tocado por atualização.** | projeto |
 
 ### Instalação
@@ -47,7 +47,7 @@ Depois, no Claude Code, `/start`. O primeiro `/start` roda `praxis.mjs init`: cl
 
 1. O Praxis (ou `/start`) despacha uma skill. Se ela não existe em `.claude/skills/`, roda `node .claude/praxis/praxis.mjs add <skill>` e segue. O script resolve o fecho das dependências pelo `catalog.json`, copia do cache, confere o hash de cada arquivo e grava no lock.
 2. **Sem pergunta e sem anúncio.** Fica no lock e numa linha `(auto)` do ledger. O usuário só ouve falar quando falha (sem rede na primeira vez, repo fora do ar): uma linha com o comando manual.
-3. A `settings.json` da semente libera a permissão de Bash **só** para o `praxis.mjs`; sem isso o "transparente" morreria no pedido de permissão.
+3. A `settings.json` da semente pré-libera o que o kit precisa para ser autossuficiente, e só isso: o `praxis.mjs`; editar e criar os artefatos do kit (`docs/**`, `CLAUDE.md`, `.gitignore`, `.claude/skills|agents|evals/**`, `.claude/quality.json`); `git status|diff|log|add|commit`. **Fora** da lista, de propósito: código do projeto (segue o modo de permissão do usuário), arquivos de settings (o kit nunca muda a própria permissão sem confirmação), `git push` e qualquer comando destrutivo. Sem isso o "transparente" morreria no pedido de permissão — e a permissão só vale depois que o usuário aceita a confiança da pasta no Claude Code interativo.
 4. O `/start` puxa de uma vez a **trilha da linha escolhida** (ex.: Linha 1 → `/discovery`, `/architect`, `/define`, `/implement`, `/validate` e dependências), para o caminho comum já estar presente.
 5. O `rules.md` manda o assistente puxar qualquer comando do catálogo que não exista localmente, mesmo com o Praxis desligado (`/mode praxis off`).
 6. O `/setup` não remove nada: puxa o módulo de stack (frontend, backend) que as respostas indicarem e oferece os opt-ins (hooks de qualidade, módulo de marca).

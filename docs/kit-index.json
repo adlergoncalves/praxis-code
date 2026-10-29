@@ -69,7 +69,9 @@
       "path": ".claude/skills/checklist/SKILL.md",
       "description": "Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos.",
       "domain": null,
-      "depends": []
+      "depends": [
+        "docs/templates/checklist-template.md"
+      ]
     },
     {
       "name": "clarify",
@@ -185,7 +187,9 @@
         ".claude/skills/backend-validate/SKILL.md",
         ".claude/agents/architecture/adr-validator.md",
         ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md",
-        ".claude/reference/frontend/third-party/interface-design/design-review.md"
+        ".claude/reference/frontend/third-party/interface-design/design-review.md",
+        ".claude/scripts/build-gate.mjs",
+        ".claude/scripts/frontend/check-learnings.mjs"
       ]
     },
     {
@@ -244,7 +248,8 @@
       "description": "Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts.",
       "domain": null,
       "depends": [
-        ".claude/agents/delivery/planner.md"
+        ".claude/agents/delivery/planner.md",
+        "docs/templates/plan-template.md"
       ]
     },
     {
@@ -430,7 +435,10 @@
       "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
       "domain": null,
       "depends": [
-        ".claude/skills/execute"
+        ".claude/skills/execute",
+        ".claude/scripts/build-gate.mjs",
+        ".claude/scripts/frontend/check-learnings.mjs",
+        ".claude/scripts/deps-audit.mjs"
       ]
     }
   ],
@@ -440,7 +448,9 @@
       "domain": "architecture",
       "path": ".claude/agents/architecture/adr-creator.md",
       "description": "Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.",
-      "depends": []
+      "depends": [
+        "docs/adr/templates"
+      ]
     },
     {
       "name": "adr-validator",
@@ -498,7 +508,9 @@
       "domain": "backend",
       "path": ".claude/agents/backend/check-tests.md",
       "description": "Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.",
-      "depends": []
+      "depends": [
+        ".claude/scripts/mutants.mjs"
+      ]
     },
     {
       "name": "scaffold-aggregate",
@@ -512,7 +524,9 @@
       "domain": "delivery",
       "path": ".claude/agents/delivery/planner.md",
       "description": "Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.",
-      "depends": []
+      "depends": [
+        "docs/templates/plan-template.md"
+      ]
     },
     {
       "name": "task-breaker",
@@ -639,7 +653,8 @@
       "path": ".claude/agents/frontend/check-visual-consistency.md",
       "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
       "depends": [
-        ".claude/reference/frontend/design-system-anatomy.md"
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/scripts/frontend/screenshot.mjs"
       ]
     },
     {
@@ -657,7 +672,9 @@
       "domain": "frontend",
       "path": ".claude/agents/frontend/design.md",
       "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
-      "depends": []
+      "depends": [
+        ".claude/scripts/frontend/screenshot.mjs"
+      ]
     },
     {
       "name": "ds-component",
@@ -695,7 +712,8 @@
         ".claude/reference/frontend/patterns.md",
         ".claude/reference/frontend/personas.md",
         ".claude/reference/frontend/register-product.md",
-        "docs/templates/design-memory-template.md"
+        "docs/templates/design-memory-template.md",
+        ".claude/scripts/frontend/screenshot.mjs"
       ]
     },
     {

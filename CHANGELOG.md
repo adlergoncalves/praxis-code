@@ -6,6 +6,15 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o 
 
 ## [Unreleased]
 
+## [0.1.1] — 2026-10-29
+
+### Semente e distribuição
+- Semente autossuficiente: `settings.json` pré-libera editar e criar os artefatos do kit (`docs/**`, `CLAUDE.md`, `.gitignore`, `.claude/skills|agents|evals/**`, `.claude/quality.json`) e `git status|diff|log|add|commit`. `git push` e os settings seguem fora da pré-liberação.
+- Lock determinístico: `.claude/praxis.json` sai sem carimbo de data e com chaves ordenadas, para o diff de uma atualização mostrar só versão, hashes e pendências.
+- Cache isolado por repositório (hash do `repo` na chave), para um fork e o catálogo original não se misturarem na mesma versão; cache cuja tag aponta para catálogo de outra versão é descartado e clonado de novo.
+- `git` ausente no PATH deixa de ser reportado como falha de rede (`ENOENT` tratado à parte).
+- Índice de ADRs com inserção em ordem numérica; título e data aceitam mais variações de formato.
+
 ## [0.1.0] — 2026-10-19 — primeira versão pública
 
 ### Distribuição — o kit se monta dentro do projeto (ADR-0009)
@@ -13,6 +22,7 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o 
 - `.claude/praxis/praxis.mjs` (`init`, `add`, `list`, `status`, `check`, `apply`, `diff`), lock em `.claude/praxis.json`, cache por máquina em `~/.claude/praxis/cache/`.
 - **Atualização:** checagem diária em background; patch e minor aplicados pelo Praxis com o loop parado, num commit separado; major só com decisão do usuário; arquivo personalizado nunca é sobrescrito; `"pin"` congela a versão.
 - `CLAUDE.md` do projeto importa as regras do kit (`.claude/praxis/rules.md`); o texto do projeto nunca é tocado pelo catálogo.
+- Semente autossuficiente: `settings.json` pré-libera editar e criar os artefatos do kit (`docs/**`, `CLAUDE.md`, `.gitignore`, `.claude/skills|agents|evals/**`, `.claude/quality.json`) e `git status|diff|log|add|commit`. Código do projeto, settings e `git push` seguem o modo de permissão do usuário.
 - `/forge`: o projeto cria as próprias ferramentas (check com eval, comando, subagente) nas convenções do kit.
 
 ### Orquestração

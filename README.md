@@ -30,11 +30,18 @@ npx degit adlergoncalves/praxis-code/seed /tmp/praxis
 cp -rn /tmp/praxis/. .    # -n: não sobrescreve arquivos existentes
 ```
 
+No PowerShell (Windows):
+
+```powershell
+npx degit adlergoncalves/praxis-code/seed $env:TEMP\praxis
+robocopy $env:TEMP\praxis . /E /XC /XN /XO   # copia só o que ainda não existe no projeto
+```
+
 - Se o projeto **já tem** `CLAUDE.md`, não substitua: acrescente ao seu a linha `@.claude/praxis/rules.md` e a seção `## Projeto` de `/tmp/praxis/CLAUDE.md`.
 - Se o projeto **já tem** `.claude/settings.json`, o `cp -n` mantém o seu: copie para ele os blocos `hooks`, `permissions.allow` (a linha do `praxis.mjs`), `enabledPlugins` e `extraKnownMarketplaces` da semente.
 - O `/adopt` confere isso na Etapa 0 e completa o que faltar.
 
-**Depois, no Claude Code:** `/start`. Ele monta o núcleo, pergunta a linha de trabalho, chama o `/setup` (stack e módulos) e puxa a trilha da linha. Daí em diante, cada ferramenta entra no projeto quando é usada — você não precisa saber o que existe no catálogo.
+**Depois, no Claude Code:** abra o projeto em modo interativo uma vez e **aceite a confiança da pasta** — sem isso o Claude Code ignora as permissões do `.claude/settings.json` e cada `praxis.mjs` vira pedido de permissão. Então `/start`. Ele monta o núcleo, pergunta a linha de trabalho, chama o `/setup` (stack e módulos) e puxa a trilha da linha. Daí em diante, cada ferramenta entra no projeto quando é usada — você não precisa saber o que existe no catálogo.
 
 **Atualização:** patch e minor do catálogo entram sozinhos no início de uma sessão, com o loop parado, num commit separado; o que você personalizou fica como está (`node .claude/praxis/praxis.mjs status` e `diff` mostram). Major só com a sua decisão. Para congelar a versão: `"pin": "0.1.0"` em `.claude/praxis.json`.
 
@@ -43,6 +50,8 @@ cp -rn /tmp/praxis/. .    # -n: não sobrescreve arquivos existentes
 ### O que roda na sua máquina
 
 O kit é só texto (prompts em Markdown) mais alguns scripts Node — **sem dependências npm e sem telemetria própria**. O plugin declarado (Claude Security) e o módulo de marca, ambos opcionais, têm as condições descritas na tabela.
+
+**O que a semente pré-libera** (`.claude/settings.json`, `permissions.allow`): o `praxis.mjs`; editar e criar os artefatos do kit — `docs/**`, `CLAUDE.md`, `.gitignore`, `.claude/skills|agents|evals/**`, `.claude/quality.json`; e `git status|diff|log|add|commit`. Código do projeto, arquivos de settings, `git push` e comandos destrutivos ficam fora: seguem o modo de permissão que você escolher.
 
 | O quê | Quando | O que faz |
 |-------|--------|-----------|

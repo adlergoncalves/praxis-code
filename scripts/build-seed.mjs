@@ -26,11 +26,13 @@ for (const ref of [...catalog.seed]) {
 }
 for (const f of catalog.seedProject) files.set(f, readFileSync(join(ROOT, f)));
 
+// mesma forma que o praxis.mjs grava (chaves ordenadas): a primeira escrita do projeto nao reordena tudo
+const sortKeys = (o) => Object.fromEntries(Object.entries(o).sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0)));
 const lock = {
   repo: catalog.repo,
   version: catalog.version,
   pin: null,
-  tools: lockTools,
+  tools: sortKeys(Object.fromEntries(Object.entries(lockTools).map(([p, t]) => [p, { kind: t.kind, files: sortKeys(t.files) }]))),
   pending: {},
 };
 files.set('.claude/praxis.json', Buffer.from(JSON.stringify(lock, null, 2) + '\n', 'utf8'));

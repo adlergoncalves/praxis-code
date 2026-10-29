@@ -2,6 +2,8 @@
 name: design
 description: Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).
 tools: Read, Write, Edit, Glob, Grep, Bash
+depends:
+  - .claude/scripts/frontend/screenshot.mjs
 ---
 
 ## IDENTIDADE E PAPEL

@@ -11,6 +11,8 @@ depends:
   - .claude/agents/architecture/adr-validator.md
   - .claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md
   - .claude/reference/frontend/third-party/interface-design/design-review.md
+  - .claude/scripts/build-gate.mjs
+  - .claude/scripts/frontend/check-learnings.mjs
 ---
 
 # /execute

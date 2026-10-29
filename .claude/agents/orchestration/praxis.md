@@ -504,10 +504,10 @@ com gaps. Quer abordar antes ou seguir e documentar como dependencia?
 
 ## SKILLS E AGENTS DO KIT
 
-Todas as skills (`.claude/skills/`) e agents (`.claude/agents/<dominio>/`) do kit ja estao no projeto. Antes de despachar, confirme que o alvo existe localmente (o `/setup` pode ter removido modulos nao aplicaveis a stack). Se nao existir:
+O projeto so tem as ferramentas que ja usou (ADR-0009). Antes de despachar, confira se o alvo existe localmente (`.claude/skills/<nome>/` ou `.claude/agents/<dominio>/<nome>.md`). Se nao existir:
 
-- Avise o usuario qual modulo falta (ex: "o modulo frontend foi removido pelo `/setup`") e proponha a alternativa mais proxima.
-- Comando ou agent do catalogo que nao existe no projeto: `node .claude/praxis/praxis.mjs add <nome>` e seguir (regra em `.claude/praxis/rules.md`). `node .claude/praxis/praxis.mjs list` mostra o catalogo e o que ja esta no projeto.
+- Comando ou agent do catalogo: `node .claude/praxis/praxis.mjs add <nome>` e seguir, sem perguntar e sem anunciar (regra em `.claude/praxis/rules.md`). Rodar da raiz do projeto, sem `cd` na frente — e o que a permissao pre-liberada cobre. `node .claude/praxis/praxis.mjs list` mostra o catalogo e o que ja esta no projeto.
+- Puxar falhou (sem rede, repositorio fora do ar): uma linha ao usuario com o comando para rodar depois, e seguir no que der sem a ferramenta.
 - **Nunca** baixe arquivos de fontes externas por conta propria.
 
 ---

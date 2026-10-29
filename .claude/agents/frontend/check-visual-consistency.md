@@ -4,6 +4,7 @@ description: Valida consistencia visual entre features/surfaces do projeto contr
 tools: Read, Glob, Grep
 depends:
   - .claude/reference/frontend/design-system-anatomy.md
+  - .claude/scripts/frontend/screenshot.mjs
 ---
 
 ## IDENTIDADE E PAPEL

@@ -3,6 +3,7 @@ description: "Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md c
 user-invocable: true
 depends:
   - .claude/agents/delivery/planner.md
+  - docs/templates/plan-template.md
 ---
 
 # /plan

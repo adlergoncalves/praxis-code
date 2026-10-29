@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "repo": "https://github.com/adlergoncalves/praxis-code.git",
   "seed": [
     ".claude/settings.json",
@@ -181,9 +181,11 @@
       "domain": "architecture",
       "description": "Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.",
       "files": {
-        ".claude/agents/architecture/adr-creator.md": "5d99d5eabae686ede39a6e889ce4ffba8c2a03aa5ed32d1618e2c67489b1ead2"
+        ".claude/agents/architecture/adr-creator.md": "a98e395b8e00fd1652819349506e4956bd48b0aa91bec06537d51e32fd899b9f"
       },
-      "depends": []
+      "depends": [
+        "docs/adr/templates"
+      ]
     },
     ".claude/agents/architecture/adr-validator.md": {
       "kind": "agent",
@@ -263,9 +265,11 @@
       "domain": "backend",
       "description": "Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.",
       "files": {
-        ".claude/agents/backend/check-tests.md": "abb5ee914317c839de7cfb2b376c996e7f0191a5b9302d1c4338a7ffe8302b7d"
+        ".claude/agents/backend/check-tests.md": "927b3a896f44b6d0c559950e8a193d9c50216bc4e3b9ccdb704ee6e30e4a3aec"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/mutants.mjs"
+      ]
     },
     ".claude/agents/backend/scaffold-aggregate.md": {
       "kind": "agent",
@@ -283,9 +287,11 @@
       "domain": "delivery",
       "description": "Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.",
       "files": {
-        ".claude/agents/delivery/planner.md": "a149374e5de7bc1e1689a70859c041493b78fdc7cccd523df971c4065fd19ae7"
+        ".claude/agents/delivery/planner.md": "1cb4cd70067455eae0cf92b10ceee9c4bd363e3e64c2777b73d82c3620a68aa4"
       },
-      "depends": []
+      "depends": [
+        "docs/templates/plan-template.md"
+      ]
     },
     ".claude/agents/delivery/task-breaker.md": {
       "kind": "agent",
@@ -460,10 +466,11 @@
       "domain": "frontend",
       "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
       "files": {
-        ".claude/agents/frontend/check-visual-consistency.md": "6fabf9b1dd87099233b832289a41a9ee994d6ab56c7bd69a9ad4df83c1d0f30d"
+        ".claude/agents/frontend/check-visual-consistency.md": "d365baa0b2da3a5bf16395f50ca96735a7b396310ac42686d4c69990aa4d7517"
       },
       "depends": [
-        ".claude/reference/frontend/design-system-anatomy.md"
+        ".claude/reference/frontend/design-system-anatomy.md",
+        ".claude/scripts/frontend/screenshot.mjs"
       ]
     },
     ".claude/agents/frontend/check-web-guidelines.md": {
@@ -485,9 +492,11 @@
       "domain": "frontend",
       "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
       "files": {
-        ".claude/agents/frontend/design.md": "cfc13736d70ced34c04867821e08670cc3bcf80d19c9ef6c50b9f6ca7bcb773e"
+        ".claude/agents/frontend/design.md": "9794dfa88fa4b2e22d137b1a982c0add54664abcd9b9cbd6c18d545870b37914"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/frontend/screenshot.mjs"
+      ]
     },
     ".claude/agents/frontend/ds-component.md": {
       "kind": "agent",
@@ -529,7 +538,7 @@
       "domain": "frontend",
       "description": "Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero.",
       "files": {
-        ".claude/agents/frontend/ux.md": "83517c566ace1796e0bea2959bef429e8237e9f5088b3fc83ee4644ddafd0f2a"
+        ".claude/agents/frontend/ux.md": "8af3fb819577dd4679cd1092ab42fc1014181a84bac5cb99abe4ee45141abe04"
       },
       "depends": [
         ".claude/reference/frontend/design-system-anatomy.md",
@@ -537,6 +546,7 @@
         ".claude/reference/frontend/patterns.md",
         ".claude/reference/frontend/personas.md",
         ".claude/reference/frontend/register-product.md",
+        ".claude/scripts/frontend/screenshot.mjs",
         "docs/templates/design-memory-template.md"
       ]
     },
@@ -546,7 +556,7 @@
       "domain": "orchestration",
       "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
       "files": {
-        ".claude/agents/orchestration/praxis.md": "15a0d784277e2720033bd9fa96fe8efc1f521bbd3231782fee0dbf6bb67a5dcb"
+        ".claude/agents/orchestration/praxis.md": "04db69ccf2321e37c30a3b04b883616f511b4889a401af0f82cb4a988cdab66c"
       },
       "depends": []
     },
@@ -1380,7 +1390,9 @@
       "files": {
         ".claude/hooks/hooks.manifest.json": "97964f000a6730eab9aa2d14c2b18be7d8211663711945e52eead9acace2298e"
       },
-      "depends": []
+      "depends": [
+        ".claude/settings.json"
+      ]
     },
     ".claude/hooks/quality": {
       "kind": "group",
@@ -1404,7 +1416,9 @@
       "files": {
         ".claude/hooks/quality/hooks.quality.json": "25c8f17da885bbaa3aae5a3bfa34ab0760d61ff46a17f2dbb3296fecf37d0473"
       },
-      "depends": []
+      "depends": [
+        ".claude/hooks/quality/quality.example.json"
+      ]
     },
     ".claude/hooks/quality/quality-on-edit.mjs": {
       "kind": "asset",
@@ -1432,7 +1446,7 @@
     ".claude/praxis/praxis.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/praxis.mjs": "f653d47a598c01a2c65ab867aa1a84a1163a16717c5303537dc1744199e48278"
+        ".claude/praxis/praxis.mjs": "797557465141d593fd68c3ba9eda05ac1fbda406f12c49d7c96d20371c9bcad6"
       },
       "depends": []
     },
@@ -1443,6 +1457,7 @@
       },
       "depends": [
         ".claude/agents/orchestration/praxis.md",
+        ".claude/praxis/praxis.mjs",
         "docs/adr/0007-loop-engineering-execucao.md"
       ]
     },
@@ -1746,9 +1761,11 @@
     ".claude/settings.json": {
       "kind": "asset",
       "files": {
-        ".claude/settings.json": "c4b710400eaab6149935d07dfdffa5534ae31ac1ba1c6ba0fe61bf998e6f0687"
+        ".claude/settings.json": "3fc92c5dd636ea91b9db2e5a0605221651a806dba35760a6a27830aab51e273c"
       },
-      "depends": []
+      "depends": [
+        ".claude/praxis/praxis.mjs"
+      ]
     },
     ".claude/skills/adopt": {
       "kind": "skill",
@@ -1838,9 +1855,11 @@
       "domain": null,
       "description": "Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos.",
       "files": {
-        ".claude/skills/checklist/SKILL.md": "6b76b7ba83b239d722c73e0f7b5d71f1cf05af77d828dc7af5a2ccb6eb44894a"
+        ".claude/skills/checklist/SKILL.md": "45e23dc7bbd855346a6b04c5e19ad553717e93aa4dfc06f5948315868b046078"
       },
-      "depends": []
+      "depends": [
+        "docs/templates/checklist-template.md"
+      ]
     },
     ".claude/skills/clarify": {
       "kind": "skill",
@@ -1975,13 +1994,15 @@
       "domain": null,
       "description": "Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/execute/SKILL.md": "02d1fc8d85c27b63c7db824da65d4625c349213b75860d575dfbbe75d336cb40",
+        ".claude/skills/execute/SKILL.md": "10c8d09ecbfcd40dd86f8a5a48d37cb818eccb82c924284488befcf09564b646",
         ".claude/skills/execute/checklists.md": "265e9784e15e0d1b81c79c994f510cade4b18396099a7bbf852057897492b5c1"
       },
       "depends": [
         ".claude/agents/architecture/adr-validator.md",
         ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md",
         ".claude/reference/frontend/third-party/interface-design/design-review.md",
+        ".claude/scripts/build-gate.mjs",
+        ".claude/scripts/frontend/check-learnings.mjs",
         ".claude/scripts/loop-doctor.mjs",
         ".claude/scripts/mutants.mjs",
         ".claude/skills/backend-validate",
@@ -2058,10 +2079,11 @@
       "domain": null,
       "description": "Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts.",
       "files": {
-        ".claude/skills/plan/SKILL.md": "80000fe3294ce73e10357c158b49741edfa082b13c9a512be53766a41a01b1ea"
+        ".claude/skills/plan/SKILL.md": "342e4a6c6a040327d564cd9e0f389b85e623a6d3284c57e2a4f836564d3de7d8"
       },
       "depends": [
-        ".claude/agents/delivery/planner.md"
+        ".claude/agents/delivery/planner.md",
+        "docs/templates/plan-template.md"
       ]
     },
     ".claude/skills/praxis": {
@@ -2070,7 +2092,7 @@
       "domain": null,
       "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
       "files": {
-        ".claude/skills/praxis/SKILL.md": "564d848fc1d5331c68f68f670470683843b28259118f0d524b91959cf95df12f"
+        ".claude/skills/praxis/SKILL.md": "1c46417d984248def034b0b65be54ca2bcb1b9fac447b3749e52b272a776fb07"
       },
       "depends": [
         ".claude/agents/orchestration/praxis.md"
@@ -2187,7 +2209,7 @@
       "domain": null,
       "description": "Setup interativo do kit Praxis — pergunta stack e modulos, puxa do catalogo so o que o projeto usa e preenche a secao do projeto no CLAUDE.md.",
       "files": {
-        ".claude/skills/setup/SKILL.md": "508cdf079b246114444a61d40fccfdb6a4a338c8e66eb93b97022433fe3c707d"
+        ".claude/skills/setup/SKILL.md": "fc08a5425062c1ef206e0cc7d1225c93d73ea74177bf0b1db3e3bd29879643f9"
       },
       "depends": [
         ".claude/hooks/quality"
@@ -2301,9 +2323,12 @@
       "domain": null,
       "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/verify-all/SKILL.md": "9e160a2edb21199db1a270463e01690fc503353f36480ad2a01866dc384cfb21"
+        ".claude/skills/verify-all/SKILL.md": "26acd699526cdeae5940ff3003b81becb51df38b2e1aa1a579de43045f2053c0"
       },
       "depends": [
+        ".claude/scripts/build-gate.mjs",
+        ".claude/scripts/deps-audit.mjs",
+        ".claude/scripts/frontend/check-learnings.mjs",
         ".claude/skills/execute"
       ]
     },
@@ -2316,13 +2341,6 @@
         ".claude/reference/frontend/third-party/README.md",
         ".claude/settings.json"
       ]
-    },
-    "docs/adr/0000-adr-index.md": {
-      "kind": "asset",
-      "files": {
-        "docs/adr/0000-adr-index.md": "a5dd34fb6b30edfc2576f6146f4b5a3edcc67dfbcce5046e51cd1afad15eb18d"
-      },
-      "depends": []
     },
     "docs/adr/0006-workspace-detalhamento-modulo.md": {
       "kind": "asset",
@@ -2358,9 +2376,10 @@
     "docs/adr/0009-distribuicao-catalogo-semente.md": {
       "kind": "asset",
       "files": {
-        "docs/adr/0009-distribuicao-catalogo-semente.md": "d853879875071383a95e9c56544adcc330ec1c67fcb898b70481b2b4b97d5fc5"
+        "docs/adr/0009-distribuicao-catalogo-semente.md": "837feb2f52f5fcd369ce6bfe0034562d3cead3e9b2980489f4877be38124954a"
       },
       "depends": [
+        ".claude/praxis/praxis.mjs",
         ".claude/praxis/rules.md",
         ".claude/settings.json",
         "docs/project/learnings/README.md"
@@ -2590,7 +2609,9 @@
       "files": {
         "docs/templates/doctor-template.json": "24e227f61ad1ca787b502db16ab2a4e1f0757810571388da21738eca8856a2f1"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/loop-doctor.mjs"
+      ]
     },
     "docs/templates/guide-template.md": {
       "kind": "asset",

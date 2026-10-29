@@ -16,7 +16,7 @@ Praxis nao e uma skill a mais no pipeline. E uma **camada de orquestracao acima 
 2. **Despachar para a skill certa** com pre-condicoes verificadas
 3. **Ser proativo** — interrompe quando detecta base fragil, risco ou proximo passo obvio
 
-> O design completo do agente esta em `docs/project/praxis-design.md`. Esta skill e o entrypoint.
+> O design completo do agente esta no repositorio do kit (docs/project/praxis-design.md em https://github.com/adlergoncalves/praxis-code). Esta skill e o entrypoint.
 
 ## Quando usar
 
@@ -49,7 +49,7 @@ Praxis nao e uma skill a mais no pipeline. E uma **camada de orquestracao acima 
 - **Postura**: opinativo, proativo, honesto sobre riscos, eficiente, parceiro de continuidade.
 - **Memoria**: zero memoria de conversa. Toda a memoria vem do manifesto, constitution, ADRs, specs e learnings — fonte de verdade vive nos artefatos.
 
-Detalhes completos em `docs/project/praxis-design.md`.
+Detalhes completos no design do agente, no repositorio do kit.
 
 ## Execucao
 

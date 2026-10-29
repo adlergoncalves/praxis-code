@@ -9,6 +9,7 @@ import { readFileSync, readdirSync, existsSync, statSync } from 'node:fs';
 import { join, dirname, basename, extname, resolve, relative } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
+import { spawnSync } from 'node:child_process';
 
 export const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 
@@ -156,7 +157,7 @@ const ASSET_ROOTS = [
   '.claude/praxis', 'docs/templates', 'docs/adr/templates',
 ];
 const ASSET_FILES = ['docs/project/learnings/README.md', 'THIRD_PARTY_NOTICES.md', '.claude/settings.json'];
-const KIT_ADR_RE = /^docs\/adr\/00\d\d-.*\.md$/;
+const KIT_ADR_RE = /^docs\/adr\/00(?!00-)\d\d-.*\.md$/; // 0000 e o indice: semente do projeto, nao asset
 
 /** Grupos: pastas que so fazem sentido inteiras (mais as que aparecem em algum depends). */
 const KNOWN_GROUPS = ['.claude/reference/frontend/third-party', 'docs/templates/detail', '.claude/evals/agents', 'docs/adr/templates'];
@@ -183,13 +184,25 @@ export function hashFile(abs) {
   return createHash('sha256').update(data).digest('hex');
 }
 
+// Arquivo ignorado pelo git nunca e do kit: os hooks rodam neste repositorio e deixam estado local
+// (`.claude/hooks/.capture-cursor.json`, `docs/project/state.md`) que nao pode entrar no catalogo.
+// Fora de um repositorio git (copia extraida) nao ha o que filtrar.
+let ignoredSet = null;
+function isIgnored(abs) {
+  if (!ignoredSet) {
+    const r = spawnSync('git', ['ls-files', '--others', '--ignored', '--exclude-standard', '-z'], { cwd: ROOT, encoding: 'utf8' });
+    ignoredSet = new Set(r.status === 0 ? r.stdout.split('\0').filter(Boolean) : []);
+  }
+  return ignoredSet.has(toPosix(relative(ROOT, abs)));
+}
+
 export function walkFiles(dirAbs) {
   const out = [];
   if (!existsSync(dirAbs)) return out;
   for (const e of readdirSync(dirAbs, { withFileTypes: true })) {
     const full = join(dirAbs, e.name);
     if (e.isDirectory()) out.push(...walkFiles(full));
-    else out.push(full);
+    else if (!isIgnored(full)) out.push(full);
   }
   return out.sort((a, b) => { const x = toPosix(a), y = toPosix(b); return x < y ? -1 : x > y ? 1 : 0; });
 }
@@ -209,13 +222,15 @@ export function citedPaths(content, filePath) {
     }
     return [...found];
   }
-  const re = /(?:`|@)((?:\.claude|docs)\/[A-Za-z0-9_./\-{}*<>«»]+|THIRD_PARTY_NOTICES\.md|CLAUDE\.md)/g;
+  // caminho do kit em qualquer posicao — inicio de linha, depois de espaco, crase, aspas, parentese ou @
+  // (um comando dentro de crases, `node .claude/scripts/x.mjs`, tambem e carga)
+  const re = /(?:^|[\s`'"(@])((?:\.claude|docs)\/[A-Za-z0-9_./\-{}*<>«»]+|THIRD_PARTY_NOTICES\.md|CLAUDE\.md)/g;
   let m;
   while ((m = re.exec(content)) !== null) {
     let p = m[1].replace(/[./]+$/, '');
     if (PLACEHOLDER.test(p) || KIT_DEV_RE.test(p)) continue;
     if (p === 'CLAUDE.md') continue; // do projeto
-    if (existsSync(join(ROOT, p))) found.add(p);
+    if (existsSync(join(ROOT, p)) && !isIgnored(join(ROOT, p))) found.add(p);
   }
   return [...found];
 }
@@ -250,7 +265,7 @@ export function collectCatalog() {
   // assets: todo arquivo das raizes do kit que nao e skill nem agent
   const assetFiles = new Set(ASSET_FILES.filter((p) => existsSync(join(ROOT, p))));
   for (const r of ASSET_ROOTS) for (const f of relFiles(r)) assetFiles.add(f);
-  for (const f of readdirSync(join(ROOT, 'docs', 'adr'))) if (KIT_ADR_RE.test(`docs/adr/${f}`)) assetFiles.add(`docs/adr/${f}`);
+  for (const f of readdirSync(join(ROOT, 'docs', 'adr'))) if (KIT_ADR_RE.test(`docs/adr/${f}`) && !isIgnored(join(ROOT, 'docs', 'adr', f))) assetFiles.add(`docs/adr/${f}`);
   // asset: dependencias computadas = ARQUIVOS do kit que ele cita. Pasta citada em texto e descricao,
   // nao carga (o README dos evals cita a pasta das fixtures; puxa-las junto traria 80+ arquivos).
   // Pasta que e dependencia de verdade entra no `depends:` de quem precisa dela.

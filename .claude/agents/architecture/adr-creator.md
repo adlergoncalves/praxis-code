@@ -2,6 +2,8 @@
 name: adr-creator
 description: Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.
 tools: Read, Write, Edit, Glob, Grep
+depends:
+  - docs/adr/templates
 ---
 
 > **Roteiro da sessao principal.** O `/architect` e o `/adopt` seguem este arquivo na sessao

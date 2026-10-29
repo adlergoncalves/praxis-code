@@ -15,7 +15,7 @@
 | `/architect` | `.claude/skills/architect/SKILL.md` | Fase 2: Arquitetura — Cria ADRs interativamente seguindo boas praticas de mercado. Questiona decisoes incomuns. | 1 |
 | `/backend-scaffold` | `.claude/skills/backend-scaffold/SKILL.md` | Roteador de scaffolding backend — hoje so Aggregate Root + testes (@scaffold-aggregate). | 1 |
 | `/backend-validate` | `.claude/skills/backend-validate/SKILL.md` | Orquestra os 6 agents de validacao backend. Suporta modo paralelo (rapido) e sequencial (interativo). | 6 |
-| `/checklist` | `.claude/skills/checklist/SKILL.md` | Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos. | - |
+| `/checklist` | `.claude/skills/checklist/SKILL.md` | Quality gates — 'testes unitarios para texto'. Gera checklists para validar qualidade dos requisitos. | 1 |
 | `/clarify` | `.claude/skills/clarify/SKILL.md` | Detecta ambiguidades em specs usando taxonomia de 9 categorias. Faz perguntas priorizadas e integra respostas na spec. | 1 |
 | `/ddd-estrategico` | `.claude/skills/ddd-estrategico/SKILL.md` | Fase 2 (opcional): Modelagem estrategica de dominio — Bounded Contexts, Context Map, classificacao Core/Supporting/Generic. Para dominios complexos com multiplos modulos interdependentes. | 1 |
 | `/debug` | `.claude/skills/debug/SKILL.md` | Investigacao de bugs — entender, pesquisar, identificar causa raiz, propor e aplicar fix. Mais leve que /implement, mais pesado que /quickfix. | - |
@@ -25,12 +25,12 @@
 | `/discovery` | `.claude/skills/discovery/SKILL.md` | Fase 1: Discovery — Entendimento completo do projeto antes de qualquer decisao | 1 |
 | `/ds-component` | `.claude/skills/ds-component/SKILL.md` | Adiciona componente ao Design System — Busca, instala, customiza e cria showcase no design-system. | 1 |
 | `/ds-init` | `.claude/skills/ds-init/SKILL.md` | Inicializa Design System — Extrai tokens de screenshot, cria design-system isolado e gera ADR. | 1 |
-| `/execute` | `.claude/skills/execute/SKILL.md` | Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007). | 9 |
+| `/execute` | `.claude/skills/execute/SKILL.md` | Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007). | 11 |
 | `/forge` | `.claude/skills/forge/SKILL.md` | Cria uma ferramenta DO PROJETO (skill, agent de checagem ou subagente de trabalho) nas convencoes do kit, a partir do que o projeto precisa. Use quando uma regra se repete, um fluxo do projeto vira rotina, ou o Praxis propoe transformar um learning recorrente em check — 'cria um check para X', 'quero um comando para Y', 'isso devia ser automatico'. | 1 |
 | `/frontend-validate` | `.claude/skills/frontend-validate/SKILL.md` | Orquestra os 11 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo). | 11 |
 | `/implement` | `.claude/skills/implement/SKILL.md` | Fase 5: Implementacao — Plan + Tasks + Execute. Planeja tecnicamente, quebra em tasks e executa respeitando ADRs. | 3 |
 | `/mode` | `.claude/skills/mode/SKILL.md` | Alterna entre modo lite (simples, rapido) e full (completo, profissional). Afeta como todo o pipeline se comporta. | 3 |
-| `/plan` | `.claude/skills/plan/SKILL.md` | Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts. | 1 |
+| `/plan` | `.claude/skills/plan/SKILL.md` | Sub-fase 5a: Planejamento tecnico. Le spec + ADRs e gera plan.md com Technical Context, data model e contracts. | 2 |
 | `/praxis` | `.claude/skills/praxis/SKILL.md` | Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta. | 1 |
 | `/prd-coverage` | `.claude/skills/prd-coverage/SKILL.md` | Mostra progresso: quantas user stories do PRD foram transformadas em specs e quantas faltam. | - |
 | `/prd-create` | `.claude/skills/prd-create/SKILL.md` | Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas. | 1 |
@@ -49,7 +49,7 @@
 | `/tasks` | `.claude/skills/tasks/SKILL.md` | Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007). | 5 |
 | `/ux` | `.claude/skills/ux/SKILL.md` | Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real. | 13 |
 | `/validate` | `.claude/skills/validate/SKILL.md` | Fase 6: Validacao — Orquestrador principal. Despacha agents core + frontend + backend conforme stack do projeto. | 4 |
-| `/verify-all` | `.claude/skills/verify-all/SKILL.md` | Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007). | 1 |
+| `/verify-all` | `.claude/skills/verify-all/SKILL.md` | Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007). | 4 |
 
 ## Agents (45)
 
@@ -57,7 +57,7 @@
 
 | Agent | Path | Descricao | Deps |
 |-------|------|-----------|------|
-| `@adr-creator` | `.claude/agents/architecture/adr-creator.md` | Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida. | - |
+| `@adr-creator` | `.claude/agents/architecture/adr-creator.md` | Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida. | 1 |
 | `@adr-validator` | `.claude/agents/architecture/adr-validator.md` | Agente dinamico que le TODAS as ADRs do projeto e valida codigo contra as regras definidas nelas. Funciona com qualquer ADR — nao tem regras hardcoded. | - |
 | `@ddd-estrategico` | `.claude/agents/architecture/ddd-estrategico.md` | Especialista Senior em DDD Estrategico e Identificacao de Bounded Contexts. Use para modelagem de dominio, identificacao de subdominios, classificacao estrategica (Core/Supporting/Generic), analise de linguagem ubiqua, definicao de Bounded Contexts e construcao de Context Maps. | - |
 
@@ -70,14 +70,14 @@
 | `@check-errors` | `.claude/agents/backend/check-errors.md` | Valida exception handling, logging estruturado e observabilidade. Detecta try/catch em handlers, swallowing de excecoes, logging nao estruturado e ausencia de correlation ID. | - |
 | `@check-naming` | `.claude/agents/backend/check-naming.md` | Valida convencoes de nomes em qualquer linguagem OO — classes, metodos, variaveis, sufixos. Detecta nomes genericos, abreviacoes, inconsistencias e violacoes de linguagem ubiqua do dominio. | - |
 | `@check-security` | `.claude/agents/backend/check-security.md` | Valida seguranca backend — SQL injection, autenticacao/autorizacao em endpoints, secrets, sanitizacao de input, audit trail e RBAC/ABAC. Detecta vulnerabilidades e oportunidades de evolucao de seguranca. | 1 |
-| `@check-tests` | `.claude/agents/backend/check-tests.md` | Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos. | - |
+| `@check-tests` | `.claude/agents/backend/check-tests.md` | Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos. | 1 |
 | `@scaffold-aggregate` | `.claude/agents/backend/scaffold-aggregate.md` | Gera Aggregate Root com private setters, factory method, audit fields e unit tests. | - |
 
 ### delivery (2)
 
 | Agent | Path | Descricao | Deps |
 |-------|------|-----------|------|
-| `@planner` | `.claude/agents/delivery/planner.md` | Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao. | - |
+| `@planner` | `.claude/agents/delivery/planner.md` | Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao. | 1 |
 | `@task-breaker` | `.claude/agents/delivery/task-breaker.md` | Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007). | 1 |
 
 ### discovery (4)
@@ -104,13 +104,13 @@
 | `@check-structure` | `.claude/agents/frontend/check-structure.md` | Valida estrutura de pastas frontend, imports, barrels e coesao de modulos. Verifica feature-first, imports cruzados, uso de shared/ e oportunidades de modularizacao. | - |
 | `@check-typescript` | `.claude/agents/frontend/check-typescript.md` | Valida configuracao TypeScript strict, uso de tipos, generics e type safety. Detecta any, ts-ignore, tipos implicitos e oportunidades de melhorar type safety. | - |
 | `@check-ux` | `.claude/agents/frontend/check-ux.md` | Valida patterns UX — loading states, feedback visual, empty states, error handling, acessibilidade basica e consistencia de interacao. | - |
-| `@check-visual-consistency` | `.claude/agents/frontend/check-visual-consistency.md` | Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual ("tela A != tela B"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto. | 1 |
+| `@check-visual-consistency` | `.claude/agents/frontend/check-visual-consistency.md` | Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual ("tela A != tela B"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto. | 2 |
 | `@check-web-guidelines` | `.claude/agents/frontend/check-web-guidelines.md` | Valida UI contra as Web Interface Guidelines (Vercel) — acessibilidade, foco, formularios, animacao, tipografia, conteudo, imagens, performance, navegacao e estado na URL, toque, layout, tema, locale, hidratacao e copy. Regras de um snapshot fixado no kit, filtradas pela stack e pelo idioma do projeto. Saida terse em arquivo:linha. | 2 |
-| `@design` | `.claude/agents/frontend/design.md` | Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%). | - |
+| `@design` | `.claude/agents/frontend/design.md` | Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%). | 1 |
 | `@ds-component` | `.claude/agents/frontend/ds-component.md` | Busca componente no registry, instala, customiza com variants e CSS variables, cria showcase no design-system. Tambem documenta componentes existentes e remove showcases orfaos. | - |
 | `@ds-foundation` | `.claude/agents/frontend/ds-foundation.md` | Extrai design tokens de screenshot, inicializa biblioteca de componentes, configura CSS variables, cria design-system isolado e gera ADR do Design System. | 3 |
 | `@paper-prototype` | `.claude/agents/frontend/paper-prototype.md` | Roteiro do /prototype para o destino Paper (MCP) — contexto do projeto, regras de construcao no Paper, padroes por tipo de tela. Lido pelo /prototype na sessao principal, onde as ferramentas do MCP existem; como subagente, nao alcanca o Paper. | - |
-| `@ux` | `.claude/agents/frontend/ux.md` | Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero. | 6 |
+| `@ux` | `.claude/agents/frontend/ux.md` | Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero. | 7 |
 
 ### orchestration (1)
 
@@ -179,6 +179,10 @@ Items omitidos sao folha (zero dependencias no kit).
 - `.claude/agents/backend/check-errors.md`
 - `.claude/agents/backend/check-security.md`
 
+### /checklist
+
+- `docs/templates/checklist-template.md`
+
 ### /clarify
 
 - `.claude/agents/product/clarifier.md`
@@ -243,6 +247,8 @@ Items omitidos sao folha (zero dependencias no kit).
 - `.claude/agents/architecture/adr-validator.md`
 - `.claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md`
 - `.claude/reference/frontend/third-party/interface-design/design-review.md`
+- `.claude/scripts/build-gate.mjs`
+- `.claude/scripts/frontend/check-learnings.mjs`
 
 ### /forge
 
@@ -277,6 +283,7 @@ Items omitidos sao folha (zero dependencias no kit).
 ### /plan
 
 - `.claude/agents/delivery/planner.md`
+- `docs/templates/plan-template.md`
 
 ### /praxis
 
@@ -358,10 +365,25 @@ Items omitidos sao folha (zero dependencias no kit).
 ### /verify-all
 
 - `.claude/skills/execute`
+- `.claude/scripts/build-gate.mjs`
+- `.claude/scripts/frontend/check-learnings.mjs`
+- `.claude/scripts/deps-audit.mjs`
+
+### @adr-creator
+
+- `docs/adr/templates`
 
 ### @check-security
 
 - `docs/adr/0008-seguranca-e-lgpd.md`
+
+### @check-tests
+
+- `.claude/scripts/mutants.mjs`
+
+### @planner
+
+- `docs/templates/plan-template.md`
 
 ### @task-breaker
 
@@ -379,11 +401,16 @@ Items omitidos sao folha (zero dependencias no kit).
 ### @check-visual-consistency
 
 - `.claude/reference/frontend/design-system-anatomy.md`
+- `.claude/scripts/frontend/screenshot.mjs`
 
 ### @check-web-guidelines
 
 - `.claude/reference/frontend/anti-patterns.md`
 - `.claude/reference/frontend/third-party`
+
+### @design
+
+- `.claude/scripts/frontend/screenshot.mjs`
 
 ### @ds-foundation
 
@@ -399,6 +426,7 @@ Items omitidos sao folha (zero dependencias no kit).
 - `.claude/reference/frontend/personas.md`
 - `.claude/reference/frontend/register-product.md`
 - `docs/templates/design-memory-template.md`
+- `.claude/scripts/frontend/screenshot.mjs`
 
 ### @clarifier
 
