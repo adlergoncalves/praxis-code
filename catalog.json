@@ -1,5 +1,5 @@
 {
-  "version": "0.1.1",
+  "version": "0.2.0",
   "repo": "https://github.com/adlergoncalves/praxis-code.git",
   "seed": [
     ".claude/settings.json",
@@ -287,7 +287,7 @@
       "domain": "delivery",
       "description": "Planejador tecnico que le spec + ADRs e gera plan.md com Technical Context, data model, contracts e guia de implementacao.",
       "files": {
-        ".claude/agents/delivery/planner.md": "1cb4cd70067455eae0cf92b10ceee9c4bd363e3e64c2777b73d82c3620a68aa4"
+        ".claude/agents/delivery/planner.md": "6210a39550b646c2d6005f92e4ae9ad43ffa2dec9f88bc8be7e46e7d7ad72ed6"
       },
       "depends": [
         "docs/templates/plan-template.md"
@@ -299,7 +299,7 @@
       "domain": "delivery",
       "description": "Quebra plan tecnico em fatias verticais (U0..Un = User Stories), cada uma com contrato completo (valor, criterio PRONTO file-level, verificacao manual, refs arquivo:linha) + DoD + mapa BDD. Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/agents/delivery/task-breaker.md": "9ccb334485d9c3ae03714dfe1475cfb7097d163aef8e5d6af810d709fe5e5c7a"
+        ".claude/agents/delivery/task-breaker.md": "e3547dc43b282dbb01e07b8fd7eaba586e86fc993ed8c9c5603808dff320917d"
       },
       "depends": [
         "docs/templates/tasks-template.md"
@@ -1453,7 +1453,7 @@
     ".claude/praxis/rules.md": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/rules.md": "0b1f84999a72443d1a3d73a8343448bdce6dcb8649389b0db2e64fa9bfd93d49"
+        ".claude/praxis/rules.md": "737b7e2100c1196ad529c7b3d315fd3520ed31e121e652925501ef8751e6312b"
       },
       "depends": [
         ".claude/agents/orchestration/praxis.md",
@@ -1737,19 +1737,41 @@
       },
       "depends": []
     },
+    ".claude/scripts/lib/loop-artifacts.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/lib/loop-artifacts.mjs": "b9a3e51cfc3f879e1fe0a8c43974015c2e8ef6a5647b0901b1d9150e3d0baaec"
+      },
+      "depends": []
+    },
+    ".claude/scripts/loop-briefing.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/loop-briefing.mjs": "209c3322312dc9b379ca453cf711cd3405686ee93c4bb1162b9295deab7ebea8"
+      },
+      "depends": [
+        ".claude/scripts/lib/loop-artifacts.mjs"
+      ]
+    },
     ".claude/scripts/loop-doctor.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/scripts/loop-doctor.mjs": "98b69d3d992282833d0f3769e4065a1f04831d105a69d697bdd9afec97e0ae1e"
+        ".claude/scripts/loop-doctor.mjs": "e477b106d56909019576e0119fc63938143ab669f24849385ed2c10b87a05674"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/lib/loop-artifacts.mjs"
+      ]
     },
     ".claude/scripts/loop-driver.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/scripts/loop-driver.mjs": "1e997e35a6391a6d2df0b4c3861742b79fec1779b5c1e6d43a200214e621fccb"
+        ".claude/scripts/loop-driver.mjs": "16e36277c581df12b1f89154b18a538e53ad1a39bc364b143d7b6eeafccc8128"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/lib/loop-artifacts.mjs",
+        ".claude/scripts/loop-briefing.mjs",
+        ".claude/scripts/slice-gates.mjs"
+      ]
     },
     ".claude/scripts/mutants.mjs": {
       "kind": "asset",
@@ -1757,6 +1779,15 @@
         ".claude/scripts/mutants.mjs": "1654edbcc0c016e58b35467820a99876b577ad24761ba753c85171a961b52c92"
       },
       "depends": []
+    },
+    ".claude/scripts/slice-gates.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/slice-gates.mjs": "0600aa02652a78f44d33f46e49a2385ef323be3fd154228de6168a0564b2b465"
+      },
+      "depends": [
+        ".claude/scripts/lib/loop-artifacts.mjs"
+      ]
     },
     ".claude/settings.json": {
       "kind": "asset",
@@ -1838,7 +1869,7 @@
       "domain": null,
       "description": "Orquestra os 6 agents de validacao backend. Suporta modo paralelo (rapido) e sequencial (interativo).",
       "files": {
-        ".claude/skills/backend-validate/SKILL.md": "666656bd11b56e340ddaafc53ffde642efcbb8fd1c7c567f423e280ef1bee223"
+        ".claude/skills/backend-validate/SKILL.md": "b235400cb267a60194b6dd1422b561769c425d00022181b7393b02dba89d12d4"
       },
       "depends": [
         ".claude/agents/backend/check-architecture.md",
@@ -1992,21 +2023,29 @@
       "kind": "skill",
       "name": "execute",
       "domain": null,
-      "description": "Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007).",
+      "description": "Sub-fase 5c: Executa o pacote aprovado em loop por fatia vertical (1 fatia = 1 User Story). Padrao: o loop-driver abre uma sessao nova por fatia (so o recorte dela), roda os gates por exit code e um verificador em outra sessao; a sessao principal trata as paradas e faz o fechamento. --checkpoint para a cada fatia; --interativo roda a fatia na sessao principal. Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/execute/SKILL.md": "10c8d09ecbfcd40dd86f8a5a48d37cb818eccb82c924284488befcf09564b646",
-        ".claude/skills/execute/checklists.md": "265e9784e15e0d1b81c79c994f510cade4b18396099a7bbf852057897492b5c1"
+        ".claude/skills/execute/SKILL.md": "d12381eb54c4f6c609ee94f31c46d7869e360a7abb6d45ee0c13b6275de47189",
+        ".claude/skills/execute/checklists.md": "265e9784e15e0d1b81c79c994f510cade4b18396099a7bbf852057897492b5c1",
+        ".claude/skills/execute/slice-session.md": "6575d5dd4ccfd936610663c47f9c1e86107a69500f3ca3184e002541dab4a64c",
+        ".claude/skills/execute/verifier-session.md": "fe97956c4d96935ecedca00edf48a8531391f653c3e238780e0fe617ec001c4d"
       },
       "depends": [
         ".claude/agents/architecture/adr-validator.md",
         ".claude/reference/frontend/third-party/design-review-playwright/design-review-agent.md",
         ".claude/reference/frontend/third-party/interface-design/design-review.md",
         ".claude/scripts/build-gate.mjs",
+        ".claude/scripts/deps-audit.mjs",
         ".claude/scripts/frontend/check-learnings.mjs",
+        ".claude/scripts/loop-briefing.mjs",
         ".claude/scripts/loop-doctor.mjs",
+        ".claude/scripts/loop-driver.mjs",
         ".claude/scripts/mutants.mjs",
+        ".claude/scripts/slice-gates.mjs",
         ".claude/skills/backend-validate",
         ".claude/skills/execute/checklists.md",
+        ".claude/skills/execute/slice-session.md",
+        ".claude/skills/execute/verifier-session.md",
         ".claude/skills/frontend-validate",
         ".claude/skills/verify-all"
       ]
@@ -2029,7 +2068,7 @@
       "domain": null,
       "description": "Orquestra os 11 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo).",
       "files": {
-        ".claude/skills/frontend-validate/SKILL.md": "862d6fa1e41e7543ec5c5ee5d3d0aa3bc28f311b9ea5b23d268d2b65ca69805d"
+        ".claude/skills/frontend-validate/SKILL.md": "ab7bb58917e81c9cb95917cb11c8a8a670d32707c34c5a65896d10ae655139e9"
       },
       "depends": [
         ".claude/agents/frontend/check-design.md",
@@ -2051,7 +2090,7 @@
       "domain": null,
       "description": "Fase 5: Implementacao — Plan + Tasks + Execute. Planeja tecnicamente, quebra em tasks e executa respeitando ADRs.",
       "files": {
-        ".claude/skills/implement/SKILL.md": "1aeede0ac03d2e20586c278a117683a9110d7ae3a7ca3fe38d81a4d16e55cf1a"
+        ".claude/skills/implement/SKILL.md": "40ab6a75bfad4cd4ec2787f9c792bf7c20b77bf1596687f40e32a2644be4dafb"
       },
       "depends": [
         ".claude/skills/execute",
@@ -2268,7 +2307,7 @@
       "domain": null,
       "description": "Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/tasks/SKILL.md": "8ec8ca3eb41cca54614fd9718d32544648452b269b49f65fa3b27496373c6401"
+        ".claude/skills/tasks/SKILL.md": "750f9c5e675de0fa00eace632431c64a6d62ec92c3dbc09b3c8b3edacf244fbd"
       },
       "depends": [
         ".claude/agents/delivery/task-breaker.md",
@@ -2352,11 +2391,13 @@
     "docs/adr/0007-loop-engineering-execucao.md": {
       "kind": "asset",
       "files": {
-        "docs/adr/0007-loop-engineering-execucao.md": "f7c5c1cea84c44c84ad5d58e517ce7143d6e030d03cd7e20a6ddfed177431621"
+        "docs/adr/0007-loop-engineering-execucao.md": "b520e259700faaa9efca1e2ce86c8376f6c3572329746e98193e21e799f02cbb"
       },
       "depends": [
+        ".claude/scripts/loop-briefing.mjs",
         ".claude/scripts/loop-doctor.mjs",
         ".claude/scripts/loop-driver.mjs",
+        ".claude/scripts/slice-gates.mjs",
         "docs/templates/doctor-template.json",
         "docs/templates/guide-template.md"
       ]
@@ -2616,14 +2657,14 @@
     "docs/templates/guide-template.md": {
       "kind": "asset",
       "files": {
-        "docs/templates/guide-template.md": "14a83110bced509c03272ecfcce00f0d198e631e8f1ea031a839daaa2b9aa48c"
+        "docs/templates/guide-template.md": "86f5f961ac85416b0458746c33938d7e99f58328291c72e849d8371f22b1b28c"
       },
       "depends": []
     },
     "docs/templates/plan-template.md": {
       "kind": "asset",
       "files": {
-        "docs/templates/plan-template.md": "509146a57374d755479b8df7e6eea42ce7a6e8c8884b8e72eddeedf2cf4d20b2"
+        "docs/templates/plan-template.md": "316481b676e359c4fe45739b4a6ca704d5ff389ef6ac88fcc1e278808feeed44"
       },
       "depends": []
     },
@@ -2637,7 +2678,7 @@
     "docs/templates/tasks-template.md": {
       "kind": "asset",
       "files": {
-        "docs/templates/tasks-template.md": "7c1bb9a8bf6312ca4a8f4f1ea8ffbc0e50895a53d8459dbb25b57ada485599f2"
+        "docs/templates/tasks-template.md": "e73a5f9467d275964f5a472c61bfad5c72ddbc99d89046e5335df57a08cb6b4a"
       },
       "depends": [
         ".claude/scripts/mutants.mjs"

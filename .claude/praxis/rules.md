@@ -49,6 +49,6 @@ Skill que conversa com o usuario (pergunta e espera resposta, mostra diff para a
 
 `/start` identifica a linha: **Novo Software** (`/discovery` → `/architect` → `/define` → `/implement`), **Modernizar Legado** (`/reverse-engineer` primeiro) ou **Adotar Projeto** (`/adopt`).
 
-**Loop Engineering (ADR-0007)**: `/execute` roda em loop por fatia vertical (1 fatia = 1 User Story) — implementa → gates → conserta ate verde → verificador independente → DONE no Loop Log (`tasks.md`) → proxima fatia. Autonomo apos o pacote aprovado no portao final do `/tasks` (guia de validacao + prontidao); so para no realmente bloqueante. `--checkpoint` para a cada fatia. Detalhes: `docs/adr/0007-loop-engineering-execucao.md`.
+**Loop Engineering (ADR-0007)**: `/execute` roda em loop por fatia vertical (1 fatia = 1 User Story), cada fatia numa sessao nova aberta pelo `loop-driver.mjs` — implementa → gates por exit code → conserta ate verde → verificador em outra sessao → DONE no Loop Log (`tasks.md`) → proxima fatia. A sessao principal solta o driver, trata as paradas e fecha; nao implementa fatias. Autonomo apos o pacote aprovado no portao final do `/tasks` (guia de validacao + prontidao + modelo por fatia); so para no realmente bloqueante. `--checkpoint` para a cada fatia; `--interativo` roda a fatia na sessao principal. Detalhes: `docs/adr/0007-loop-engineering-execucao.md`.
 
 **Team scope**: `/implement` e `/validate` aceitam `--team front|back|db|full`.

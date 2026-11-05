@@ -99,10 +99,12 @@ só é pego aqui. *(spec › Decisões Fechadas e Diferidas)*
 | Push | {sim / não} |
 | Modo | {sequencial / multi-agente em G«n»} |
 | Scan de segurança | {sim, esforço X / não} |
+| Modelo por fatia | {U0 sonnet · medium; U1 opus · high; …} |
 
-Aprovado o pacote, o `/execute` encadeia as fatias sem pedir ok entre elas e só para no
-realmente bloqueante (bloqueio sem fatia liberada, watchdog, decisão de negócio não
-fechada, ação destrutiva).
+Aprovado o pacote, o `/execute` solta o driver: cada fatia roda numa sessão nova, no modelo
+aprovado, e é conferida por um verificador em outra sessão. As fatias se encadeiam sem pedir ok
+e o loop só para no realmente bloqueante (bloqueio sem fatia liberada, watchdog, decisão de
+negócio não fechada, ação destrutiva, fatia reprovada duas vezes).
 
 ## 11. O que este guia NÃO cobre
 

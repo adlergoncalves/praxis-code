@@ -8,7 +8,7 @@ Conteudo do kit Praxis consumido pelo Claude Code.
 | `skills/<nome>/SKILL.md` | Skills (comandos `/nome`) — flat, uma pasta por skill |
 | `agents/<dominio>/<nome>.md` | Subagents organizados por dominio (ver `docs/kit-domains.md`) |
 | `hooks/` | Hooks de aprendizado (captura + reconciliacao) — registrados em `settings.json`; em `hooks/quality/`, hooks de qualidade opt-in (ligados pelo `/setup` no `settings.local.json`) |
-| `scripts/` | Gates e utilitarios: build-gate, loop-doctor (Gate 0), loop-driver, deps-audit, mutants, check-learnings, detect-cliches, screenshot |
+| `scripts/` | Gates e utilitarios: build-gate, loop-doctor (Gate 0), loop-driver (gerente do loop), loop-briefing (recorte da fatia), slice-gates (gates por exit code), deps-audit, mutants, check-learnings, detect-cliches, screenshot |
 | `evals/` | Fixtures e contratos dos agent evals (`/agent-eval`) |
 | `reference/` | Conhecimento canonico carregado pelos agents (design, adapters de stack) |
 | `assets/` | Imagens de referencia |

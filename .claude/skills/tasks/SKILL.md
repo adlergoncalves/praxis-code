@@ -44,7 +44,7 @@ A unidade e a **fatia** (contrato completo); as tasks horizontais sao **sub-task
 
 ```
 ### U«n» — {título} (= US X.Y)
-- Valor entregável / Camadas / Depende de / Início / Critério de PRONTO (file-level)
+- Valor entregável / Camadas / Depende de / Modelo · esforço / Início / Critério de PRONTO (file-level)
 - Verificação MANUAL (1-3 passos) / Fora de escopo / ADRs + Ref(arquivo:linha)
 - Sub-tasks: [ ] [T00N] [P] {desc} — {arquivo}
 - BDD: [B]/[F]/[E2E] → testes nomeados
@@ -81,6 +81,11 @@ guia e conversa com o usuario), apos o `@task-breaker` devolver o `tasks.md`.
    branch (nome e base), politica de commit (default `commit autonomo`), push, modo de execucao
    (sequencial ou multi-agente nos grupos com pontos de colisao declarados) e **scan de seguranca**
    no fechamento (esforco; a resposta aceita o custo do scan, para o loop nao parar depois). Gravar no `tasks.md`.
+   Na mesma rodada, a **tabela de modelo por fatia** (fatia · modelo · esforco · motivo), com a
+   proposta do `@task-breaker`, para o usuario aprovar ou trocar fatia a fatia: e com ela que o
+   driver abre a sessao de cada fatia. A resposta vai para a linha **Modelo · esforço** da fatia.
+   Conferir tambem a coluna **Caminhos** da tabela Gates contra a Project Structure do plan: glob
+   errado faz o gate da camada nao rodar.
 5. **Guia de validacao** — gerar a partir de spec/plan/tasks pela estrutura de
    `docs/templates/guide-template.md` (derivado, nunca fonte). Com publicacao de paginas
    disponivel na sessao (Artifacts do Claude): publicar como pagina HTML com os diagramas
@@ -96,10 +101,11 @@ Cobertura de entendimento: {NN}% ({o que falta, ou "tudo fechado"})
 Indice de execucao autonoma: {NN}% (top riscos: {1–3})
 Paradas eliminadas: {n} — {as principais em poucas palavras}
 Execucao: branch {…} · commit {…} · push {…} · modo {…} · scan de seguranca {…}
+Modelo por fatia: {n} sonnet · {n} opus — {fatias em opus em poucas palavras}
 Guia de validacao: {link ou caminho} — leia antes de aprovar (secoes 8 e 9)
 ```
 
-7. **De-acordo** → gravar `Pacote aprovado em` no Preflight e seguir para o `/execute` (autonomo).
+7. **De-acordo** → gravar `Pacote aprovado em` no Preflight e seguir para o `/execute` (o driver, uma sessao por fatia).
    **Ajustar** → mudar o pacote, regenerar o guia, re-apresentar.
 
 **Modo lite**: passos 2–4 em versao curta e resumo no chat, sem guia publicado.
@@ -109,7 +115,7 @@ o pacote e o fim da implementacao.
 
 ## Gestao de Contexto
 
-Aprovado o pacote, recomende `/clear` antes do `/execute` (ou rode pelo `loop-driver.mjs`). O tasks.md esta salvo.
+Aprovado o pacote, recomende `/clear` antes do `/execute`. O tasks.md esta salvo; o `/execute` solta o `loop-driver.mjs`, e cada fatia roda numa sessao nova.
 
 ## Handoffs
 

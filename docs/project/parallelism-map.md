@@ -37,10 +37,11 @@
 ### Dentro de /execute (entre fatias)
 
 ```
-Fatias (U0…Un)       → em sequencia, na ordem do grafo de dependencias do tasks.md
-Grupos G«n»          → multi-agente SO se o Preflight liberar: um subagente por fatia do
-                       grupo, pontos de colisao declarados; integracao e verificacao
-                       independente na sessao principal
+Fatias (U0…Un)       → em sequencia, na ordem do grafo de dependencias do tasks.md; cada
+                       fatia numa sessao nova (loop-driver.mjs), verificada por outra sessao
+Grupos G«n»          → multi-agente SO se o Preflight liberar: uma sessao para o grupo, um
+                       subagente por fatia, pontos de colisao declarados; integracao e gates
+                       nessa sessao, verificador sobre o grupo
 Sub-tasks [P]        → paralelizaveis dentro da fatia
 ```
 

@@ -6,8 +6,9 @@
 **Team Scope**: {full|front|back|db}
 
 > **Loop Engineering (ADR-0007).** A **unidade de iteração é a fatia vertical** (U0…Un),
-> cada uma = uma User Story (ou fundação declarada). O `/execute` roda **uma fatia por
-> iteração**, na sessão principal → implementa → verifica → conserta até verde → marca DONE → segue para a próxima fatia liberada (só para no realmente bloqueante; `--checkpoint` é opt-in). Este
+> cada uma = uma User Story (ou fundação declarada). O `/execute` solta o `loop-driver.mjs`, que
+> abre **uma sessão nova por fatia** (só com o recorte dela) → implementa → gates → verificador
+> em outra sessão → DONE → próxima fatia liberada; só para no realmente bloqueante. Este
 > arquivo é o **estado durável** do loop (trava T1: **sem `STATUS.md` concorrente**).
 
 ---
@@ -91,7 +92,7 @@ Uma fatia só é `DONE` quando **todos** forem verdadeiros:
 1. **Test-first cumprido** (quando há mudança de comportamento em código testado): teste alterado/escrito antes, mostrado falhando (RED), **classificado** (`contrato-novo` · `especificacao-nova` · `refactor-puro` · `teste-de-implementacao` — nunca `ajuste-para-passar`) e justificado com a fonte; produção depois (GREEN); refactor sem mexer no teste. Teste de regra de negócio que nasceu verde: mutantes mortos (`.claude/scripts/mutants.mjs`).
 2. **Cenários de aceitação da fatia passam** (`[B]`/`[F]`/`[E2E]` mapeados abaixo).
 3. **Gates da(s) camada(s) verdes** (tabela abaixo). **Nunca marcar DONE com gate vermelho.**
-4. **Conformidade com ADRs** citados (sem violações) — conferida por **verificador independente** (check agents despachados pelo `/execute` sobre os arquivos da fatia), não por quem implementou.
+4. **Conformidade com ADRs** citados (sem violações) — conferida pelo **verificador independente** (sessão separada, com os check agents da camada tocada sobre os arquivos da fatia), não por quem implementou.
 5. **Defense-in-depth** — toda regra de negócio validada existe no **front (UX)** E no **back (integridade)**.
 6. **Sem strings hardcoded** (i18n) e **a11y mínima** (role, teclado, touch targets) — se UI.
 7. **Fidelidade** (se UI com régua pixel-perfect na spec): página renderizada == frame (ou conforme DS / segue tela existente — ver spec § Régua de Fidelidade).
@@ -102,13 +103,19 @@ Uma fatia só é `DONE` quando **todos** forem verdadeiros:
 
 ## Gates (rodar conforme as camadas tocadas)
 
-| Camada | Comandos (preencher com o stack real do projeto) |
-|---|---|
-| Backend | {ex: build · test · format} |
-| Database | {ex: migration/deploy} |
-| Frontend (unit) | {ex: type-check · lint · test · build} |
-| Frontend (e2e/BDD) | {ex: Playwright — quando aplicável} |
-| Conformidade | {/backend-validate · /frontend-validate} |
+| Camada | Caminhos | Comandos (preencher com o stack real do projeto) |
+|---|---|---|
+| Backend | {ex: `src/server/**`, `prisma/**`} | {ex: `npm run build` · `npm test -- server`} |
+| Database | {ex: `migrations/**`} | {ex: `npm run db:migrate`} |
+| Frontend (unit) | {ex: `src/web/**`} | {ex: `npm run typecheck` · `npx eslint {arquivos}` · `npx vitest run`} |
+| Frontend (e2e/BDD) | — | {ex: `npx playwright test` — quando aplicável} |
+| Conformidade | — | /backend-validate · /frontend-validate (verificador) |
+
+O `slice-gates.mjs` roda esta tabela ao fim de cada fatia e decide pelo **exit code**. **Caminhos**:
+globs dos arquivos da camada — a linha roda só se a fatia tocou um deles; `*` = sempre; `—` = o
+script não roda (e2e que depende do app de pé, conformidade): a sessão da fatia roda e o
+verificador cobra a prova. **Comandos**: literais, entre crases, a partir da raiz do projeto;
+`{arquivos}` vira a lista dos arquivos alterados da camada.
 
 ---
 
@@ -118,11 +125,26 @@ Uma fatia só é `DONE` quando **todos** forem verdadeiros:
 > meio e fim, **verificável na mão**. Fundação (U0/U1) é exceção declarada do princípio
 > vertical, mas ainda entrega algo verificável (dado real / permissão testável).
 
+**Modelo · esforço por fatia** — proposto na quebra, aprovado no portão final do `/tasks`. O
+driver abre a sessão da fatia com ele; fatia sem a linha roda no modelo padrão da conta.
+Reprovada pelo verificador, a fatia repete um degrau acima. Ponto de partida, a calibrar pela
+tabela "Custo por sessão (driver)":
+
+| Tipo de fatia | Modelo · esforço |
+|---|---|
+| Preflight, seed, i18n, migration simples, documentação | `sonnet · medium` |
+| CRUD que copia o Módulo de Referência sem regra nova | `sonnet · high` |
+| Regra de negócio, dinheiro, contrato, integração externa, concorrência, segurança | `opus · high` |
+| Segunda tentativa (automática, depois de reprovada) | um degrau acima: `sonnet` → `opus · high` → `opus · xhigh` → `opus · max` |
+
+Na dúvida entre dois degraus, o de cima: fatia de domínio em modelo menor sai mais cara em retrabalho.
+
 ### U«n» — {título da fatia} {(= User Story X.Y)}
 
 - **Valor entregável:** {o que passa a funcionar e é verificável na mão}
 - **Camadas:** `[ ] DB  [ ] Domain  [ ] UseCase  [ ] Endpoint  [ ] FE  [ ] E2E`
 - **Depende de:** {U_x | —}
+- **Modelo · esforço:** {sonnet | opus} · {medium | high | xhigh} — {motivo em uma frase}
 - **Início (pré-estado):** {o que já existe quando esta fatia começa}
 - **Critério de PRONTO (file-level):**
   - {mudança concreta 1 — arquivo/símbolo}
@@ -138,6 +160,13 @@ Uma fatia só é `DONE` quando **todos** forem verdadeiros:
   - `[B]` {Dado … Quando … Então …} → teste `Metodo_Cenario_Resultado`
   - `[F]` {…} → teste Vitest/RTL
   - `[E2E]` {…} → teste Playwright (se aplicável)
+  - Cenário de "não acontece" → em par com o controle: {o caso vizinho em que acontece, para o mesmo destinatário}
+  - Variações que mudam o caminho: {configuração/perfil → cenário, ou "fora: motivo"}
+
+> **Regras de prova:** o cenário tem que poder falhar quando a regra quebra. Ausência só com o
+> controle positivo para o mesmo destinatário; efeito assíncrono com o esperado no destino (o que
+> quem recebe vê), não no registro gravado; esperado no que a ação produziu, não no rótulo ou na
+> mensagem de sucesso; cada configuração e perfil que muda o caminho com ao menos um cenário.
 
 ---
 
@@ -164,6 +193,7 @@ U2 ──┘
 - [ ] Toda fatia é **vertical** (não "uma camada inteira") — fundação é exceção declarada.
 - [ ] Toda fatia é **entregável e verificável manualmente** (tem passo de verificação manual).
 - [ ] Todo critério de aceite mapeia a **≥1 teste nomeado** (`[B]`/`[F]`/`[E2E]`).
+- [ ] Todo cenário de ausência tem o **controle positivo**, e toda variação que muda o caminho tem cenário (ou a decisão de deixá-la fora).
 - [ ] Dependências formam **grafo sem ciclo**.
 - [ ] Cada fatia cabe em **uma iteração** (se inchar, dividir em `U_n.a` / `U_n.b`).
 
@@ -179,17 +209,22 @@ U2 ──┘
 **Status possíveis**: `TODO` | `WIP` | `DONE` | `BLOCKED` | `ABANDONADA`.
 **BLOCKED** = motivo de 1 linha + o que destrava (escala, não improvisa — ADR-0007 T3).
 **ABANDONADA** = decisão do usuário no watchdog anti-giro, com o motivo nas Notas.
-Não mudar a ordem das colunas: o `loop-driver.mjs` lê `| Fatia | Status |`.
+Não mudar a ordem das colunas: o `loop-driver.mjs` lê `| Fatia | Status |` e escreve o Status e
+as Notas (Gate 0 parcial, reprovação do verificador).
 
 ### Log de iterações — uma linha por iteração, concluída ou não
 
-| Data | Fatia | Resultado | Gates | Commits | Custo aprox. |
-|---|---|---|---|---|---|
-| — | — | — | — | — | — |
+| Data | Fatia | Resultado | Gates | Commits |
+|---|---|---|---|---|
+| — | — | — | — | — |
 
 **Resultado**: `DONE` | `BLOCKED` | `PARCIAL` | `SEM PROGRESSO`. É o que alimenta o
-watchdog: na 3ª tentativa da mesma fatia sem progresso, o `/execute` para e devolve a
+watchdog: na 3ª tentativa da mesma fatia sem progresso, a sessão para e devolve a
 decisão ao usuário (abandonar · BLOCKED · tentar mais N vezes).
+
+O custo não vai aqui: o `loop-driver.mjs` cria e mantém, logo abaixo, a tabela **"Custo por
+sessão (driver)"** — uma linha por sessão (fatia, continuação, verificador) com modelo, custo,
+pico de contexto, turnos e resultado.
 
 ---
 

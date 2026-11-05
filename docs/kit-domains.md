@@ -41,7 +41,7 @@
 - **discovery/**: discovery, codebase-mapper, legacy-analyzer, strategy
 - **product/**: clarifier, module-detailer, prd-create, prd-validate, prd-decompose, spec-from-prd
 - **architecture/**: adr-creator, adr-validator, ddd-estrategico `[optional]`
-- **delivery/**: planner, task-breaker (o loop do `/execute` roda na sessão principal — ADR-0007)
+- **delivery/**: planner, task-breaker (o loop do `/execute` não é agent: cada fatia roda numa sessão nova aberta pelo `loop-driver.mjs` — ADR-0007)
 - **quality/**: analyzer, solid-review, spec-review, revalidator
 - **frontend/**: ux, design, paper-prototype, ds-foundation, ds-component, check-{design, forms, i18n, react, responsiveness, routing, structure, typescript, ux, ai-cliches, visual-consistency, security-frontend, web-guidelines}
 - **backend/**: scaffold-aggregate, check-{architecture, ddd, errors, naming, security, tests}

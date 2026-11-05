@@ -27,7 +27,7 @@
 - **Roda inline** (sem agent) quando é **orquestração pura ou trivial**.
   - Ex.: `/mode`, `/checklist`, `/debug`, `/quickfix`, `/start` (despacha), `/define`/`/implement` (orquestram outras skills).
 - **Roda inline, mesmo sendo pesada**, quando o trabalho precisa **conversar com o usuário** (perguntar quando bloqueia) ou de **verificação independente** (despachar outros agents). Subagente não conversa com o usuário nem despacha agents — delegar esse trabalho faz quem implementa conferir o próprio trabalho.
-  - Ex.: `/ux` (entrevistas de Charter/Shape e escolha entre direções renderizadas — o `@ux` fica para parecer pontual), `/design` (diff aprovado pelo usuário, olhando a tela) e `/execute` (loop por fatia — ADR-0007). Para conter a janela do `/execute`: `.claude/scripts/loop-driver.mjs` (uma fatia por sessão nova).
+  - Ex.: `/ux` (entrevistas de Charter/Shape e escolha entre direções renderizadas — o `@ux` fica para parecer pontual), `/design` (diff aprovado pelo usuário, olhando a tela) e `/execute` (soltar o loop, tratar as paradas e fechar — ADR-0007). O trabalho de cada fatia não roda na sessão principal: `.claude/scripts/loop-driver.mjs` abre uma sessão nova por fatia e outra para o verificador, e a sessão principal só conversa.
 
 ## Convenção de nomes
 

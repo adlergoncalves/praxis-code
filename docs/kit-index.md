@@ -25,7 +25,7 @@
 | `/discovery` | `.claude/skills/discovery/SKILL.md` | Fase 1: Discovery — Entendimento completo do projeto antes de qualquer decisao | 1 |
 | `/ds-component` | `.claude/skills/ds-component/SKILL.md` | Adiciona componente ao Design System — Busca, instala, customiza e cria showcase no design-system. | 1 |
 | `/ds-init` | `.claude/skills/ds-init/SKILL.md` | Inicializa Design System — Extrai tokens de screenshot, cria design-system isolado e gera ADR. | 1 |
-| `/execute` | `.claude/skills/execute/SKILL.md` | Sub-fase 5c: Executa o pacote aprovado em LOOP AUTONOMO por fatia vertical (1 fatia = 1 User Story), NA SESSAO PRINCIPAL: implementa test-first, roda gates, conserta ate verde, despacha verificadores independentes, marca DONE e segue para a proxima — so para no realmente bloqueante. --checkpoint para a cada fatia; --driver roda uma fatia por sessao nova. Loop Engineering (ADR-0007). | 11 |
+| `/execute` | `.claude/skills/execute/SKILL.md` | Sub-fase 5c: Executa o pacote aprovado em loop por fatia vertical (1 fatia = 1 User Story). Padrao: o loop-driver abre uma sessao nova por fatia (so o recorte dela), roda os gates por exit code e um verificador em outra sessao; a sessao principal trata as paradas e faz o fechamento. --checkpoint para a cada fatia; --interativo roda a fatia na sessao principal. Loop Engineering (ADR-0007). | 17 |
 | `/forge` | `.claude/skills/forge/SKILL.md` | Cria uma ferramenta DO PROJETO (skill, agent de checagem ou subagente de trabalho) nas convencoes do kit, a partir do que o projeto precisa. Use quando uma regra se repete, um fluxo do projeto vira rotina, ou o Praxis propoe transformar um learning recorrente em check — 'cria um check para X', 'quero um comando para Y', 'isso devia ser automatico'. | 1 |
 | `/frontend-validate` | `.claude/skills/frontend-validate/SKILL.md` | Orquestra os 11 agents de validacao frontend. Suporta modo paralelo (rapido) e sequencial (interativo). | 11 |
 | `/implement` | `.claude/skills/implement/SKILL.md` | Fase 5: Implementacao — Plan + Tasks + Execute. Planeja tecnicamente, quebra em tasks e executa respeitando ADRs. | 3 |
@@ -239,8 +239,14 @@ Items omitidos sao folha (zero dependencias no kit).
 ### /execute
 
 - `.claude/skills/execute/checklists.md`
+- `.claude/skills/execute/slice-session.md`
+- `.claude/skills/execute/verifier-session.md`
+- `.claude/scripts/loop-driver.mjs`
+- `.claude/scripts/loop-briefing.mjs`
+- `.claude/scripts/slice-gates.mjs`
 - `.claude/scripts/loop-doctor.mjs`
 - `.claude/scripts/mutants.mjs`
+- `.claude/scripts/deps-audit.mjs`
 - `.claude/skills/verify-all/SKILL.md`
 - `.claude/skills/frontend-validate/SKILL.md`
 - `.claude/skills/backend-validate/SKILL.md`

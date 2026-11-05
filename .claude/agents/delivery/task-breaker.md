@@ -56,7 +56,11 @@ declaradas como excecao (ainda entregam algo verificavel: dado real, permissao t
 Para CADA fatia, preencher o **contrato da fatia** (ver tasks-template):
 - **Valor entregavel** (o que passa a funcionar, verificavel na mao)
 - **Camadas** tocadas (checklist DB/Domain/UseCase/Endpoint/FE/E2E)
-- **Depende de** (outras fatias — grafo sem ciclo)
+- **Depende de** (outras fatias — grafo sem ciclo; o driver so abre a fatia com todas DONE)
+- **Modelo · esforco** proposto, com uma linha de motivo, pela tabela do tasks-template
+  (`sonnet · medium` preparo/seed/i18n/doc; `sonnet · high` CRUD que copia o Modulo de Referencia;
+  `opus · high` regra de negocio, dinheiro, contrato, integracao, concorrencia, seguranca). Na
+  duvida entre dois degraus, o de cima. E proposta: o usuario aprova no portao final do `/tasks`
 - **Inicio (pre-estado)**
 - **Criterio de PRONTO (file-level)** — mudancas concretas por arquivo/simbolo, citando
   os **Fatos Confirmados** e o **Modulo de Referencia** do plan
@@ -69,12 +73,26 @@ Para CADA fatia, preencher o **contrato da fatia** (ver tasks-template):
 > Test-first: para cada sub-task de logica/regra com mudanca de comportamento, incluir a
 > task de teste ANTES da producao. Cada criterio de aceite mapeia a ≥1 teste nomeado.
 
+**Regras de prova dos cenarios** — o cenario tem que poder falhar quando a regra quebra:
+- **Ausencia vem com o controle.** Cenario de "nao acontece" (nao notifica, nao aparece, nao
+  gera) sai em par com o cenario vizinho em que o efeito acontece, **para o mesmo destinatario**,
+  no mesmo teste ou lado a lado. Sem o controle, o "nao aconteceu" passa com o sistema quebrado.
+- **Efeito assincrono, esperado no destino.** Notificacao, mensagem, processamento em fila: o
+  esperado diz o que **quem recebe** ve, nao so que o registro foi gravado. Quando o fluxo tem
+  etapa intermediaria (fila, outbox, job), o cenario confere origem, etapa e entrega.
+- **Esperado e o que a acao produziu.** Acao que gera ou muda algo (documento, registro, estado)
+  tem o esperado no resultado aberto, nao no rotulo, selo ou mensagem de sucesso.
+- **Matriz de variacao.** Cada configuracao e cada perfil que muda o caminho da regra (flag
+  ligada × desligada, papel A × papel B) tem ao menos um cenario. Variacao que fica de fora e
+  decisao escrita na fatia, com o motivo.
+
 ### Passo 2.5 — Checker da decomposicao
 
 Rodar na propria lista (vira o portao pre-execucao):
 - Toda fatia e **vertical** (nao "uma camada inteira")? (fundacao = excecao declarada)
 - Toda fatia e **entregavel e verificavel manualmente** (tem passo manual)?
 - Todo criterio de aceite mapeia a **≥1 teste nomeado**?
+- Todo cenario de ausencia tem o **controle positivo** e toda variacao que muda o caminho tem cenario (regras de prova)?
 - Dependencias formam **grafo sem ciclo**?
 - Cada fatia cabe em **uma iteracao** (se inchar, dividir em `U_n.a`/`U_n.b`)?
 
@@ -145,11 +163,13 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 {checklist DoD uniforme — copiar do template}
 
 ## Gates (conforme camadas tocadas)
-{tabela de gates com os comandos reais do stack}
+| Camada | Caminhos | Comandos |   ← comandos reais do stack, entre crases; Caminhos = globs reais
+(da Project Structure do plan) para o slice-gates.mjs rodar so a camada tocada; `—` no e2e que
+depende do app de pe e na Conformidade
 
 ## Backlog de Fatias (U0…Un)
 ### U«n» — {título} (= US X.Y)
-- Valor entregável / Camadas / Depende de / Início / Critério de PRONTO (file-level)
+- Valor entregável / Camadas / Depende de / Modelo · esforço / Início / Critério de PRONTO (file-level)
 - Verificação MANUAL (1-3 passos) / Fora de escopo / ADRs + Ref(arquivo:linha)
 - Sub-tasks: [ ] [T00N] [P] {desc} — {arquivo}
 - BDD: [B]/[F]/[E2E] → testes nomeados
@@ -160,7 +180,8 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 ## Estado durável (Loop Log)   ← fonte única (T1): sem STATUS.md concorrente
 | Fatia | Status | Data | Commit/PR | Notas |  (TODO/WIP/DONE/BLOCKED/ABANDONADA)
 ### Log de iterações
-| Data | Fatia | Resultado | Gates | Commits | Custo aprox. |
+| Data | Fatia | Resultado | Gates | Commits |
+(a tabela "Custo por sessão (driver)" e criada pelo loop-driver na primeira corrida — nao gerar)
 
 ## Cobertura (US → fatia)
 ## Tasks Delegadas (se team scope != full)
@@ -172,7 +193,7 @@ Gerar `docs/specs/{feature}/tasks.md` **seguindo o `docs/templates/tasks-templat
 
 1. **A unidade e a FATIA VERTICAL** (= User Story) — sub-tasks horizontais vivem dentro dela
 2. **IDs sequenciais** de sub-task — nunca pular numeros
-3. **Toda fatia tem contrato completo** — valor + critério PRONTO file-level + verificacao manual (1-3 passos) + ref arquivo:linha
+3. **Toda fatia tem contrato completo** — valor + critério PRONTO file-level + verificacao manual (1-3 passos) + ref arquivo:linha + modelo · esforco proposto. E o que a sessao da fatia le (pelo recorte): o que nao esta na fatia, no DoD, nos Gates, nas regras e decisoes da spec ou nos Fatos do plan, ela nao sabe
 4. **Todo criterio de aceite mapeia a ≥1 teste nomeado** (`[B]`/`[F]`/`[E2E]`)
 5. **Grafo de dependencia sem ciclo** — fatia paralelizavel marcada; sub-task `[P]` nao depende de outra da mesma fatia
 6. **TDD**: para sub-task de logica, incluir "Escrever teste" ANTES da implementacao

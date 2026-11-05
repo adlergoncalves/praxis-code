@@ -63,7 +63,7 @@ O kit é só texto (prompts em Markdown) mais alguns scripts Node — **sem depe
 | **Módulo de marca** (taste-skill v2, opcional) | Só se você aceitar no `/setup` | Instalado de um commit fixado; seus scripts pedem Node 22+ e Chrome e consultam a rede para buscar imagens em acervos abertos. |
 | **Mutantes** (`.claude/scripts/mutants.mjs`) | Quando o `/execute` precisa provar um teste que nasceu verde | Aplica cada mutante descrito num JSON, roda o comando de teste e **devolve o arquivo byte a byte** ao original em qualquer caso (inclusive Ctrl+C). |
 | **Gate 0** (`.claude/scripts/loop-doctor.mjs`) | No início de toda corrida do `/execute` e no portão final do `/tasks` | Confere pacote aprovado, branch, se os `arquivo:linha` dos Fatos Confirmados ainda existem e as checagens de ambiente da feature (`docs/specs/<feature>/doctor.json`: porta, URL local, conteúdo de arquivo, comando do projeto). |
-| **Loop driver** (`.claude/scripts/loop-driver.mjs`) | Só quando **você** roda | Abre um `claude -p` por fatia do `tasks.md`, com o modo de permissão que você escolher, e grava o JSON de cada sessão numa pasta temporária fora do projeto. |
+| **Loop driver** (`.claude/scripts/loop-driver.mjs`) | Quando o `/execute` solta a corrida (ou você roda) | Abre um `claude -p` por fatia do `tasks.md` e outro para o verificador, com o modo de permissão que você escolher; roda os gates da tabela Gates (`slice-gates.mjs`); escreve no `tasks.md` só o status das fatias e a tabela de custo; grava o JSON de cada sessão numa pasta temporária fora do projeto. |
 | **Instalações** | Só em `/ds-init` e `/ds-component` | `npx shadcn@latest ...` para instalar componentes — pedido de permissão normal do Claude Code. |
 
 Para desligar todos os hooks: `.claude/settings.local.json` com `{ "disableAllHooks": true }`. Para desligar só os de qualidade, remova o bloco deles do mesmo arquivo.
@@ -198,7 +198,7 @@ Esses são os números do **catálogo**. Um projeto recebe só o que usa: o `/se
 | `/implement` | 5 | Orquestra Plan → Tasks → Execute (suporta `--team`) |
 | `/plan` | 5a | Planejamento técnico |
 | `/tasks` | 5b | Quebra em **fatias verticais** (U0…Un = User Stories) com contrato + DoD + BDD |
-| `/execute` | 5c | Executa o pacote aprovado **em loop autônomo por fatia** (micro-loop até verde, verificador independente; `--checkpoint`, `--driver`) |
+| `/execute` | 5c | Executa o pacote aprovado **em loop autônomo por fatia**: uma sessão nova por fatia, gates por exit code, verificador em outra sessão (`--checkpoint`, `--interativo`) |
 | `/validate` | 6 | Valida conformidade — perfis: minimal/standard/full (suporta `--team`) |
 | `/revalidate` | 7 | Revalidação cirúrgica dos itens pendentes |
 | `/verify-all` | 6 | Confronta o Loop Log com os gates reais (exit codes) — veredito verde/vermelho |
@@ -249,7 +249,7 @@ Esses são os números do **catálogo**. Um projeto recebe só o que usa: o `/se
   agents/<domínio>/  — 45 subagents em 8 domínios
   skills/<nome>/     — 41 skills
   hooks/             — hooks de aprendizado (em settings.json) e, em quality/, hooks de qualidade opt-in
-  scripts/           — gates e utilitários (build-gate, loop-doctor, loop-driver, deps-audit, mutants, learnings, clichês, screenshot)
+  scripts/           — gates e utilitários (build-gate, loop-doctor, loop-driver, loop-briefing, slice-gates, deps-audit, mutants, learnings, clichês, screenshot)
   reference/         — conhecimento canônico (design, adapters de stack)
 
 seed/                — a semente que o projeto instala (gerada por scripts/build-seed.mjs)

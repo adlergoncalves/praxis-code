@@ -46,9 +46,11 @@ Executa agents de checagem frontend.
 
 Todos os agents sao **read-only e independentes** — nenhum depende do resultado de outro. Por isso podem rodar em paralelo com seguranca.
 
-1. Lancar todos os 11 agents simultaneamente via `Agent()` com `run_in_background: true`
+1. Lancar os 11 agents **na mesma mensagem** (varias chamadas `Agent()` numa resposta rodam em paralelo), cada um com o escopo recebido — a lista de arquivos, quando vier uma (o verificador do loop passa os arquivos da fatia)
 2. Aguardar todos completarem
 3. Consolidar resultados em relatorio unico
+
+Nao usar `run_in_background`: em sessao nao interativa (`claude -p`, o verificador do loop) o resultado de tarefa em segundo plano se perde quando o turno acaba.
 
 **Vantagens**: ~3x mais rapido, ~60% menos tokens no contexto principal.
 

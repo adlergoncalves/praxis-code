@@ -46,12 +46,14 @@ verticais** (U0…Un = User Stories), cada uma com contrato (valor, PRONTO file-
 verificacao manual, refs) + DoD + mapa BDD. Inclui tasks delegadas se team scope.
 
 ### 5c — Execucao em Loop (`/execute`)
-Skill `/execute`, **na sessao principal** (ADR-0007). Roda **em loop por fatia vertical**:
-uma fatia por iteracao → implementa test-first → gates → conserta ate verde → verificadores
-independentes → DONE no Loop Log → proxima fatia, **autonomo** apos o pacote aprovado no
-portao final do `/tasks`; so para no realmente bloqueante (`--checkpoint` para a cada fatia;
-`--driver` roda uma fatia por sessao nova). Detecta dependencias cross-team. Passa pelo
-**Regra 0 do `/execute`** (Gate 0 `loop-doctor.mjs`) antes da 1ª fatia; o Preflight ja vem respondido do portao final do `/tasks`.
+Skill `/execute` (ADR-0007): a sessao principal confere a **Regra 0** (Gate 0 `loop-doctor.mjs`,
+Preflight, branch, ambiente) e solta o `loop-driver.mjs`, que roda **em loop por fatia
+vertical**: uma **sessao nova por fatia**, com o recorte dela e o modelo aprovado → test-first →
+gates por exit code → **verificador em outra sessao** → DONE no Loop Log → proxima fatia,
+**autonomo** apos o pacote aprovado no portao final do `/tasks`; so para no realmente
+bloqueante. A sessao principal trata as paradas e faz o fechamento (`--checkpoint` para a cada
+fatia; `--interativo` roda a fatia aqui, quando ela precisa do usuario no meio). Detecta
+dependencias cross-team.
 
 ## Team Scope — Como funciona
 

@@ -285,12 +285,14 @@ exceção declarada. (Loop Engineering, ADR-0007.)
 /execute docs/specs/001-feature/
 ```
 
-O agent executa **em loop por fatia**: implementa uma fatia → roda os gates → **conserta até
-verde** (micro-loop) → verificador independente → marca **DONE no Loop Log** → segue para a
-próxima fatia, sem pedir ok entre elas: a conversa aconteceu antes, no portão final do `/tasks`.
-Só para no realmente bloqueante (`--checkpoint` se você quiser revisar fatia a fatia). Quando encontra
-divergências entre o planejado e o possível, atualiza a spec com "Implementation Notes" —
-mantendo rastreabilidade mesmo quando a realidade muda o plano.
+O `/execute` confere o ambiente e solta o **driver**, que roda **em loop por fatia**: cada fatia
+numa **sessão nova**, que lê só o recorte dela → implementa → roda os gates → **conserta até
+verde** → um **verificador em outra sessão** confere → **DONE no Loop Log** → próxima fatia, sem
+pedir ok entre elas: a conversa aconteceu antes, no portão final do `/tasks`. Só para no
+realmente bloqueante, e a parada chega a você nesta sessão (`--checkpoint` se você quiser revisar
+fatia a fatia). Quando encontra divergências entre o planejado e o possível, atualiza a spec com
+"Implementation Notes" — mantendo rastreabilidade mesmo quando a realidade muda o plano. O custo
+de cada sessão fica anotado no `tasks.md`.
 
 ```
 /clear

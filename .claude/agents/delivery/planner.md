@@ -168,7 +168,7 @@ Salvar separadamente em `docs/specs/{feature}/contracts/`
 
 Enumerar como **pré-condição** (não surpresa de fatia) toda persona/auth/fixture/seed/
 scope que os testes de aceite e2e exigem:
-- **Personas / auth-setups** (storageState): quem, capacidade, setup existe ou criar.
+- **Personas / auth-setups** (storageState): quem, capacidade, **onde esta a permissao** (espelhando a persona do ambiente real: mesmo papel, permissao no mesmo nivel), setup existe ou criar; quem deve (ou nao deve) ser afetado por um cenario existe, esta ativo e tem acesso.
 - **Fixtures determinísticas** + **seeds idempotentes** (reaproveita por chave única; evita 409/cascata).
 - **Scopes OIDC/API** + **projeto de teste** (espelhar o existente).
 - **Sequenciamento**: o que provisionar em qual fatia e o que cada item bloqueia.

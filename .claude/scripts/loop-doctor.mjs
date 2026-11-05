@@ -28,6 +28,7 @@ import { readFileSync, existsSync, readdirSync } from 'node:fs';
 import { join, isAbsolute } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { connect } from 'node:net';
+import { gates } from './lib/loop-artifacts.mjs';
 
 const ROOT = process.cwd();
 const args = process.argv.slice(2);
@@ -129,13 +130,9 @@ async function main() {
     else add('Fatos Confirmados', velhos.length ? 'FALHOU' : 'OK', velhos.length ? `${velhos.length}/${refs.length} referencias velhas: ${velhos.join('; ')} — re-pinar no plan antes de rodar` : `${refs.length} referencias conferidas`);
   }
 
-  // 4. ferramentas dos gates
-  const gateRows = (section(tasks, /^##\s+Gates/i) || []).filter((l) => l.trim().startsWith('|') && !/^\|\s*-/.test(l.trim()) && !/Camada/i.test(l));
+  // 4. ferramentas dos gates (so a coluna Comandos: a coluna Caminhos traz globs, nao comandos)
   const tools = new Set();
-  for (const row of gateRows) for (const m of row.matchAll(/`([^`]+)`/g)) {
-    const first = m[1].trim().split(/\s+/)[0];
-    if (first && !first.startsWith('/') && !first.startsWith('{')) tools.add(first);
-  }
+  for (const g of gates(tasks)) for (const cmd of g.comandos) tools.add(cmd.split(/\s+/)[0]);
   const ausentes = [...tools].filter((t) => !onPath(t));
   if (!tools.size) add('Ferramentas dos gates', 'AVISO', 'tabela Gates sem comando literal entre crases');
   else add('Ferramentas dos gates', ausentes.length ? 'AVISO' : 'OK', ausentes.length ? `fora do PATH: ${ausentes.join(', ')}` : [...tools].join(', '));

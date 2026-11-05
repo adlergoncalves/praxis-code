@@ -93,9 +93,15 @@ Ver [contracts/](./contracts/)
 
 ### Personas / auth-setups
 
-| Persona | Capacidade | Setup (existe? criar?) | storageState |
-|---|---|---|---|
-| {...} | {gerenciar/leitura} | {auth-xxx.setup — existe?} | {e2e/.auth/user-xxx.json} |
+| Persona | Capacidade | Onde está a permissão | Setup (existe? criar?) | storageState |
+|---|---|---|---|---|
+| {...} | {gerenciar/leitura} | {ex.: na organização · só no projeto/recurso} | {auth-xxx.setup — existe?} | {e2e/.auth/user-xxx.json} |
+
+- **A persona de teste espelha a do ambiente real:** mesmo papel, com a permissão concedida no
+  mesmo nível (organização × recurso). Persona com a permissão em outro lugar dá falha que não
+  existe ou passe que não vale. Se divergir, corrige-se a persona, nunca o esperado.
+- **Destinatário capaz de receber:** quem deve (ou não deve) ser afetado por um cenário existe,
+  está ativo e tem acesso ao que o cenário toca — senão o cenário de ausência passa sem provar nada.
 
 ### Fixtures / Seeds
 

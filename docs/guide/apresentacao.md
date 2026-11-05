@@ -164,9 +164,11 @@ O usuário revisa as fatias e aprova antes de avançar.
 
 ### 5c — Execução em loop (`/execute`)
 
-Roda **em loop por fatia**: implementa uma fatia → roda os gates → **conserta até verde**
-(micro-loop) → verificador independente → marca **DONE no Loop Log** → segue para a próxima
-fatia. Roda autônomo depois que você aprova o pacote no portão final do `/tasks` (guia de
+Roda **em loop por fatia**, e cada fatia numa **sessão nova** que lê só o que ela usa: implementa
+→ roda os gates → **conserta até verde** (micro-loop) → um **verificador em outra sessão**, sem o
+histórico de quem implementou, confere → marca **DONE no Loop Log** → segue para a próxima fatia.
+O gerente do loop é um script, então o custo de uma fatia não cresce com as que vieram antes.
+Roda autônomo depois que você aprova o pacote no portão final do `/tasks` (guia de
 validação + métricas de prontidão) e só para no realmente bloqueante. Quando encontra
 divergências, atualiza a spec com "Implementation Notes" — mantendo rastreabilidade mesmo
 quando a realidade muda o plano.

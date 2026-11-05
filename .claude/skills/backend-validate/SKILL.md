@@ -36,9 +36,11 @@ Executa agents de checagem backend.
 
 Todos os agents sao **read-only e independentes**. Podem rodar em paralelo.
 
-1. Lancar todos os 6 agents simultaneamente via `Agent()` com `run_in_background: true`
+1. Lancar os 6 agents **na mesma mensagem** (varias chamadas `Agent()` numa resposta rodam em paralelo), cada um com o escopo recebido — a lista de arquivos, quando vier uma (o verificador do loop passa os arquivos da fatia)
 2. Aguardar todos completarem
 3. Consolidar resultados em relatorio unico
+
+Nao usar `run_in_background`: em sessao nao interativa (`claude -p`, o verificador do loop) o resultado de tarefa em segundo plano se perde quando o turno acaba.
 
 ## Modo Sequencial
 

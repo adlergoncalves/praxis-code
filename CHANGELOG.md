@@ -6,6 +6,29 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o 
 
 ## [Unreleased]
 
+## [0.2.0] — 2026-11-05
+
+### Loop Engineering — uma sessão por fatia é o caminho padrão (ADR-0007, revisão)
+- **`/execute` não implementa mais na sessão principal.** Ela confere a Regra 0, solta o `loop-driver.mjs` em segundo plano, trata as paradas com o usuário pelo código de saída e faz o fechamento. Com o loop numa sessão só, cada chamada relia tudo o que veio antes; agora cada fatia nasce numa sessão vazia.
+- **`loop-driver.mjs` reescrito como gerente do loop:** Gate 0 a cada iteração, próxima fatia liberada pelo grafo (`Depende de`), sessão da fatia no modelo aprovado, gates por exit code, verificador em outra sessão, uma segunda tentativa um degrau de modelo acima quando reprovada, continuação automática quando a sessão cai com trabalho feito, grupo multi-agente numa sessão só, `BLOCKED` que não para a rodada. Códigos de saída por motivo de parada (0 acabou · 3 decisão humana · 4 fora do contrato · 5 só BLOCKED · 6 reprovada duas vezes · 7 `--max`).
+- **Sessão da fatia enxuta:** protocolo próprio (`slice-session.md`) em vez da skill inteira, recorte do pacote (`loop-briefing.mjs`) em vez de spec, plan e tasks inteiros, leitura de PRD e guia de validação bloqueada por regra de permissão.
+- **Verificador em sessão separada** (`verifier-session.md`): sem o histórico de quem implementou e sem edição nem commit; critério a critério com evidência, check agents da camada, revisão visual, caça a teste afrouxado. Pode reprovar só parte de um grupo.
+- **`slice-gates.mjs`:** roda a tabela Gates do `tasks.md` só nas camadas tocadas e decide pelo exit code; comando fora do PATH sai como falha de infraestrutura, não como defeito da fatia.
+- **`tasks.md`:** linha **Modelo · esforço** por fatia (proposta pelo `@task-breaker`, aprovada no portão final do `/tasks`), coluna **Caminhos** na tabela Gates e tabela **"Custo por sessão (driver)"** (modelo, custo, pico de contexto, turnos, resultado de cada sessão). O custo sai do Log de iterações. Campos opcionais: `tasks.md` anterior a eles continua rodando.
+- `--interativo` roda a fatia na sessão principal quando ela precisa do usuário no meio; `--checkpoint` passa a ser o driver com uma fatia por rodada; `--driver` deixa de existir como flag do `/execute`.
+
+### Regras de prova — teste que não tem como falhar não prova a regra
+- **Ausência com controle positivo:** cenário de "não acontece" sai em par com o caso vizinho em que acontece, para o mesmo destinatário. Sem o controle, o verificador reprova.
+- **Efeito assíncrono provado no destino**, não pelo registro gravado; **esperado no que a ação produziu**, não no rótulo ou na mensagem de sucesso; **matriz de variação** por configuração e perfil que mudam o caminho.
+- Revisão visual: a tela inteira, não só o componente da fatia; **sintoma funcional é achado, não sugestão**; defeito anterior à fatia vai para o relatório sem reprovar.
+- Cenário que o ambiente local não fecha (provedor real, worker, rotina agendada) sai NÃO VERIFICADO com onde fecha, nunca como passou.
+- Infra de Verificação: a persona de teste espelha a do ambiente real (papel e nível da permissão) e o destinatário do cenário tem como receber.
+- Onde: `@task-breaker` e template de `tasks` (geração e checker da decomposição), sessão da fatia, verificador, `@planner` e template de `plan`.
+
+### Correções
+- `/frontend-validate` e `/backend-validate` despachavam os check agents em segundo plano: numa sessão não interativa o resultado se perdia. Agora vão na mesma mensagem, em paralelo, e aceitam a lista de arquivos como escopo.
+- Gate 0: a checagem de ferramentas dos gates lê só a coluna Comandos.
+
 ## [0.1.1] — 2026-10-29
 
 ### Semente e distribuição

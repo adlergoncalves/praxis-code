@@ -419,19 +419,21 @@ ferramenta. Você lê o guia e dá o de-acordo; é o único portão humano entre
 
 ### 5c — Execução em loop (`/execute`)
 
-**Skill**: `/execute {spec} [--max N] [--checkpoint] [--driver]` — roda **na sessão principal**, não num subagente
+**Skill**: `/execute {spec} [--team t] [--from U{N}] [--max N] [--checkpoint] [--interativo]`
 
-- Exige o **pacote aprovado** no portão final do `/tasks` (Preflight já respondido)
-- **Loop autônomo por fatia**: implementa uma fatia → roda os gates → **conserta até verde** (micro-loop) → **verificador independente** (check agents sobre os arquivos da fatia — quem implementa não é quem confere) → commit/push conforme o Preflight → **próxima fatia**, sem pedir ok
-- Test-first quando aplicável: o **RED aparece** antes da produção; **nunca marca DONE com gate vermelho**
-- Marca a fatia **DONE no Loop Log** e registra a iteração no **Log de iterações** (o tasks.md é a fonte única — sem STATUS.md concorrente)
-- **Só para no realmente bloqueante**: nenhuma fatia liberada, watchdog (3ª tentativa sem progresso: abandonar · BLOCKED · tentar mais N), decisão de negócio não fechada que bloqueia, ação destrutiva ou fora do escopo. Fatia `BLOCKED` não para a corrida
+- Exige o **pacote aprovado** no portão final do `/tasks` (Preflight e modelo de cada fatia já respondidos)
+- **A sessão principal não implementa fatias.** Ela confere a Regra 0 (Gate 0, branch, ambiente, permissões) e solta o `loop-driver.mjs` em segundo plano. Com o loop numa sessão só, cada chamada relê tudo o que veio antes; aqui cada fatia começa do zero
+- **Por fatia, uma sessão nova** (`claude -p`), no **modelo · esforço** aprovado, que lê só o **recorte** do pacote (a fatia, DoD, Gates, Preflight, Loop Log, regras e decisões da spec, Fatos do plan): implementa test-first (o **RED aparece**), **conserta até verde**, commita/push conforme o Preflight e marca a fatia **DONE**
+- **Gates por exit code** (`slice-gates.mjs`): os comandos da tabela Gates, só das camadas que a fatia tocou (coluna Caminhos). Gate vermelho reprova sem gastar o verificador
+- **Verificador em outra sessão**, sem o histórico de quem implementou e sem poder editar: critério a critério com evidência, check agents da camada, revisão visual, caça a teste afrouxado. Reprovada, a fatia volta para `WIP` e repete **uma vez** um degrau de modelo acima; reprovada de novo, o loop para
+- O driver anota no `tasks.md` o **custo, o pico de contexto e o resultado de cada sessão** (tabela "Custo por sessão (driver)")
+- **Só para no realmente bloqueante**: nenhuma fatia liberada, watchdog (3ª tentativa sem progresso: abandonar · BLOCKED · tentar mais N), decisão de negócio não fechada que bloqueia, ação destrutiva ou fora do escopo, reprovação dupla. Fatia `BLOCKED` não para a corrida. A parada chega a você pela sessão principal, que registra a resposta e solta o driver de novo
 - Divergência com default claro no escopo aprovado → aplica, registra em "Implementation Notes" e segue
-- `--checkpoint` para a cada fatia (opt-in); `--max N` limita a corrida
+- `--checkpoint` roda uma fatia por vez e espera "próxima"; `--interativo` roda a fatia na sessão principal, quando ela precisa de você no meio (protótipo, decisão de UI)
 
-**Uma fatia por sessão nova** (opcional): `node .claude/scripts/loop-driver.mjs --feature {feature}` abre um
-`claude -p` por fatia, com contexto vazio, e para em fatia sem progresso, em pedido de decisão sua ou no
-`--max`. O Preflight precisa estar respondido (portão final do `/tasks`); `--max 1` é o ensaio.
+**Primeira corrida no projeto:** o ensaio (`--max 1`) mostra se alguma permissão foi negada — a sessão do
+driver não tem quem aprove. **Corrida longa:** o mesmo comando roda num terminal
+(`node .claude/scripts/loop-driver.mjs --feature {feature}`); em segundo plano, ele morre se o editor fechar.
 
 ### Usando /implement como orquestrador
 
@@ -719,7 +721,7 @@ Todas as interações com o pipeline são feitas via skills (invocados com `/`).
 | `/implement` | 5 | Orquestra Plan + Tasks + Execute |
 | `/plan` | 5a | Planejamento técnico (gera plan.md) |
 | `/tasks` | 5b | Quebra plan em fatias verticais (U0…Un = User Stories) com contrato + DoD + BDD |
-| `/execute` | 5c | Executa o pacote aprovado em loop autônomo por fatia (micro-loop até verde, verificador independente; `--checkpoint`, `--driver`) |
+| `/execute` | 5c | Executa o pacote aprovado em loop autônomo por fatia: uma sessão nova por fatia, gates por exit code, verificador em outra sessão (`--checkpoint`, `--interativo`) |
 | `/validate` | 6 | Validação de conformidade |
 | `/revalidate` | 7 | Revalidação cirúrgica |
 
