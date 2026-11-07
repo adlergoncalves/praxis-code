@@ -281,7 +281,7 @@ A fonte de verdade é o projeto:
 - Regras e restrições → `constitution.md` + ADRs
 - Decisões tomadas → specs + planos
 - O que está aberto → relatórios de validação
-- Learnings → `docs/project/learnings/{dominio}-learnings.md`
+- Regras ativas → `.claude/rules/learned/{dominio}-{slug}.md`; evidência → `docs/project/learnings/{dominio}-learnings.md` (ADR-0010)
 
 Isso significa que Praxis funciona **igual em qualquer sessão**, com ou sem histórico de conversa. Reiniciar o Claude Code não perde contexto — porque o contexto está nos artefatos, não no chat.
 

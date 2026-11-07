@@ -41,7 +41,7 @@ Os hooks tornam a captura de aprendizado **redundante e independente do `/compac
 
 | Script | Eventos | Papel |
 |---|---|---|
-| `reconcile.mjs` | `SessionStart`, `UserPromptSubmit` | **Uso**: injeta estado reconciliado + correções/pendências como contexto de fundo; faz o nag de "trabalho não registrado" |
+| `reconcile.mjs` | `SessionStart`, `UserPromptSubmit` | **Uso**: injeta o estado da última sessão, a atividade recente e a **cobrança da memória** (`memory-check.mjs`: regra quebrada, fonte morta, vencida, correção sem regra — ADR-0010); faz o nag de "trabalho não registrado". Não injeta regras: elas vivem em `.claude/rules/learned/` e o Claude Code as carrega por `paths` |
 | `capture.mjs` | `Stop`, `SubagentStop`, `PreCompact`, `SessionEnd` | **Captura**: grava a linha `(auto)` por turno no `ledger-auto.md` (local, gitignored) + reescreve o snapshot `state.md`. O `ledger.md` versionado fica só com as linhas semânticas `(llm)` |
 | `quality/quality-on-edit.mjs` (**opt-in**) | `PostToolUse` Write/Edit | Roda os comandos de `.claude/quality.json` no arquivo editado (formatar, lintar, teste colocado); falha volta ao Claude como `block` |
 | `quality/critical-paths-gate.mjs` (**opt-in**) | `PreToolUse` Write/Edit | Edição em caminho crítico (ADR, pipeline, config do kit) pede confirmação — sem humano (driver, `claude -p`), a edição não acontece |
@@ -50,7 +50,8 @@ Os hooks tornam a captura de aprendizado **redundante e independente do `/compac
 - **Hooks de qualidade são opt-in**: executam comandos do projeto, então não vêm ligados — o `/setup` pergunta e grava no `settings.local.json` de quem aceitou (`.claude/hooks/quality/hooks.quality.json` é a fonte do bloco). Os de aprendizado seguem ligados por padrão e não executam comandos.
 - **A instrução é a fonte primária** (CLAUDE.md / agents gravam o conteúdo semântico no instante); os hooks são **redes**. Hooks rodam shell determinístico — não invocam o LLM.
 - Os hooks já vêm registrados em `.claude/settings.json` (bloco `hooks`). `.claude/hooks/hooks.manifest.json` é a fonte canônica desse bloco — ao alterar um, alterar o outro (o CI verifica).
-- Detalhe do ciclo de captura/uso e do gate: `docs/project/learnings/README.md`.
+- **Memória do projeto** (ADR-0010): regra ativa em `.claude/rules/learned/<dominio>-<slug>.md` (carregada pelo Claude Code por `paths`, na sessão principal, nos subagentes e nas sessões do driver), evidência em `docs/project/learnings/`, cobrança determinística em `.claude/scripts/memory-check.mjs`. A pasta de regras é do projeto; o catálogo não a toca.
+- Detalhe do ciclo de captura/uso e do gate: `docs/project/learnings/README.md`; a decisão: `docs/adr/0010-memoria-do-projeto.md`.
 
 ## Módulos de stack — núcleo agnóstico + adapter
 

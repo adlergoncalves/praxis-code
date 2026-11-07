@@ -444,6 +444,7 @@
         ".claude/skills/execute",
         ".claude/scripts/build-gate.mjs",
         ".claude/scripts/frontend/check-learnings.mjs",
+        ".claude/scripts/memory-check.mjs",
         ".claude/scripts/deps-audit.mjs"
       ]
     }
@@ -727,7 +728,10 @@
       "domain": "orchestration",
       "path": ".claude/agents/orchestration/praxis.md",
       "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
-      "depends": []
+      "depends": [
+        "docs/templates/rule-template.md",
+        ".claude/scripts/memory-check.mjs"
+      ]
     },
     {
       "name": "clarifier",

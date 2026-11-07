@@ -81,8 +81,8 @@ function changedFilesThisTurn(input, root) {
     let obj; try { obj = JSON.parse(line); } catch { continue; }
     collectPaths(obj, paths, root);
   }
-  // ignora os proprios arquivos de memoria (evita auto-ruido)
-  return [...paths].filter((p) => !/learnings\/(ledger|.*-learnings)|project\/state\.md/.test(p));
+  // ignora os proprios arquivos de memoria (evita auto-ruido): learnings, ledger, state e regras ativas
+  return [...paths].filter((p) => !/learnings\/(ledger|.*-learnings)|project\/state\.md|^\.claude\/rules\//.test(p));
 }
 
 function snapshot(root, event, files) {

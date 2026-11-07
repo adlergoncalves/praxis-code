@@ -40,7 +40,7 @@ $ARGUMENTS → Caminho ou "geral"
 - `React.FC` com `children` → no React 18+ usar `PropsWithChildren` ou declarar `children` explicitamente
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre React, state management, performance, Suspense, Server Components. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar correcoes ja identificadas no projeto.
+Ler ADRs em `docs/adr/` sobre React, state management, performance, Suspense, Server Components. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

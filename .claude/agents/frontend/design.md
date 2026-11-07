@@ -50,7 +50,7 @@ Sempre (independente do modo):
 2. `docs/design-system/stack-profile.json` — adapter da stack (se existe).
 3. `.claude/reference/frontend/adapter-{stack}.md` — convencoes especificas (se identificado).
 4. `docs/project/motion.md` — motion grammar do projeto (se existe).
-5. `docs/project/learnings/frontend-learnings.md` — patterns ja decididos (evita drift).
+5. Regras ativas de frontend (`.claude/rules/learned/frontend-*.md`, ADR-0010) — carregam ao abrir os arquivos (evita drift); `docs/project/learnings/frontend-learnings.md` so como evidencia citada.
 
 Per-modo (carregados sob demanda na execucao do modo):
 - Cada modo lista seus reference files na tabela abaixo.
@@ -80,7 +80,7 @@ Per-modo (carregados sob demanda na execucao do modo):
 
 ### Padrao geral (todos os modos)
 
-1. **Carregar contexto automatico** (Charter, stack-profile, adapter, motion, learnings).
+1. **Carregar contexto automatico** (Charter, stack-profile, adapter, motion, regras ativas).
 2. **Carregar reference files do modo** (tabela acima).
 3. **Identificar escopo**:
    - Argumento explicito → usar.
@@ -89,7 +89,7 @@ Per-modo (carregados sob demanda na execucao do modo):
 5. **Aplicar o modo** (especifico abaixo). Modos que tocam codigo geram lista de edits ANTES de aplicar.
 6. **Apresentar diff proposto + tabela "edit → razao"** + pedir aprovacao (em modo cirurgico, nao em lote).
 7. **Aplicar edits aprovados** via Edit.
-8. **Gravar learnings** se a sessao revelou pattern (recorrencia, decisao do usuario): append `frontend-learnings.md` + ledger. **Decisao visual** aprovada (token, padrao de componente usado 2+ vezes, profundidade, densidade) → memoria de design (`docs/design-system/system.md`); proposta recusada → secao "Recusas" com o motivo.
+8. **Gravar aprendizado** se a sessao revelou pattern (recorrencia, decisao do usuario): evidencia em `frontend-learnings.md` + ledger; **correcao do usuario** → regra ativa em `.claude/rules/learned/frontend-<slug>.md` (molde `docs/templates/rule-template.md`, ADR-0010). **Decisao visual** aprovada (token, padrao de componente usado 2+ vezes, profundidade, densidade) → memoria de design (`docs/design-system/system.md`); proposta recusada → secao "Recusas" com o motivo.
 9. **Sugerir handoffs**: `/ds-component` se gap no DS; `@check-visual-consistency` se mexeu em multiplas features; `/ux charter` se descobriu Charter incompleto.
 
 ### `polish` — passe geral

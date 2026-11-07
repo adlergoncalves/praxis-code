@@ -119,6 +119,8 @@ export const CORE = [
   '.claude/hooks/_lib.mjs',
   '.claude/hooks/reconcile.mjs',
   '.claude/hooks/capture.mjs',
+  '.claude/scripts/memory-check.mjs',   // cobranca da memoria (ADR-0010); o reconcile o importa
+  'docs/templates/rule-template.md',    // molde da regra ativa (.claude/rules/learned/)
   '.claude/hooks/hooks.manifest.json',
   'docs/project/learnings/README.md',
 ];

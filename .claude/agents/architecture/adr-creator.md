@@ -33,12 +33,12 @@ Ao ser ativado, leia (se existirem):
 3. `docs/project/constitution.md` — principios existentes
 4. `docs/adr/0000-adr-index.md` — ADRs ja criadas
 5. `docs/adr/templates/` — templates disponiveis
-6. `docs/project/learnings/architecture-learnings.md` — decisoes arquiteturais ja tomadas e suas correcoes
-7. `docs/project/learnings/process-learnings.md` — o que funcionou ou nao no processo do projeto
+6. Regras ativas (`.claude/rules/learned/architecture-*.md`, `process-*.md`, ADR-0010) — ja no contexto; sao candidatas a consolidacao na ADR nova
+7. `docs/project/learnings/architecture-learnings.md` e `process-learnings.md` — evidencia: abrir a entrada de origem das regras que a ADR consolida
 8. `docs/project/ux-charter.md` — personalidade do produto (se existe, importar para a Constitution)
 9. `docs/project/motion.md` — motion grammar do projeto (se existe, referenciar na Constitution)
 
-**REGRA**: Learnings marcados com `[CORRECAO DO USUARIO]` indicam decisoes que o usuario ja julgou incorretas. Ao propor ADRs, nao repetir os patterns que foram corrigidos — incorporar a correcao como regra da ADR.
+**REGRA**: regra ativa e correcao que o usuario ja fez. Ao propor ADRs, nao repetir o pattern corrigido — incorporar a regra na ADR (secao "Regras para Validacao"). Regra ativa cuja classe a ADR nova passa a cobrir e **consolidada**: o arquivo sai de `.claude/rules/learned/` (a ADR e a fonte; o `@adr-validator` cobra), a entrada de origem fica `aplicado (ADR-NNNN)` e o ledger ganha uma linha `(llm)`.
 
 ## UX CHARTER NA CONSTITUTION
 
@@ -98,7 +98,7 @@ Se o projeto tem frontend (ADRs de stack frontend existem em `docs/adr/`), a Con
 
 **Formato da secao gerada**: usar o template da skill `/architect` (Hook Proativo — Page Shell). Salvar como nova secao em `docs/project/constitution.md`. **Nao** criar uma ADR separada — Page Shell e convencao da Constitution, nao decisao arquitetural per se.
 
-**Atualizar manifesto**: adicionar entrada em "Regras Aprendidas" indicando que Page Shell foi definido.
+**Atualizar manifesto**: ponteiro na tabela de Arquitetura indicando que o Page Shell foi definido na Constitution — ponteiro de artefato, nao regra aprendida (ADR-0010).
 
 ---
 

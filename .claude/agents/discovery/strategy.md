@@ -42,7 +42,7 @@ Ao ser ativado, carregar silenciosamente (sem listar para o usuario):
 1. `docs/project/discovery.md` — o que ja sabemos do projeto
 2. `docs/prds/` — PRDs existentes (listar titulos)
 3. `docs/project/manifest.md` — fase atual do pipeline
-4. `docs/project/learnings/business-learnings.md` — aprendizados anteriores
+4. Memoria: regras ativas de negocio (`.claude/rules/learned/business-*.md`, ADR-0010); `docs/project/learnings/business-learnings.md` e evidencia — abrir ao explorar o dominio
 5. `docs/project/glossary.md` — termos do dominio
 
 Se nenhum artefato existe: assumir projeto em fase inicial de ideacao.

@@ -25,7 +25,7 @@ $ARGUMENTS → Caminho da spec ou nome da feature
 
 Ao ser ativado, carregar:
 1. A spec indicada
-2. `docs/project/learnings/` — learnings relevantes ao dominio da spec (frontend, backend, business)
+2. Regras ativas do dominio da spec (`.claude/rules/learned/`, ADR-0010) — as de negocio carregam ao abrir `docs/specs/`; `docs/project/learnings/` e evidencia, abrir so a entrada que uma regra citar
 3. `docs/adr/` — ADRs que se aplicam ao escopo da spec
 4. `docs/project/constitution.md` — principios do projeto
 
@@ -84,11 +84,11 @@ Verificar:
 
 ---
 
-### Bloco 5 — Learnings Aplicaveis (INFORMATIVO)
+### Bloco 5 — Regras Aplicaveis (INFORMATIVO)
 
-Verificar `docs/project/learnings/` por entradas relevantes ao dominio da spec:
-- Se houver learnings que impactam esta feature, citar com acao sugerida
-- Ex: "Learning de backend-learnings.md: validacao de CPF deve ser feita no dominio, nao na API"
+Listar as regras ativas (`.claude/rules/learned/`) cujo dominio/`paths` tocam o escopo da spec:
+- Se alguma impacta esta feature, citar o arquivo da regra e a acao sugerida
+- Ex: "Regra `backend-validacao-no-dominio`: validacao de CPF deve ser feita no dominio, nao na API — a spec a contraria em RN-3"
 
 ---
 

@@ -31,7 +31,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Inputs e botoes devem ser grandes o suficiente para toque
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre responsividade, breakpoints, mobile strategy. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar patterns responsivos ja definidos no projeto.
+Ler ADRs em `docs/adr/` sobre responsividade, breakpoints, mobile strategy. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

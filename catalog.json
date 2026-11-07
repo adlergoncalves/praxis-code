@@ -1,5 +1,5 @@
 {
-  "version": "0.2.0",
+  "version": "0.3.0",
   "repo": "https://github.com/adlergoncalves/praxis-code.git",
   "seed": [
     ".claude/settings.json",
@@ -18,6 +18,8 @@
     ".claude/hooks/_lib.mjs",
     ".claude/hooks/reconcile.mjs",
     ".claude/hooks/capture.mjs",
+    ".claude/scripts/memory-check.mjs",
+    "docs/templates/rule-template.md",
     ".claude/hooks/hooks.manifest.json",
     "docs/project/learnings/README.md"
   ],
@@ -181,7 +183,7 @@
       "domain": "architecture",
       "description": "Agente interativo e opinativo que cria ADRs seguindo boas praticas de mercado. Questiona decisoes incomuns do usuario e pede justificativa. Usa templates pre-definidos como ponto de partida.",
       "files": {
-        ".claude/agents/architecture/adr-creator.md": "a98e395b8e00fd1652819349506e4956bd48b0aa91bec06537d51e32fd899b9f"
+        ".claude/agents/architecture/adr-creator.md": "a326dd192d0fdf840fe64c0ca8c9d2bf87671c078bbdc42d90224071664d02ac"
       },
       "depends": [
         "docs/adr/templates"
@@ -193,7 +195,7 @@
       "domain": "architecture",
       "description": "Agente dinamico que le TODAS as ADRs do projeto e valida codigo contra as regras definidas nelas. Funciona com qualquer ADR — nao tem regras hardcoded.",
       "files": {
-        ".claude/agents/architecture/adr-validator.md": "4096bf6771ae0cdccead7c84dd609a2f16537e006a05271fc2756128c428bae6"
+        ".claude/agents/architecture/adr-validator.md": "c9c947412fabcef46ccbec13b828e197c73c1bff063a174374d7f9e959383b27"
       },
       "depends": []
     },
@@ -243,7 +245,7 @@
       "domain": "backend",
       "description": "Valida convencoes de nomes em qualquer linguagem OO — classes, metodos, variaveis, sufixos. Detecta nomes genericos, abreviacoes, inconsistencias e violacoes de linguagem ubiqua do dominio.",
       "files": {
-        ".claude/agents/backend/check-naming.md": "b5a825762727eb4b89a085a8da8f7b7bafe6b553a26a77ea250f6c97e8c14f20"
+        ".claude/agents/backend/check-naming.md": "83b115da4fb8252455fc181a9a4cdc95b942f7c41a71e74fde0b53121edcc5a2"
       },
       "depends": []
     },
@@ -265,7 +267,7 @@
       "domain": "backend",
       "description": "Valida patterns de teste — AAA, naming, cobertura, mocks, isolamento de testes de integracao. Detecta testes sem assertions, nomes ruins, mocks excessivos e ausencia de testes em caminhos criticos.",
       "files": {
-        ".claude/agents/backend/check-tests.md": "927b3a896f44b6d0c559950e8a193d9c50216bc4e3b9ccdb704ee6e30e4a3aec"
+        ".claude/agents/backend/check-tests.md": "e696c8bbfb616f21af27584a5c013de11c9aabd3c2e4b9833039bd33cd083a65"
       },
       "depends": [
         ".claude/scripts/mutants.mjs"
@@ -343,7 +345,7 @@
       "domain": "discovery",
       "description": "Estrategista de Negocio Senior que pensa junto com o usuario para avaliar ideias, discutir features, priorizar, questionar premissas e garantir que o produto tem potencial real antes de entrar no pipeline tecnico. Conversacional, opinativo e orientado a resultados de negocio.",
       "files": {
-        ".claude/agents/discovery/strategy.md": "6e77aa0a4efd6aa3863e1338d682d88a1bd398eb75f91af0ab1fbc48a8eac3c3"
+        ".claude/agents/discovery/strategy.md": "11501ea3bc7efdc5f53447f6e112fbb6aaf6a0cb694d05e872ac8bf868d66509"
       },
       "depends": []
     },
@@ -366,7 +368,7 @@
       "domain": "frontend",
       "description": "Valida Design System compliance — tokens de tema, componentes consistentes, sem reimplementacao de componentes existentes, spacing e tipografia via tokens.",
       "files": {
-        ".claude/agents/frontend/check-design.md": "f44da6ec6b0e245be91319a53208247c988c9a27b707efeeb387b36ba69c7e6d"
+        ".claude/agents/frontend/check-design.md": "2d9b050c3a3dd8ccd1487e04de89f021455032d3a37129a9cc619c46bb0d7b31"
       },
       "depends": []
     },
@@ -376,7 +378,7 @@
       "domain": "frontend",
       "description": "Valida patterns de formularios — validacao, masks, UX, acessibilidade de form. Detecta useState por campo, onChange prematuro, falta de schema validation e double submit.",
       "files": {
-        ".claude/agents/frontend/check-forms.md": "9ddbcd49f240a6b8008a70359e69689193972a2a5b67cbd275c4c0cf9f7cd325"
+        ".claude/agents/frontend/check-forms.md": "2ee38651bce86b700035bc116aef7bf512358d25bc4b45763887c08b35a173a6"
       },
       "depends": []
     },
@@ -386,7 +388,7 @@
       "domain": "frontend",
       "description": "Valida internacionalizacao — detecta strings user-facing hardcoded, verifica namespaces por feature, lazy loading de traducoes e consistencia de chaves.",
       "files": {
-        ".claude/agents/frontend/check-i18n.md": "84df19209a1f91fb15bad122379c18ff898f042c18398809e129946cab6ef7cd"
+        ".claude/agents/frontend/check-i18n.md": "c6073aafeffd1bf2ff7f0244357cf89a5a1d8df4a6103d8724ab5abcd8d1a9d2"
       },
       "depends": []
     },
@@ -396,7 +398,7 @@
       "domain": "frontend",
       "description": "Valida patterns React — hooks, composicao, estado, performance, key props. Detecta anti-patterns comuns, re-renders desnecessarios e oportunidades de evolucao arquitetural.",
       "files": {
-        ".claude/agents/frontend/check-react.md": "b0f7c4a59d036ba26e4eb04973a12fe4480e1aabf7efd8c2ad5feb8a35e0e825"
+        ".claude/agents/frontend/check-react.md": "f5ad7df9366f0fdce8d604a3a3e2049723849d4f35338c09b72d8591892d4d1a"
       },
       "depends": []
     },
@@ -406,7 +408,7 @@
       "domain": "frontend",
       "description": "Valida responsividade — mobile-first, breakpoints via utility classes, ausencia de @media inline e widths fixos. Detecta abordagens desktop-first e oportunidades de melhoria de layout responsivo.",
       "files": {
-        ".claude/agents/frontend/check-responsiveness.md": "b4f556547354afcc52d97c21dd1366a1790b763ca3c2fb65c664dbd926d285c5"
+        ".claude/agents/frontend/check-responsiveness.md": "09ec41e92ecb9fc3b1f29a24b923d2eb32b6642247918c21b84a457ddbf1d4b4"
       },
       "depends": []
     },
@@ -416,7 +418,7 @@
       "domain": "frontend",
       "description": "Valida patterns de rotas — URLs semanticas, navegacao via router, lazy loading, CRUD pattern e protecao de rotas autenticadas.",
       "files": {
-        ".claude/agents/frontend/check-routing.md": "9aa00112e073db68f98d4243bfff42ec7badc789076497822b7199f5b0c8d32a"
+        ".claude/agents/frontend/check-routing.md": "c049b0167fb8fb81c9a023e0c8288efb75c5014d3004825bbac4ff40dd12382a"
       },
       "depends": []
     },
@@ -426,7 +428,7 @@
       "domain": "frontend",
       "description": "Valida seguranca frontend — XSS (dangerouslySetInnerHTML, innerHTML), armazenamento inseguro de token/credencial, secrets expostos no bundle, open redirect, dados sensiveis no client e tabnabbing. Detecta vulnerabilidades client-side e oportunidades de evolucao.",
       "files": {
-        ".claude/agents/frontend/check-security-frontend.md": "bac2087d5bddf99329782d4f3428c4c72a576aac8f30034bdc7f60aeeabb4440"
+        ".claude/agents/frontend/check-security-frontend.md": "e1f8a3c3a6c986ace10f2022e416aec8196643a03655712078c4a0bd31d3acb5"
       },
       "depends": []
     },
@@ -436,7 +438,7 @@
       "domain": "frontend",
       "description": "Valida estrutura de pastas frontend, imports, barrels e coesao de modulos. Verifica feature-first, imports cruzados, uso de shared/ e oportunidades de modularizacao.",
       "files": {
-        ".claude/agents/frontend/check-structure.md": "96f59c1d146ad357ce8e7f4333152627f5450c860431cabd3da9220a15baa8d2"
+        ".claude/agents/frontend/check-structure.md": "6227aad638963a7b9f74e7b788b174ed518d570d0e42d07c3a019af3b96b3247"
       },
       "depends": []
     },
@@ -446,7 +448,7 @@
       "domain": "frontend",
       "description": "Valida configuracao TypeScript strict, uso de tipos, generics e type safety. Detecta any, ts-ignore, tipos implicitos e oportunidades de melhorar type safety.",
       "files": {
-        ".claude/agents/frontend/check-typescript.md": "8da20a56ef895b15191261db7cbfae445daaaabd4430f42d019e35b3f533e0af"
+        ".claude/agents/frontend/check-typescript.md": "f35c7759964fc611aa628742a50592b845456f28937fa273a24c938aa486e74b"
       },
       "depends": []
     },
@@ -456,7 +458,7 @@
       "domain": "frontend",
       "description": "Valida patterns UX — loading states, feedback visual, empty states, error handling, acessibilidade basica e consistencia de interacao.",
       "files": {
-        ".claude/agents/frontend/check-ux.md": "ae8636258b087f3f2e188df1cf72b83504b75c88338bfd13eeaa31fe3f0c9217"
+        ".claude/agents/frontend/check-ux.md": "a7fceb80a38058feaed7232f6ba231e2efb4a27c426fe8acb281e7766df3810c"
       },
       "depends": []
     },
@@ -466,7 +468,7 @@
       "domain": "frontend",
       "description": "Valida consistencia visual entre features/surfaces do projeto contra Charter + Design System + reference files. Detecta drift visual (\"tela A != tela B\"), uso divergente de componentes/variants/motion/densidade. Comparativo, nao absoluto.",
       "files": {
-        ".claude/agents/frontend/check-visual-consistency.md": "d365baa0b2da3a5bf16395f50ca96735a7b396310ac42686d4c69990aa4d7517"
+        ".claude/agents/frontend/check-visual-consistency.md": "c7fe5c3eb64a10fdc738e9d601ba275a28f928fad26cea8183cece9199c097c6"
       },
       "depends": [
         ".claude/reference/frontend/design-system-anatomy.md",
@@ -479,7 +481,7 @@
       "domain": "frontend",
       "description": "Valida UI contra as Web Interface Guidelines (Vercel) — acessibilidade, foco, formularios, animacao, tipografia, conteudo, imagens, performance, navegacao e estado na URL, toque, layout, tema, locale, hidratacao e copy. Regras de um snapshot fixado no kit, filtradas pela stack e pelo idioma do projeto. Saida terse em arquivo:linha.",
       "files": {
-        ".claude/agents/frontend/check-web-guidelines.md": "19c9883d22d7ac7ea4d2ba596eaf4fb48d36256de8a5cd403b630aa266e21729"
+        ".claude/agents/frontend/check-web-guidelines.md": "765d8a37c69fa5f9d9a069aae3ee25e571d4750adadb5482d307cff3be160f08"
       },
       "depends": [
         ".claude/reference/frontend/anti-patterns.md",
@@ -492,7 +494,7 @@
       "domain": "frontend",
       "description": "Craftsman de design — opera sobre codigo ja gerado para refinar (polish/critique/deslop/distill/animate/colorize/typeset/layout/bolder/quieter/delight/harden). Ancora-se no Charter e na memoria de design do projeto + reference files + adapter da stack. Diferente do @ux (estrategia, 70%), o @design e execucao de refino (30%).",
       "files": {
-        ".claude/agents/frontend/design.md": "9794dfa88fa4b2e22d137b1a982c0add54664abcd9b9cbd6c18d545870b37914"
+        ".claude/agents/frontend/design.md": "40ec8244d9646791d0228522dfc7bf7482c214b3431278edfcb5cdd252c82b52"
       },
       "depends": [
         ".claude/scripts/frontend/screenshot.mjs"
@@ -538,7 +540,7 @@
       "domain": "frontend",
       "description": "Especialista Senior em Experiencia do Usuario que pensa junto com o dev para garantir que interfaces sao claras, funcionais, bonitas e intuitivas. Tambem propoe direcao criativa, motion grammar e personalidade do produto. Conversacional, opinativo e sincero.",
       "files": {
-        ".claude/agents/frontend/ux.md": "8af3fb819577dd4679cd1092ab42fc1014181a84bac5cb99abe4ee45141abe04"
+        ".claude/agents/frontend/ux.md": "90ea621cdaff326db8ace12641a2824b5720e18d1814023d9fac79d8ce9efeca"
       },
       "depends": [
         ".claude/reference/frontend/design-system-anatomy.md",
@@ -556,9 +558,12 @@
       "domain": "orchestration",
       "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
       "files": {
-        ".claude/agents/orchestration/praxis.md": "04db69ccf2321e37c30a3b04b883616f511b4889a401af0f82cb4a988cdab66c"
+        ".claude/agents/orchestration/praxis.md": "a42fc629dfb09d1b9fcd465d169a963a73b52a74fa17be05fb457697343f5aa1"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/memory-check.mjs",
+        "docs/templates/rule-template.md"
+      ]
     },
     ".claude/agents/product/clarifier.md": {
       "kind": "agent",
@@ -578,7 +583,7 @@
       "domain": "product",
       "description": "Conduz o detalhamento de um modulo pre-SDD. Scaffolda workspace canonico, preenche as 8 dimensoes interativamente, rastreia decisoes/duvidas com IDs estaveis e congela o workspace para alimentar /prd-decompose.",
       "files": {
-        ".claude/agents/product/module-detailer.md": "9b71d0deb74ca960f413a91fa033e776da80c86b043ccb994bd10593ffda061d"
+        ".claude/agents/product/module-detailer.md": "76ac313e9dbf8cbf016b1ff52be174d782419f4aeae8f758a819596ddf52b40c"
       },
       "depends": [
         "docs/adr/0006-workspace-detalhamento-modulo.md",
@@ -591,7 +596,7 @@
       "domain": "product",
       "description": "Cria PRD estrategico ou tatico seguindo o template canonico. Atua como Especialista Senior em Product Management — questiona premissas vagas, nao aceita \"a definir\" e prioriza clareza. Redige o PRD com as respostas que o /prd-create coletou na sessao principal; lacuna volta como pergunta.",
       "files": {
-        ".claude/agents/product/prd-create.md": "adc382d5b2e90a0fbae2530d451b9bd13919370fdb9ab137d603e6be1473ac27"
+        ".claude/agents/product/prd-create.md": "ea29ade0f69a70a5bab6e10b9a6fb0a4f5e7f3d40cb18e0efa9bc02050f44d81"
       },
       "depends": []
     },
@@ -621,7 +626,7 @@
       "domain": "product",
       "description": "Transforma uma feature do PRD em spec tecnica detalhada, numerada e rastreavel. Le PRD, TODAS as ADRs, glossario e specs existentes. Trabalho gerativo pesado, roda isolado.",
       "files": {
-        ".claude/agents/product/spec-from-prd.md": "a74fd4090ff5179338d4b673072bad37ac947ac1f9a1d86a841aab4909e10dcb"
+        ".claude/agents/product/spec-from-prd.md": "783fed75009a6846c41173e41d24d96478856a17624a0d66519e68b7cb9a5fa2"
       },
       "depends": [
         ".claude/skills/spec-from-prd",
@@ -664,7 +669,7 @@
       "domain": "quality",
       "description": "Valida se uma spec tecnica esta pronta para implementacao. Verifica campos obrigatorios, criterios de aceite concretos, edge cases, entidades definidas e ausencia de ambiguidades bloqueantes. Read-only — reporta gaps mas nao corrige.",
       "files": {
-        ".claude/agents/quality/spec-review.md": "aedb8c19efa9b4fc9b687e427815041404a20ce795b2ed5d2a0e71e00c498ddf"
+        ".claude/agents/quality/spec-review.md": "b9c7d1f3e7c8f4925a2a59c1b105336c28b24db47352a31b2dc461c8eae79a31"
       },
       "depends": []
     },
@@ -1372,14 +1377,14 @@
     ".claude/hooks/_lib.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/hooks/_lib.mjs": "6b6619e8a72b9f00e34fb3bad6d03308134e423b245eaa65bd1687114b4fd200"
+        ".claude/hooks/_lib.mjs": "5fde59d8b8d95f699927b529f6d39f26b12e96522e4150c6429569930549ab38"
       },
       "depends": []
     },
     ".claude/hooks/capture.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/hooks/capture.mjs": "de119d98139c05eded9cc52269bd3a7a2615fc97ecaf6647db32c5703e9a2125"
+        ".claude/hooks/capture.mjs": "6ca0b9d7bd417b4d500e4ee5060d15448471ae83d64f64a77461976702a42ee2"
       },
       "depends": [
         ".claude/hooks/_lib.mjs"
@@ -1437,7 +1442,7 @@
     ".claude/hooks/reconcile.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/hooks/reconcile.mjs": "c6323f434804f55d9a196b6033bc93c7478f475e3a35e71b0f19e1608c4d0b28"
+        ".claude/hooks/reconcile.mjs": "ac097a8d58f2698b525ec44893a74192400c07d55fb83cdb33c066152a0a5345"
       },
       "depends": [
         ".claude/hooks/_lib.mjs"
@@ -1446,19 +1451,21 @@
     ".claude/praxis/praxis.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/praxis.mjs": "797557465141d593fd68c3ba9eda05ac1fbda406f12c49d7c96d20371c9bcad6"
+        ".claude/praxis/praxis.mjs": "064876306c005ec5b71a48816ca2f107544933ea90d03d0ad721fd026ceff22d"
       },
       "depends": []
     },
     ".claude/praxis/rules.md": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/rules.md": "737b7e2100c1196ad529c7b3d315fd3520ed31e121e652925501ef8751e6312b"
+        ".claude/praxis/rules.md": "ee0dba3fa5264b77af4734f2b1f2d4132011551ccfaeb2af647097cf60422ed8"
       },
       "depends": [
         ".claude/agents/orchestration/praxis.md",
         ".claude/praxis/praxis.mjs",
-        "docs/adr/0007-loop-engineering-execucao.md"
+        ".claude/scripts/memory-check.mjs",
+        "docs/adr/0007-loop-engineering-execucao.md",
+        "docs/templates/rule-template.md"
       ]
     },
     ".claude/reference/frontend/adapter-angular-material.md": {
@@ -1773,6 +1780,13 @@
         ".claude/scripts/slice-gates.mjs"
       ]
     },
+    ".claude/scripts/memory-check.mjs": {
+      "kind": "asset",
+      "files": {
+        ".claude/scripts/memory-check.mjs": "6c790efbd667b47cf2e4e457dfda61bcbcff895a1dc1f34407b5ff58e90b0d17"
+      },
+      "depends": []
+    },
     ".claude/scripts/mutants.mjs": {
       "kind": "asset",
       "files": {
@@ -1932,7 +1946,7 @@
       "domain": null,
       "description": "Fase 3: Definicao — Orquestra workflow de PRD (discovery → create → validate → decompose → spec)",
       "files": {
-        ".claude/skills/define/SKILL.md": "7674c85b2e33969fef70ab2ad9dd18ac94f7afae3c4676a52474c25ab53a73f2"
+        ".claude/skills/define/SKILL.md": "66d7eae0d1fe9064328d117f1028be8d92f70eb088dcc23f92bd41889b7215b9"
       },
       "depends": [
         ".claude/skills/prd-create",
@@ -2025,10 +2039,10 @@
       "domain": null,
       "description": "Sub-fase 5c: Executa o pacote aprovado em loop por fatia vertical (1 fatia = 1 User Story). Padrao: o loop-driver abre uma sessao nova por fatia (so o recorte dela), roda os gates por exit code e um verificador em outra sessao; a sessao principal trata as paradas e faz o fechamento. --checkpoint para a cada fatia; --interativo roda a fatia na sessao principal. Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/execute/SKILL.md": "d12381eb54c4f6c609ee94f31c46d7869e360a7abb6d45ee0c13b6275de47189",
+        ".claude/skills/execute/SKILL.md": "573cf4afe3c0edfaf7eaf72de21f225a29b426bdac078da8fe4b01824fd42579",
         ".claude/skills/execute/checklists.md": "265e9784e15e0d1b81c79c994f510cade4b18396099a7bbf852057897492b5c1",
-        ".claude/skills/execute/slice-session.md": "6575d5dd4ccfd936610663c47f9c1e86107a69500f3ca3184e002541dab4a64c",
-        ".claude/skills/execute/verifier-session.md": "fe97956c4d96935ecedca00edf48a8531391f653c3e238780e0fe617ec001c4d"
+        ".claude/skills/execute/slice-session.md": "e1bc3c0f8b2e7aaa05d9dc60e8c43cf46c0015624109c1452c34df1d404727d1",
+        ".claude/skills/execute/verifier-session.md": "f39cfa6ae76fc44b67dff07cf5092066fd326a09c50bcb744e4acb53d34ae449"
       },
       "depends": [
         ".claude/agents/architecture/adr-validator.md",
@@ -2056,7 +2070,7 @@
       "domain": "orchestration",
       "description": "Cria uma ferramenta DO PROJETO (skill, agent de checagem ou subagente de trabalho) nas convencoes do kit, a partir do que o projeto precisa. Use quando uma regra se repete, um fluxo do projeto vira rotina, ou o Praxis propoe transformar um learning recorrente em check — 'cria um check para X', 'quero um comando para Y', 'isso devia ser automatico'.",
       "files": {
-        ".claude/skills/forge/SKILL.md": "c388ba3b90f3b013cc56a1faa2b3d80000da607c334562a5b6944b949484fd0e"
+        ".claude/skills/forge/SKILL.md": "b028055a208d7851f9dc47386ff346a41a95dd11103def9d2e0210d56bfc9112"
       },
       "depends": [
         ".claude/evals/agents/README.md"
@@ -2131,7 +2145,7 @@
       "domain": null,
       "description": "Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta.",
       "files": {
-        ".claude/skills/praxis/SKILL.md": "1c46417d984248def034b0b65be54ca2bcb1b9fac447b3749e52b272a776fb07"
+        ".claude/skills/praxis/SKILL.md": "8156f581de5f93b8078742a14b62daa7bef376764e19a32095b0641eef42c535"
       },
       "depends": [
         ".claude/agents/orchestration/praxis.md"
@@ -2153,7 +2167,7 @@
       "domain": null,
       "description": "Cria PRD estrategico ou tatico seguindo template canonico. Questiona informacoes incompletas.",
       "files": {
-        ".claude/skills/prd-create/SKILL.md": "7e1e5d3e86d7e2853741c444585babb191076b50486aa674d3342902f74ecb75"
+        ".claude/skills/prd-create/SKILL.md": "82510b4b9e647474398dc31ad1da120b037004dce1ee99366c86d18f563ba63d"
       },
       "depends": [
         ".claude/agents/product/prd-create.md"
@@ -2260,7 +2274,7 @@
       "domain": null,
       "description": "Transforma feature do PRD em spec tecnica detalhada para o dev. Le PRD, ADRs e specs existentes.",
       "files": {
-        ".claude/skills/spec-from-prd/SKILL.md": "a325277f89013edbd2e6bf46fe68d4dfa270a3cfcff8a97d5df071c1e91a7244"
+        ".claude/skills/spec-from-prd/SKILL.md": "520551a1e96056d937737ba8555680c30b65983756312608ca84ed085a9ca5bc"
       },
       "depends": []
     },
@@ -2270,7 +2284,7 @@
       "domain": null,
       "description": "Valida se uma spec tecnica esta pronta para implementacao — criterios de aceite, edge cases, alinhamento com ADRs e learnings aplicaveis. Gate leve antes do /implement.",
       "files": {
-        ".claude/skills/spec-review/SKILL.md": "5cd953ace9a8602a8eb1abaf4b71d3d35a7200a8507c71b023b3c4036226e605"
+        ".claude/skills/spec-review/SKILL.md": "0ef33d9ec16c851684472b73889226bd61c1eb2806ca0b43036bf6f1ad1cd89c"
       },
       "depends": [
         ".claude/agents/quality/spec-review.md",
@@ -2295,7 +2309,7 @@
       "domain": null,
       "description": "Estrategia de Negocio — Avalia ideias, prioriza features, discute modelos de negocio e questiona premissas antes de entrar no pipeline tecnico.",
       "files": {
-        ".claude/skills/strategy/SKILL.md": "cf997f0f8053854931b8a9d722a359415a3f9386ce23b4d60c0d04942dfb0b99"
+        ".claude/skills/strategy/SKILL.md": "972ad0d36047ecf5665e49734e0dfc892b7a195b4cb20c33eb5ef753cac1840f"
       },
       "depends": [
         ".claude/agents/discovery/strategy.md"
@@ -2323,7 +2337,7 @@
       "domain": null,
       "description": "Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real.",
       "files": {
-        ".claude/skills/ux/SKILL.md": "a87335f6115ce8982cfb2c91ea540b085fe2c83c9bb4b473f647b828bdd552c8"
+        ".claude/skills/ux/SKILL.md": "4b204df1337bcd3188a9a77b3d0ad834794e76b21e956d1ffe285161e662978a"
       },
       "depends": [
         ".claude/agents/frontend/ux.md",
@@ -2347,7 +2361,7 @@
       "domain": null,
       "description": "Fase 6: Validacao — Orquestrador principal. Despacha agents core + frontend + backend conforme stack do projeto.",
       "files": {
-        ".claude/skills/validate/SKILL.md": "6f80ec9ad6932b1b111f395605d7537e4c710bd00fd53f93f4c7fa673253c3a7"
+        ".claude/skills/validate/SKILL.md": "eb4098f1e132b89ecc9c6ce81c145a5543bb179d29f4e3c5ffd34134f8a717b5"
       },
       "depends": [
         ".claude/agents/architecture/adr-validator.md",
@@ -2362,12 +2376,13 @@
       "domain": null,
       "description": "Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007).",
       "files": {
-        ".claude/skills/verify-all/SKILL.md": "26acd699526cdeae5940ff3003b81becb51df38b2e1aa1a579de43045f2053c0"
+        ".claude/skills/verify-all/SKILL.md": "03981399fb7165f077ba750ee20ca113b3c1440dcd962d541adb0c778ba59775"
       },
       "depends": [
         ".claude/scripts/build-gate.mjs",
         ".claude/scripts/deps-audit.mjs",
         ".claude/scripts/frontend/check-learnings.mjs",
+        ".claude/scripts/memory-check.mjs",
         ".claude/skills/execute"
       ]
     },
@@ -2424,6 +2439,17 @@
         ".claude/praxis/rules.md",
         ".claude/settings.json",
         "docs/project/learnings/README.md"
+      ]
+    },
+    "docs/adr/0010-memoria-do-projeto.md": {
+      "kind": "asset",
+      "files": {
+        "docs/adr/0010-memoria-do-projeto.md": "09eda07cc0902c041b2034a7f816147800e0976846becfee02c14469d6290ef8"
+      },
+      "depends": [
+        ".claude/scripts/memory-check.mjs",
+        "docs/project/learnings/README.md",
+        "docs/templates/rule-template.md"
       ]
     },
     "docs/adr/templates": {
@@ -2543,9 +2569,12 @@
     "docs/project/learnings/README.md": {
       "kind": "asset",
       "files": {
-        "docs/project/learnings/README.md": "6039780b2b4760beaa49c5f5e7287abfacd437827817b92075b0281b71a54255"
+        "docs/project/learnings/README.md": "ab4e52a7177d62d6821d342ca1b8a33a1d1507b02f8c3d5feb41899928a5537c"
       },
-      "depends": []
+      "depends": [
+        ".claude/scripts/memory-check.mjs",
+        "docs/templates/rule-template.md"
+      ]
     },
     "docs/templates/checklist-template.md": {
       "kind": "asset",
@@ -2665,6 +2694,13 @@
       "kind": "asset",
       "files": {
         "docs/templates/plan-template.md": "316481b676e359c4fe45739b4a6ca704d5ff389ef6ac88fcc1e278808feeed44"
+      },
+      "depends": []
+    },
+    "docs/templates/rule-template.md": {
+      "kind": "asset",
+      "files": {
+        "docs/templates/rule-template.md": "eee55fb0d045b7bd5589dd6baf0c2c905afda6044bc28d7782d838a7cab2853c"
       },
       "depends": []
     },

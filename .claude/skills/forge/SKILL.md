@@ -22,14 +22,16 @@ Roda **nesta sessao**: entender o que o projeto precisa e conversa, e o resultad
 /forge                         # sem descricao: perguntar o que se repete
 ```
 
-Chamada pelo Praxis no LOOP DE MELHORIA (2a ocorrencia de uma correcao) com a regra derivada ja escrita.
+Chamada pelo Praxis no LOOP DE MELHORIA (regressao de uma regra ativa) com o arquivo da regra
+(`.claude/rules/learned/<dominio>-<slug>.md`, ADR-0010).
 
 ## Execucao
 
 ### 1. Entender e decidir o tipo
 
-Ler, antes de propor: `docs/project/manifest.md`, as ADRs do projeto e os learnings do dominio
-(a regra pode ja estar escrita la — nesse caso a ferramenta **cita** a fonte, nao copia).
+Ler, antes de propor: `docs/project/manifest.md`, as ADRs do projeto e a **regra ativa** que motivou
+o pedido (`.claude/rules/learned/`) — a ferramenta **cita** a regra e a ADR, nao copia. A evidencia
+(`docs/project/learnings/`) so se a regra citar (`origem`).
 
 | O projeto precisa de... | Tipo | Onde nasce |
 |---|---|---|
@@ -75,8 +77,8 @@ sessao". Se despacha agent: o agent no `depends`.
 ### 4. Mostrar e gravar
 
 Mostrar o arquivo (e a fixture, se check) antes de gravar. Aprovado: gravar, e registrar:
-- `docs/project/manifest.md` → secao de ferramentas do projeto: nome, tipo, data, de onde veio (learning/ADR);
-- learning de origem → `Check: {nome}` e status `aplicado`;
+- `docs/project/manifest.md` → secao de ferramentas do projeto: nome, tipo, data, de onde veio (regra/ADR);
+- regra ativa de origem → `check: {nome}` no frontmatter e `medido_em` de hoje; a entrada de evidencia (`origem`) ganha `Check: {nome}`;
 - uma linha `(llm)` no `ledger.md`: `<ts> | decisao | domain:<d> | "ferramenta do projeto {nome} criada" | (llm)`.
 
 Check novo entra no verificador independente do `/execute` quando os arquivos da fatia caem no

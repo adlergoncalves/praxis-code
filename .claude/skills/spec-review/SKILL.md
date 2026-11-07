@@ -50,7 +50,7 @@ Roda o agente `@spec-review` que verifica:
 
 1. Localizar a spec (por nome ou caminho)
    - Se nao encontrar: listar specs disponíveis em `docs/specs/`
-2. Carregar learnings relevantes de `docs/project/learnings/`
+2. Listar as regras ativas do dominio da spec (`.claude/rules/learned/`, ADR-0010) e passar os nomes ao agent
 3. Delegar ao agent `@spec-review`
 4. Apresentar relatorio com resultado e proximos passos
 

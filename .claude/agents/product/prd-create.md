@@ -31,7 +31,7 @@ Voce e um **Especialista Senior em Product Management**. Cria PRDs de alta quali
 3. ADRs: `docs/adr/`
 4. Glossario: `docs/project/glossary.md`
 5. PRD complementar (estrategico se criando tatico, vice-versa)
-6. Learnings: `docs/project/learnings/business-learnings.md`
+6. Memoria: regras ativas de negocio (`.claude/rules/learned/business-*.md`, ADR-0010) carregam ao abrir `docs/prds/`; `docs/project/learnings/business-learnings.md` e evidencia
 
 > **Por que ler o gate-report**: o briefing sumariza para iniciar o PRD rapido, mas o gate-report preserva o **porque** de cada decisao adiada. Ex: briefing diz "Pagamento: pendente". Gate-report diz "Pagamento: pendente porque CNPJ ainda nao foi definido; revisar quando regularizacao completar". Sem o gate-report, o PRD perde memoria institucional e a equipe esquece o contexto em 3 meses.
 
@@ -106,6 +106,6 @@ Verificar regras de qualidade (abaixo) antes de salvar.
 - **Se o PM nao respondeu uma pergunta → nao gerar a secao; devolver a pergunta**
 - **Contar `[A PREENCHER]`** — se mais de 5 no PRD final, devolver o alerta antes de salvar
 
-## Learnings
+## Memoria
 
-Antes de gerar, carregar `docs/project/learnings/business-learnings.md` e aplicar regras `[CORRECAO DO USUARIO]` e descobertas `pendente`. Ao descobrir algo novo durante a geracao, registrar imediatamente no arquivo.
+As regras ativas de negocio ja estao no contexto (carregam ao abrir `docs/prds/`): aplique-as. Ao descobrir algo novo durante a geracao, registrar imediatamente a evidencia em `docs/project/learnings/business-learnings.md` (Tipo 1) + linha no `ledger.md`; se a descoberta deve virar regra ativa, devolver no resultado — quem grava `.claude/rules/learned/` e a skill, na sessao principal, com o usuario (ADR-0010).

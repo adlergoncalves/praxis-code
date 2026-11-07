@@ -53,6 +53,7 @@
 | Codebase Map | `docs/project/codebase-map.md` | — |
 | Constitution | `docs/project/constitution.md` | — |
 | Glossario | `docs/project/glossary.md` | — |
+| Regras ativas (ADR-0010) | `.claude/rules/learned/` | — |
 | Learnings Frontend | `docs/project/learnings/frontend-learnings.md` | — |
 | Learnings Backend | `docs/project/learnings/backend-learnings.md` | — |
 | Learnings Business | `docs/project/learnings/business-learnings.md` | — |
@@ -120,9 +121,6 @@
 
 ## Regras Aprendidas
 
-> Regras que surgiram durante o uso do kit neste projeto.
-> Formato: uma linha por regra, com referencia ao learning que a originou.
-
-| Regra | Origem | Data |
-|-------|--------|------|
-| — | — | — |
+> As regras do projeto vivem em `.claude/rules/learned/` — uma por arquivo, carregada pelo Claude Code ao tocar os
+> arquivos do `paths` dela — e a evidencia em `docs/project/learnings/` (ADR-0010). Este manifesto nao as copia:
+> `node .claude/scripts/memory-check.mjs` lista e cobra.

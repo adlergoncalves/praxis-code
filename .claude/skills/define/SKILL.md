@@ -68,7 +68,7 @@ Ler e cruzar:
 - `docs/project/constitution.md`
 - **Todas as ADRs** em `docs/adr/`
 - `docs/project/manifest.md`
-- `docs/project/learnings/architecture-learnings.md`
+- regras ativas de arquitetura (`.claude/rules/learned/architecture-*.md`, ADR-0010); `docs/project/learnings/architecture-learnings.md` so como evidencia
 - PRDs ja existentes (para evitar duplicacao)
 
 Verificar **7 dimensoes**:

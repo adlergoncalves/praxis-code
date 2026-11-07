@@ -15,7 +15,7 @@
 
 - **Manifesto** (`docs/project/manifest.md`): fonte unica de "onde estamos". **Todo agent le antes de executar. Toda skill atualiza ao concluir.**
 - **CLAUDE.md evolutivo (max ~4KB)**: so regras do projeto + ponteiros de 1 linha. Detalhes vao para o manifesto. `/discovery`, `/architect`, `/ds-init` e `/adopt` adicionam ponteiros.
-- **Learnings** (`docs/project/learnings/{frontend,backend,business,architecture,process}-learnings.md`): cada agent carrega **so o arquivo do seu dominio** e registra ali descobertas nao previstas (divergencia, pattern, edge case). Decisoes e correcoes tambem viram uma linha em `ledger.md`.
+- **Memoria** (ADR-0010): a **regra ativa** fica em `.claude/rules/learned/<dominio>-<slug>.md` (molde `docs/templates/rule-template.md`) e o Claude Code a carrega sozinho — por `paths`, ao tocar os arquivos da area, em qualquer sessao. **Correcao do usuario vira regra ativa no mesmo turno** + entrada `[CORRECAO DO USUARIO]` no learning do dominio (`docs/project/learnings/`, a evidencia) + uma linha em `ledger.md`. Ninguem carrega `*-learnings.md` por obrigacao: abre o que uma regra cita. Regra cuja `Fonte` nao bate com o codigo nao se aplica — derrube (arquivo sai; a evidencia registra). `node .claude/scripts/memory-check.mjs` cobra.
 
 **REGRA MAXIMA — NUNCA PULAR ETAPAS**: o pipeline e obrigatorio em ordem: `/spec-from-prd` → `/plan` → `/tasks` → `/execute` → `/validate`. Se o usuario pedir para implementar sem os artefatos anteriores, parar, avisar qual etapa falta e rodar a etapa correta antes de escrever codigo. Excecoes: `/quickfix` (trabalho trivial), `/debug` (investigacao de bug) e o modo lite (fluxo enxuto — ver `/mode`).
 

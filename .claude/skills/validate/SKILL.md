@@ -161,7 +161,7 @@ Formato do registro (Tipo 1 — Descoberta durante execucao):
 - **Status**: aplicado
 ```
 
-4. **Atualizar Manifesto**: adicionar entrada em "Regras Aprendidas" do `docs/project/manifest.md` com referencia ao learning registrado.
+4. **Regra ativa** (ADR-0010): candidato aprovado que deve valer no codigo vira arquivo em `.claude/rules/learned/<dominio>-<slug>.md` (molde `docs/templates/rule-template.md`, `paths` da area, `Fonte` com o `arquivo:linha` de um dos achados, `origem` apontando para a entrada acima). Nao ha painel no manifesto: a pasta e o indice.
 
 5. Se algum candidato e claramente **uma ADR nao escrita ainda** (ex: pattern de seguranca recorrente sem ADR cobrindo), sugerir ao usuario:
    > "A regra '{descricao}' parece arquitetural — talvez merece virar ADR formal via `/architect`. Quer abrir essa sessao agora ou registrar so como learning?"

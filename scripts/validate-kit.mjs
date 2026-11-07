@@ -21,6 +21,7 @@
 //   - VERSION ausente ou fora do formato X.Y.Z
 import { readFileSync, existsSync, readdirSync, statSync } from 'node:fs';
 import { join, relative } from 'node:path';
+import { spawnSync } from 'node:child_process';
 import { ROOT, collectKit, collectCatalog, closure, filesOf, kitVersion, isKitOwned, resolveTool } from './lib/kit.mjs';
 
 const errors = [];
@@ -30,6 +31,12 @@ const { skills, agents } = collectKit();
 
 // Versao do catalogo
 if (!/^\d+\.\d+\.\d+$/.test(kitVersion())) fail('VERSION: ausente ou fora do formato X.Y.Z');
+
+// Cobranca da memoria (ADR-0010): o memory-check tem auto-teste e ele precisa passar
+{
+  const r = spawnSync(process.execPath, [join(ROOT, '.claude', 'scripts', 'memory-check.mjs'), '--self-test'], { encoding: 'utf8' });
+  if (r.status !== 0) fail(`.claude/scripts/memory-check.mjs --self-test falhou (exit ${r.status}):\n${(r.stdout + r.stderr).trim().split('\n').map((l) => '      ' + l).join('\n')}`);
+}
 
 // Grafo de dependencias (ADR-0009)
 {

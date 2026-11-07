@@ -241,7 +241,9 @@ O Praxis não é uma ferramenta externa — vive dentro do repositório e evolui
 
 **Manifesto central** (`docs/project/manifest.md`): estado vivo do projeto — stack, ADRs, specs, fase atual, artefatos. Todo agent lê antes de executar. Toda skill atualiza ao concluir.
 
-**Learnings por domínio** (`docs/project/learnings/`): cinco arquivos especializados acumulam descobertas ao longo do tempo.
+**Memória do projeto** (ADR-0010): o que o projeto aprende vira **regra ativa** em `.claude/rules/learned/`, uma por arquivo, que o Claude Code carrega sozinho quando o trabalho toca a área dela (`paths`) — na sessão principal, nos subagentes e nas sessões do loop. Correção do usuário vira regra na primeira vez; regressão vira check; padrão vira ADR.
+
+**Learnings por domínio** (`docs/project/learnings/`): a evidência de cada regra — por que existe, quando mudou ou caiu — em cinco arquivos.
 
 | Arquivo | O que acumula |
 |---------|--------------|
@@ -251,7 +253,7 @@ O Praxis não é uma ferramenta externa — vive dentro do repositório e evolui
 | `architecture-learnings.md` | Decisões arquiteturais, ADR patterns |
 | `process-learnings.md` | O que funciona (ou não) no processo |
 
-Agents carregam apenas o arquivo relevante ao seu escopo — sem desperdiçar contexto. Quanto mais o projeto avança, mais preciso o kit fica. O que foi aprendido num ciclo alimenta o próximo. Erros não se repetem. Padrões validados são reutilizados.
+Ninguém carrega a evidência por obrigação: abre-se a entrada que uma regra cita. Toda regra tem data de verificação, condição de queda e fonte no código; `memory-check` cobra o que quebrou ou venceu. Erros não se repetem. Padrões validados são reutilizados.
 
 ---
 

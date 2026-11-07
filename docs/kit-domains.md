@@ -73,7 +73,7 @@ No frontend:
 
 ## Learnings espelham os domínios
 
-A memória evolutiva (`docs/project/learnings/`) é organizada pelos mesmos eixos: `frontend`, `backend`, `business` (discovery/product), `architecture`, `process` (orchestration/delivery/quality). Cada agent carrega apenas o learning do seu domínio antes de executar.
+A memória do projeto segue os mesmos eixos: regra ativa em `.claude/rules/learned/<dominio>-*.md` e evidência em `docs/project/learnings/<dominio>-learnings.md`, com `dominio` ∈ `frontend`, `backend`, `business` (discovery/product), `architecture`, `process` (orchestration/delivery/quality). A regra carrega sozinha ao tocar os arquivos do `paths`; a evidência só quando citada (ADR-0010).
 
 ## Princípio que rege tudo (70/30)
 

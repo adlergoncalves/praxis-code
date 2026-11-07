@@ -113,19 +113,21 @@ O agent usa o titulo e contexto da ADR para determinar quais arquivos verificar:
 
 ## LEARNINGS — MEMORIA EVOLUTIVA
 
-### Antes de validar: carregar correcoes do usuario
+### Antes de validar: as regras ativas do projeto
 
-**OBRIGATORIO antes de comecar**: ler `docs/project/learnings/architecture-learnings.md` e `docs/project/learnings/process-learnings.md`.
+As regras ativas (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo. Cada uma e uma correcao que o usuario ja fez:
 
-- Learnings marcados com `[CORRECAO DO USUARIO]` indicam erros que o usuario ja identificou e corrigiu
-- Ao validar, verificar ATIVAMENTE se esses erros foram reintroduzidos no codigo
-- Se reintroduzidos → reportar como **REGRESSAO** com severidade maxima (acima de ERRO)
+- Ao validar, verificar ATIVAMENTE se o erro foi reintroduzido no codigo
+- Se reintroduzido → reportar como **REGRESSAO** com severidade maxima (acima de ERRO), citando o arquivo da regra
+- Regra cuja `**Fonte**` nao bate mais com o codigo → aviso "derrubar" no relatorio (nao e regressao)
+
+`docs/project/learnings/` e evidencia: abrir so a entrada que uma regra citar (`origem`).
 
 Formato de regressao:
 ```markdown
-- [ ] **REGRESSAO** `{arquivo}:{linha}` — Pattern corrigido pelo usuario foi reintroduzido
-  - **Correcao original**: {o que foi corrigido anteriormente, baseado no learning}
-  - **Como resolver**: {aplicar a mesma correcao}
+- [ ] **REGRESSAO** `{arquivo}:{linha}` — regra ativa `{dominio}-{slug}` violada
+  - **Regra**: {linha Regra do arquivo da regra}
+  - **Como resolver**: {aplicar a regra}
 ```
 
 ### Registrar novos patterns sem ADR
@@ -141,7 +143,7 @@ Se durante a validacao detectar patterns recorrentes que nao estao cobertos por 
 - **Status**: pendente
 ```
 
-Tambem atualizar a tabela "Regras Aprendidas" em `docs/project/manifest.md` quando patterns forem recorrentes (>3 ocorrencias).
+Pattern recorrente (>3 ocorrencias) e candidato a ADR: dizer isso no relatorio. Quem propoe `/architect` e o Praxis (LOOP DE MELHORIA, nivel 2). Nao ha painel de regras no manifesto (ADR-0010).
 
 ---
 

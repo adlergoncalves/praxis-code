@@ -33,7 +33,7 @@ $ARGUMENTS → Caminho do frontend ou "geral"
 - Proibido: imports circulares entre modulos
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre estrutura de pastas, monorepo, modularizacao. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar convencoes ja definidas no projeto.
+Ler ADRs em `docs/adr/` sobre estrutura de pastas, monorepo, modularizacao. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

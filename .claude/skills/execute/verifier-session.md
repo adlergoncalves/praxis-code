@@ -25,7 +25,10 @@ plano morrem com o fim do turno); comando longo em primeiro plano, com timeout d
 3. **Conformidade, pelos check agents da camada tocada, sobre os arquivos da fatia**:
    - frontend tocado → `/frontend-validate {arquivos}`; backend tocado → `/backend-validate {arquivos}`;
    - sempre `@adr-validator` sobre os mesmos arquivos (projeto em modo `lite`: so ele);
-   - despache tudo **na mesma mensagem** (rodam em paralelo), nunca com `run_in_background`.
+   - despache tudo **na mesma mensagem** (rodam em paralelo), nunca com `run_in_background`;
+   - **regras ativas do escopo** (`.claude/rules/learned/` cujo `paths` cobre os arquivos da fatia):
+     cada uma respeitada? Regra violada = achado, citando o arquivo da regra. Regra cuja `Fonte`
+     nao bate com o codigo: aviso ("derrubar no fechamento"), nao reprova.
    **ERRO** = achado. **AVISO** vai para o relatorio e nao reprova.
 4. **Afirmacao sem prova** — suite "verde" com teste ignorado (`.skip`/`.only`), teste que passaria
    sem a implementacao, assertion relaxada (`toBe(x)` → `toBeDefined()`), teste apagado sem fonte,

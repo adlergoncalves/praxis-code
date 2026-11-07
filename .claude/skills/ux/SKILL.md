@@ -97,7 +97,7 @@ O `/ux` nao substitui nenhuma fase — ele alimenta todas com melhores decisoes 
 1. Verificar se ha contexto existente:
    - `docs/project/discovery.md` → carregar silenciosamente (publico-alvo)
    - `docs/project/manifest.md` → fase atual, stack, Design System em uso
-   - `docs/project/learnings/frontend-learnings.md` → patterns ja decididos
+   - regras ativas de frontend (`.claude/rules/learned/frontend-*.md`, ADR-0010) → patterns ja decididos; `docs/project/learnings/frontend-learnings.md` so como evidencia citada
    - `docs/prds/` → PRDs existentes (listar titulos)
 
 2. Identificar o modo de operacao pelo argumento ou perguntar:
@@ -146,7 +146,7 @@ Esses artefatos sao **consumidos por outras skills**:
 
 ## Atualizacao do Manifesto
 
-Se a sessao gerar decisoes relevantes (pattern definido, componente escolhido, fluxo validado, **personalidade definida, motion grammar criada**), atualizar `docs/project/manifest.md` na secao de Regras Aprendidas e registrar em `docs/project/learnings/frontend-learnings.md`.
+Se a sessao gerar decisoes relevantes (pattern definido, componente escolhido, fluxo validado, **personalidade definida, motion grammar criada**), registrar em `docs/project/learnings/frontend-learnings.md` (evidencia) + linha no `ledger.md`. Decisao que deve valer no codigo (padrao de componente, token, regra de tela) vira **regra ativa** em `.claude/rules/learned/frontend-<slug>.md` (molde `docs/templates/rule-template.md`). O manifesto recebe so ponteiro de artefato (charter, motion, brief), nunca regra (ADR-0010).
 
 ## Handoffs
 

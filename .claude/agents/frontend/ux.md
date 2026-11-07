@@ -46,8 +46,8 @@ Ao ser ativado, carregar silenciosamente (sem listar para o usuario):
 1. `docs/project/discovery.md` — publico-alvo, contexto do produto
 2. `docs/prds/` — PRDs existentes (listar titulos para referencia)
 3. `docs/project/manifest.md` — fase atual do pipeline, stack, DS utilizado
-4. `docs/project/learnings/frontend-learnings.md` — patterns e decisoes de UI ja tomadas
-5. `docs/project/learnings/business-learnings.md` — regras de negocio, persona, modelo (usado no Modo 8 Personalidade)
+4. Regras ativas de frontend e de negocio (`.claude/rules/learned/`, ADR-0010) — carregam sozinhas ao abrir os arquivos da area
+5. `docs/project/learnings/frontend-learnings.md` e `business-learnings.md` — evidencia (patterns, personas, modelo): abrir a entrada que uma regra citar, ou ao explorar o dominio (Modo 8 Personalidade)
 6. `docs/project/glossary.md` — termos do dominio
 7. `docs/adr/` — ADRs de Design System e UX patterns (se existirem)
 8. `docs/project/ux-charter.md` — personalidade do produto (se existe, usado como ancora em todos os modos)
@@ -315,7 +315,7 @@ Define a **linguagem de movimento** do projeto. Output: `docs/project/motion.md`
 - **Nunca passar de 600ms** exceto em hero animations ou celebracoes intencionais
 ```
 
-6. Apos salvar, sugerir: "Vou registrar a motion grammar como Regra Aprendida no manifesto e em `frontend-learnings.md`. OK?"
+6. Apos salvar, sugerir: "Vou registrar a motion grammar em `frontend-learnings.md` (evidencia) e no ledger; o manifesto recebe o ponteiro para `docs/project/motion.md`. OK?"
 
 **Regra**: motion.md e UM por projeto. Se ja existe, perguntar se quer **revisar** ou **substituir** — nao criar duplicata.
 
@@ -475,7 +475,7 @@ Cada decisao de UI/UX deve poder ser citada de volta a um atributo ou principio 
 **Regras de persistencia:**
 - **Apenas** `docs/project/ux-charter.md` — single source of truth. NAO escrever na Constitution.
 - **Nunca sobrescrever silenciosamente** — se existia, ja foi confirmado no Step 1.
-- Atualizar `docs/project/manifest.md` (secao identidade visual, Regras Aprendidas) com pointer ao charter.
+- Atualizar `docs/project/manifest.md` (secao identidade visual) com pointer ao charter — ponteiro de artefato, nao regra (ADR-0010).
 - Registrar em `docs/project/learnings/frontend-learnings.md` no instante: "Charter capturado: register=X, arquetipo=Y, refs=[...]".
 
 ##### Step 7 — Confirmar e fechar
@@ -658,7 +658,7 @@ Apresentar o brief completo. **Esperar "vai" explicito do usuario**. Nada de imp
 
 Quando o usuario aprovar:
 - Marcar checkbox no brief com data.
-- Atualizar `docs/project/manifest.md`: adicionar entrada em "Regras Aprendidas" → "feature {slug}: shape brief aprovado em {data}, mock {aprovado em {data} | dispensado: {razao}}".
+- Nao escrever no manifesto: aprovacao de brief e evento (ledger + evidencia abaixo), nao regra (ADR-0010). O `/execute` le o checklist do proprio brief.
 - Append em `docs/project/learnings/frontend-learnings.md`: descoberta + decisoes do brief.
 - Append linha no `ledger.md` (via instrucao incremental): `decisao | domain:frontend | "Shape brief {slug} aprovado: color={X}, refs=[{Y}]"`.
 

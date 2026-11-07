@@ -30,7 +30,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Inline styles (`style={{}}`) apenas para valores dinamicos que nao tem outro meio
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre Design System, tokens, componentes. Verificar se existe `design-system/` ou `src/design-system/` com tokens definidos. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar patterns do DS do projeto.
+Ler ADRs em `docs/adr/` sobre Design System, tokens, componentes. Verificar se existe `design-system/` ou `src/design-system/` com tokens definidos. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 **Adicionalmente, carregar (se existirem)**:
 - `docs/project/motion.md` — motion grammar do projeto (gerada via `/ux motion`). Define duracoes, easings e microinteracoes padrao. **Toda animacao no codigo deve ser validavel contra este documento**

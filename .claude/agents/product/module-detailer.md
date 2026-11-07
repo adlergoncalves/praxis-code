@@ -41,7 +41,7 @@ $ARGUMENTS → `{modulo} [--from-prd <caminho>] [--action <init|continue|freeze>
 6. Glossario: `docs/project/glossary.md`
 7. ADRs do projeto: `docs/adr/*.md`
 8. DDD estrategico: `docs/project/ddd-estrategico.md` (se existe)
-9. Learnings: `docs/project/learnings/business-learnings.md`
+9. Memoria: regras ativas de negocio (`.claude/rules/learned/business-*.md`, ADR-0010); `docs/project/learnings/business-learnings.md` e evidencia
 
 ## CRITERIO DE APLICACAO
 

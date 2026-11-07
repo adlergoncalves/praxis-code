@@ -47,7 +47,7 @@ Praxis nao e uma skill a mais no pipeline. E uma **camada de orquestracao acima 
 
 - **Voz**: direto, opinativo, sem rodeios. Nao pergunta "como posso ajudar?" — diz o que ve e o que recomenda.
 - **Postura**: opinativo, proativo, honesto sobre riscos, eficiente, parceiro de continuidade.
-- **Memoria**: zero memoria de conversa. Toda a memoria vem do manifesto, constitution, ADRs, specs e learnings — fonte de verdade vive nos artefatos.
+- **Memoria**: zero memoria de conversa. Toda a memoria vem do manifesto, constitution, ADRs, specs e regras ativas (`.claude/rules/learned/`, ADR-0010); os learnings sao a evidencia — fonte de verdade vive nos artefatos.
 
 Detalhes completos no design do agente, no repositorio do kit.
 

@@ -49,7 +49,7 @@
 | `/tasks` | `.claude/skills/tasks/SKILL.md` | Sub-fase 5b: Quebra o plan em fatias verticais (U0..Un = User Stories) com contrato + DoD + mapa BDD e fecha o pacote no portao final: consistencia, paradas provaveis eliminadas, metricas de prontidao, Preflight e guia de validacao para aprovacao. Depois dele o /execute roda autonomo. Loop Engineering (ADR-0007). | 5 |
 | `/ux` | `.claude/skills/ux/SKILL.md` | Especialista em Experiencia do Usuario — avalia fluxos, decide componentes, questiona specs pela otica do usuario e aponta problemas de interface com sinceridade. Consultivo, proativo e orientado ao usuario real. | 13 |
 | `/validate` | `.claude/skills/validate/SKILL.md` | Fase 6: Validacao — Orquestrador principal. Despacha agents core + frontend + backend conforme stack do projeto. | 4 |
-| `/verify-all` | `.claude/skills/verify-all/SKILL.md` | Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007). | 4 |
+| `/verify-all` | `.claude/skills/verify-all/SKILL.md` | Confronta o Loop Log (tasks.md) com os gates REAIS (exit codes). Veredito binário verde/vermelho — não 'o modelo acha que terminou'. Gate objetivo do Loop Engineering (ADR-0007). | 5 |
 
 ## Agents (45)
 
@@ -116,7 +116,7 @@
 
 | Agent | Path | Descricao | Deps |
 |-------|------|-----------|------|
-| `@praxis` | `.claude/agents/orchestration/praxis.md` | Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta. | - |
+| `@praxis` | `.claude/agents/orchestration/praxis.md` | Agente principal do kit. Dev senior parceiro de projeto que conhece o estado real, despacha para a skill certa e interrompe quando ve risco. Le manifesto antes de qualquer resposta. | 2 |
 
 ### product (6)
 
@@ -373,6 +373,7 @@ Items omitidos sao folha (zero dependencias no kit).
 - `.claude/skills/execute`
 - `.claude/scripts/build-gate.mjs`
 - `.claude/scripts/frontend/check-learnings.mjs`
+- `.claude/scripts/memory-check.mjs`
 - `.claude/scripts/deps-audit.mjs`
 
 ### @adr-creator
@@ -433,6 +434,11 @@ Items omitidos sao folha (zero dependencias no kit).
 - `.claude/reference/frontend/register-product.md`
 - `docs/templates/design-memory-template.md`
 - `.claude/scripts/frontend/screenshot.mjs`
+
+### @praxis
+
+- `docs/templates/rule-template.md`
+- `.claude/scripts/memory-check.mjs`
 
 ### @clarifier
 

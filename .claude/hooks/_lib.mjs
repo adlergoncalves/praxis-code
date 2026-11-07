@@ -149,7 +149,9 @@ export function ensureState(root) {
   const p = statePath(root);
   if (existsSync(p)) return;
   mkdirSync(dirname(p), { recursive: true });
-  const seed = `# Estado do Projeto (snapshot de handoff)\n\n> Reescrito automaticamente pelo hook capture.mjs. Snapshot efemero (gitignored no cliente).\n\n${STATE_START}\n**Ultimo checkpoint**: —\n**Evento**: —\n**Fase atual**: —\n**Ultima acao (skill / resultado)**: — / —\n**Arquivos alterados no ultimo turno**: —\n**Learnings pendentes**: —\n**Proximo passo sugerido**: —\n**Nag emitido no turno anterior**: nao\n${STATE_END}\n`;
+  // So campos que algum hook grava de fato. "Onde estamos" e o manifesto (docs/project/manifest.md) e o
+  // Loop Log do tasks.md — nao este snapshot (ADR-0010).
+  const seed = `# Estado do Projeto (snapshot de handoff)\n\n> Reescrito automaticamente pelo hook capture.mjs. Snapshot efemero (gitignored no cliente).\n\n${STATE_START}\n**Ultimo checkpoint**: —\n**Evento**: —\n**Arquivos alterados no ultimo turno**: —\n**Learnings pendentes**: —\n**Nag emitido no turno anterior**: nao\n**Cobranca de memoria em**: —\n${STATE_END}\n`;
   writeFileSync(p, seed, 'utf8');
 }
 

@@ -34,7 +34,7 @@ Cria PRDs de alta qualidade seguindo o template canonico do projeto. Atua como *
 3. ADRs: `docs/adr/`
 4. Glossario: `docs/project/glossary.md`
 5. PRD complementar (estrategico se criando tatico, vice-versa)
-6. Learnings: `docs/project/learnings/business-learnings.md`
+6. Memoria: regras ativas de negocio (`.claude/rules/learned/business-*.md`, ADR-0010) carregam ao abrir `docs/prds/`; `docs/project/learnings/business-learnings.md` e evidencia
 
 > **Por que ler o gate-report**: o briefing sumariza para iniciar o PRD rapido, mas o gate-report preserva o **porque** de cada decisao adiada. Ex: briefing diz "Pagamento: pendente". Gate-report diz "Pagamento: pendente porque CNPJ ainda nao foi definido; revisar quando regularizacao completar". Sem o gate-report, o PRD perde memoria institucional e a equipe esquece o contexto em 3 meses.
 

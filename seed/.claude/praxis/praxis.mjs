@@ -402,14 +402,23 @@ function cmdCheck(lock, args) {
 
 function planUpdate(lock, next) {
   const replace = [], keep = [], add = [], removed = [], same = [];
-  const tools = closure(next, Object.keys(lock.tools).filter((p) => resolveTool(next, p)));
+  // O nucleo faz parte de todo projeto com o kit (o init o puxa): ferramenta que ENTROU no nucleo
+  // depois da instalacao chega pela atualizacao, nao so a que ja estava no lock.
+  const wanted = [...new Set([...Object.keys(lock.tools), ...(next.core ?? [])])].filter((p) => resolveTool(next, p));
+  const tools = closure(next, wanted);
   for (const p of tools) {
     const t = next.tools[p];
     const entry = lock.tools[p] ?? { files: {} };
     for (const [file, sha] of Object.entries(t.files)) {
       const abs = join(ROOT, file);
       const old = entry.files[file];
-      if (old === undefined) { if (!existsSync(abs)) add.push(file); continue; }
+      if (old === undefined) {
+        // arquivo que o lock nao conhece: novo (nao existe) · igual ao do kit · ou do projeto (mantido)
+        if (!existsSync(abs)) add.push(file);
+        else if (hashFile(abs) === sha) same.push(file);
+        else keep.push(file);
+        continue;
+      }
       if (!existsSync(abs)) { removed.push(file); continue; }
       const cur = hashFile(abs);
       if (cur === sha) same.push(file);
@@ -452,7 +461,7 @@ function cmdApply(lock, args) {
       const entry = { kind: t.kind, files: {} };
       const old = lock.tools[p]?.files ?? {};
       for (const [file, sha] of Object.entries(t.files)) {
-        if (plan.keep.includes(file)) { entry.files[file] = old[file]; newLock.pending[file] = update.version; continue; }
+        if (plan.keep.includes(file)) { entry.files[file] = old[file] ?? sha; newLock.pending[file] = update.version; continue; }
         if (plan.removed.includes(file)) { entry.files[file] = old[file]; continue; }
         if (plan.same.includes(file)) { entry.files[file] = sha; delete newLock.pending[file]; continue; }
         if (file === '.claude/praxis/praxis.mjs') { entry.files[file] = sha; continue; } // por ultimo

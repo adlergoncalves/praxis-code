@@ -79,7 +79,7 @@ degrau de modelo acima, com os achados no prompt; reprovada de novo, o driver pa
 1. **Preflight respondido** — linha `—` e falha de geracao do pacote: perguntar **todas juntas, uma vez**, antes da corrida.
 2. **Branch** — estar na branch do Preflight; nao existe → criar a partir da base declarada. Arvore suja com trabalho alheio a feature → parar e perguntar. Nunca implementar na branch principal (`main`/`master`/`develop`).
 3. **Ambiente** — o que o Gate 0 nao cobre: itens da Infra de Verificacao (plan) e o que as fatias pendentes exigem (runner de e2e, banco e servicos locais, **app rodando** para a revisao visual das fatias de UI). Subir o que for do projeto e deixar de pe durante a corrida — as sessoes do driver o usam. O que estiver morto e nao puder subir → a fatia que depende dele vira `BLOCKED` de largada.
-4. **Learnings** — carregar os arquivos de `docs/project/learnings/` e as `[CORRECAO DO USUARIO]`. As sessoes do driver recebem as correcoes pelo hook de inicio de sessao. Conflito com **regra de negocio** → perguntar antes da corrida.
+4. **Regras ativas** (ADR-0010) — listar `.claude/rules/learned/` e conferir as do escopo da feature (dominio/`paths`): elas carregam sozinhas nas sessoes do driver ao tocar os arquivos. A cobranca do hook (`node .claude/scripts/memory-check.mjs`) com ERRO — regra quebrada, `Fonte` morta — se resolve antes da corrida: derrubar ou corrigir. Regra em conflito com **regra de negocio** da spec → perguntar antes da corrida.
 5. **Gate de frontend** (feature que toca UI) — ver secao Gate de frontend; faltando ancora ou Shape, as fatias de UI ficam `BLOCKED` de largada (marcar no Loop Log com o motivo).
 6. **Permissoes** — a sessao do driver nao tem quem aprove: o que o `settings.json` nao libera e negado. Na primeira corrida do projeto, rodar o **ensaio** (`--max 1`) e conferir no log se houve negacao; acrescentar a regra que faltou antes de soltar a corrida inteira.
 
@@ -101,7 +101,7 @@ degrau de modelo acima, com os achados no prompt; reprovada de novo, o driver pa
 
 | Saida | O que fazer |
 |---|---|
-| `0` acabou | Fechamento (seguranca → `/verify-all` → learnings → promessa) |
+| `0` acabou | Fechamento (seguranca → `/verify-all` → memoria → promessa) |
 | `3` parada pedida pela sessao | Ler o relatorio da sessao (caminho na saida) e levar a pergunta ao usuario: decisao de negocio, watchdog (abandonar · `BLOCKED` · tentar mais N), acao destrutiva. Registrar a resposta (spec › Decisoes ou Implementation Notes; Loop Log no watchdog) e soltar o driver de novo |
 | `4` fora do contrato | Ler o log da sessao: permissao negada, ferramenta ausente, relatorio sem a linha do driver, verificador sem veredito. Corrigir a causa e soltar de novo; sem causa corrigivel, levar ao usuario |
 | `5` so BLOCKED / nada liberado | Listar o motivo de cada uma (Notas). O que bloqueava mudou (servico de pe, decisao tomada) → voltar a fatia para `TODO` e soltar de novo; senao, "bloqueado, preciso de X" |
@@ -154,35 +154,36 @@ roda os gates depois da integracao; o verificador confere o grupo e pode reprova
 
 ---
 
-## Learnings — registrar no instante
+## Memoria — registrar no instante
 
-**No instante, nunca no fim**. Descoberta nao prevista → entrada Tipo 1 no arquivo do dominio (`docs/project/learnings/`) + uma linha `(llm)` no `ledger.md` (`<ts> | descoberta | domain:<d> | "<resumo>" | (llm)`). Correcao do usuario (nas paradas, no fechamento) → entrada `[CORRECAO DO USUARIO]` (com **Regra derivada**) + linha `(llm)` (`<ts> | correcao | domain:<d> | "<regra derivada>" | (llm)`) **antes de seguir**. Formatos em `docs/project/learnings/README.md`.
+**No instante, nunca no fim** (ADR-0010). Correcao do usuario (nas paradas, no fechamento) → **regra ativa** em `.claude/rules/learned/<dominio>-<slug>.md` (molde `docs/templates/rule-template.md`, `paths` da area, `Fonte`, `origem`) + entrada `[CORRECAO DO USUARIO]` no learning do dominio + linha `(llm)` (`<ts> | correcao | domain:<d> | "<regra>" | (llm)`) **antes de seguir**. Descoberta nao prevista → entrada Tipo 1 no learning do dominio + linha `(llm)` (`<ts> | descoberta | domain:<d> | "<resumo>" | (llm)`); vira regra so se mudar a implementacao. Formatos em `docs/project/learnings/README.md`.
 
-| Origem | Arquivo |
+| Origem | Dominio (prefixo da regra e arquivo de evidencia) |
 |---|---|
-| `--team front` | `frontend-learnings.md` |
-| `--team back` / `--team db` | `backend-learnings.md` |
-| decisao de arquitetura | `architecture-learnings.md` |
-| comportamento do kit / processo | `process-learnings.md` |
+| `--team front` | `frontend` |
+| `--team back` / `--team db` | `backend` |
+| decisao de arquitetura | `architecture` |
+| comportamento do kit / processo | `process` |
 
 ## Gate de uso de aprendizado (TRAVA — antes de declarar a feature concluida)
 
-O aprendizado so vale se muda a implementacao. No fechamento, produzir (e gravar na spec, em `## Implementation Notes` ou secao propria):
+O aprendizado so vale se muda a implementacao. No fechamento, rodar `node .claude/scripts/memory-check.mjs` (exit 1 → derrubar ou corrigir a regra antes de seguir) e produzir (gravar na spec, em `## Implementation Notes` ou secao propria):
 
 ```markdown
-## Learnings aplicados — {feature}
+## Regras aplicadas — {feature}
 
-| Learning | Dominio | Status | Como foi aplicado / por que nao se aplica |
+| Regra (arquivo em .claude/rules/learned/) | Dominio | Status | Como foi respeitada / por que nao se aplica |
 |---|---|---|---|
-| [CORRECAO 2026-05-16] nunca pular etapas | process | resolvido (aplicado) | pipeline seguido: plan→tasks→execute |
+| process-pipeline-em-ordem | process | aplicada | pipeline seguido: plan→tasks→execute |
+| frontend-rota-declarada | frontend | nao se aplica | fatia sem navegacao |
 | [pendente] {descoberta} | {dominio} | aplicado / descartado | {o que foi feito} |
 ```
 
-1. **Toda** `[CORRECAO DO USUARIO]` do escopo aparece com como foi respeitada.
-2. Todo learning Tipo 1 `pendente` do dominio vira `aplicado` (flipar no arquivo) ou `descartado` (com motivo).
-3. Cada correcao aplicada → uma linha `(llm)` no `ledger.md` (`<ts> | correcao | domain:<d> | "aplicada em {feature}" | (llm)`).
+1. **Toda** regra ativa cujo dominio/`paths` cobre os arquivos da feature aparece com como foi respeitada. Regra cuja `Fonte` nao bateu com o codigo durante a corrida (relatorio da fatia) → derrubar agora: arquivo sai, a entrada de origem registra data e motivo.
+2. Todo learning Tipo 1 `pendente` do dominio vira `aplicado` (flipar no arquivo; mudou a implementacao → gravar a regra) ou `descartado` (com motivo).
+3. Cada regra aplicada → `medido_em` de hoje no arquivo dela (a corrida acabou de confirma-la) + uma linha `(llm)` no `ledger.md` (`<ts> | correcao | domain:<d> | "aplicada em {feature}" | (llm)`).
 
-Learning relevante nao aplicado → corrigir antes de concluir; se a correcao exigir decisao de negocio, perguntar. Sem learnings no escopo → escrever "Nenhum learning aplicavel ao escopo desta feature".
+Regra relevante nao respeitada → corrigir antes de concluir; se exigir decisao de negocio, perguntar. Sem regra no escopo → escrever "Nenhuma regra ativa aplicavel ao escopo desta feature".
 
 ## Gate de frontend (features de UI — conferido na Regra 0)
 
@@ -191,7 +192,7 @@ Quando a feature toca UI (`--team front` ou spec/tasks com telas/componentes/DS)
 1. **Ancora de design** — Charter (`docs/project/ux-charter.md` com `## Register`) **ou** memoria de design (`docs/design-system/system.md` com Register, Direcao e Dominio preenchidos). Um basta.
 2. **Shape brief** — `docs/project/ux-shape-{slug}.md` com o checklist de aprovacao marcado: brief aprovado + (mock aprovado **ou** mock dispensado com razao explicita).
 
-Faltando → as fatias de UI ficam `BLOCKED` ("sem ancora de design / Shape — rodar `/ux shape {feature}`, que explora o dominio e grava a memoria quando nao ha ancora") e o loop segue com as fatias sem UI. Ao concluir: duas linhas extras em "Learnings aplicados" (`[GATE] Ancora` — Charter ou memoria, com register — e `[GATE] Shape brief`, com datas) + no `ledger.md`: `{ts} | decisao | domain:frontend | "Feature {slug}: ancora+shape gate passados; implementacao concluida" | (llm)`. Padrao de componente usado 2+ vezes na feature → memoria de design (`docs/design-system/system.md`).
+Faltando → as fatias de UI ficam `BLOCKED` ("sem ancora de design / Shape — rodar `/ux shape {feature}`, que explora o dominio e grava a memoria quando nao ha ancora") e o loop segue com as fatias sem UI. Ao concluir: duas linhas extras em "Regras aplicadas" (`[GATE] Ancora` — Charter ou memoria, com register — e `[GATE] Shape brief`, com datas) + no `ledger.md`: `{ts} | decisao | domain:frontend | "Feature {slug}: ancora+shape gate passados; implementacao concluida" | (llm)`. Padrao de componente usado 2+ vezes na feature → memoria de design (`docs/design-system/system.md`).
 
 ---
 

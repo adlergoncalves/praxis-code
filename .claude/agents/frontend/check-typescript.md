@@ -38,7 +38,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Proibido: `enum` numerico sem valor explicito (fragil a reordenacao)
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre TypeScript, type safety, generics. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar correcoes ja identificadas no projeto.
+Ler ADRs em `docs/adr/` sobre TypeScript, type safety, generics. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

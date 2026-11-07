@@ -18,9 +18,12 @@
   as linhas do Log de iteracoes, as regras, decisoes e armadilhas da spec, e o Modulo de
   Referencia, os Fatos Confirmados e a Infra do plan. Abra spec, plan ou tasks inteiros so se
   faltar algo, e diga no relatorio o que faltou. ADRs citados na fatia: abra-os.
-- **Correcoes do usuario** chegam no contexto de inicio de sessao (hook `reconcile`): sao
-  restricoes antes de escrever codigo e prevalecem sobre spec e plan. Conflito com **regra de
-  negocio** → `DRIVER: PARAR` com a pergunta.
+- **Regras ativas do projeto** (`.claude/rules/learned/`, ADR-0010) carregam sozinhas quando voce
+  le ou edita um arquivo do `paths` delas: sao restricoes antes de escrever codigo e prevalecem
+  sobre spec e plan. Regra com `**Fonte**` que o codigo contradiz **nao se aplica**: nao a edite
+  nem apague (fora do escopo da fatia) — registre no relatorio ("regra X: fonte nao bate") e a
+  sessao principal derruba no fechamento. Conflito com **regra de negocio** → `DRIVER: PARAR`
+  com a pergunta.
 
 ## Passos
 
@@ -97,7 +100,8 @@
 - **Decisao que nao bloqueia esta fatia** → registre e siga.
 - **Acao destrutiva ou fora do escopo do pacote** → `DRIVER: PARAR - <o que e por que>`.
 - **Descoberta nao prevista** → no instante: entrada Tipo 1 no learning do dominio
-  (`docs/project/learnings/`) + uma linha `(llm)` no `ledger.md`.
+  (`docs/project/learnings/`) + uma linha `(llm)` no `ledger.md`. Nao crie regra ativa aqui
+  (`.claude/rules/learned/` e da sessao principal, com o usuario); proponha no relatorio.
 
 ## Execucao sem humano
 

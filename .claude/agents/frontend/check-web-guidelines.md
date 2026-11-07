@@ -35,8 +35,10 @@ decidem explicitamente nao e achado. Em conflito com `.claude/reference/frontend
 ou com os registers, o kit vence (precedencia no README de terceiros).
 
 ## REGRAS DINAMICAS
-Carregar `docs/project/learnings/frontend-learnings.md` (correcoes do usuario tem peso maximo) e as
-ADRs de frontend em `docs/adr/`.
+As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao
+abrir os arquivos do escopo — aplique-as como regra do projeto (correcao do usuario tem peso maximo);
+`docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
+E as ADRs de frontend em `docs/adr/`.
 
 ## EXECUCAO
 

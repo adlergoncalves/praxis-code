@@ -6,6 +6,18 @@ O formato segue [Keep a Changelog](https://keepachangelog.com/pt-BR/1.1.0/) e o 
 
 ## [Unreleased]
 
+## [0.3.0] — 2026-11-07
+
+### Memória do projeto — regra ativa carregada por caminho, evidência sob demanda, validade e cobrança (ADR-0010)
+- **Correção do usuário vira regra ativa na primeira vez**, em `.claude/rules/learned/<dominio>-<slug>.md` (molde `docs/templates/rule-template.md`). O Claude Code carrega a regra sozinho — por `paths`, quando um arquivo da área é lido, escrito ou editado — na sessão principal, nos subagentes e nas sessões do driver. O hook deixa de injetar correções e pendências; o roteiro do Praxis e o `/execute` deixam de carregar os cinco arquivos de learning.
+- **Learnings viram evidência**: `docs/project/learnings/` guarda o histórico (descoberta, correção, por que a regra mudou ou caiu); ninguém carrega por obrigação, abre-se a entrada que uma regra cita.
+- **Validade**: toda regra tem `medido_em`, `derruba_com`, `vale_enquanto`, `check`, `origem` e `Fonte` (`arquivo:linha`), conferida antes de aplicar. Regra que o código contradiz é derrubada (arquivo sai; a evidência registra), não editada.
+- **Cobrança determinística**: `.claude/scripts/memory-check.mjs` (frontmatter quebrado, fonte morta, vencida, corpo longo, orçamento de regras sem `paths`, correção sem regra; `--self-test` no `validate-kit`). Roda no `SessionStart` pelo `reconcile.mjs` (uma linha; problemas no máximo 1x/dia), no fechamento do `/execute` e no `/verify-all`.
+- **Escada com fonte única**: 1ª correção → regra; regressão → amplia + `/forge` cria o check e preenche `check:`; 3ª ou "criar ADR" → `/architect`, a regra sai e a ADR cobra. O painel "Regras Aprendidas" do manifesto deixa de existir.
+- **Migração**: o `memory-check` acusa `[CORRECAO DO USUARIO]` sem regra; o Praxis propõe converter uma por vez.
+- `state.md` reduzido ao que os hooks gravam. Onde: ADR-0010, `reconcile.mjs`, `_lib.mjs`, `capture.mjs`, `praxis.md`, `rules.md`, `learnings/README.md`, `manifest.md`, `/execute` (Regra 0, memória, gate de uso, sessão da fatia, verificador), `/verify-all`, `/forge`, `/validate`, `/ux`, `/strategy`, `/define`, `/spec-review`, `@adr-creator`, `@adr-validator`, `@spec-review`, `@prd-create`, `@spec-from-prd`, `@strategy`, `@ux`, `@design`, `@module-detailer`, os `check-*`, manual, apresentação e arquitetura do kit.
+
+
 ## [0.2.0] — 2026-11-05
 
 ### Loop Engineering — uma sessão por fatia é o caminho padrão (ADR-0007, revisão)

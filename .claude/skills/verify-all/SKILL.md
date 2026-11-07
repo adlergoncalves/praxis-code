@@ -5,6 +5,7 @@ depends:
   - .claude/skills/execute
   - .claude/scripts/build-gate.mjs
   - .claude/scripts/frontend/check-learnings.mjs
+  - .claude/scripts/memory-check.mjs
   - .claude/scripts/deps-audit.mjs
 ---
 
@@ -36,6 +37,8 @@ terminou". Esta skill é esse gate.
    - o comando agregado do projeto, se existir (ex.: `npm run check` / `make check`);
    - `node .claude/scripts/build-gate.mjs .` (se o script existe no projeto);
    - `node .claude/scripts/frontend/check-learnings.mjs <path>` (se existe);
+   - `node .claude/scripts/memory-check.mjs` (ADR-0010): regra ativa quebrada ou com `Fonte` morta é
+     exit 1 — a memória que orientou a feature não pode estar mentindo quando a promessa sai;
    - os comandos de teste declarados na tabela de Gates (unit sempre; integração/e2e
      quando o ambiente estiver disponível — senão reporta como NÃO VERIFICADO, sem inventar);
    - `node .claude/scripts/deps-audit.mjs . --dry-run` (dependência vulnerável nova desde o

@@ -80,7 +80,7 @@ O `/strategy` e uma sessao conversacional — nao requer `/clear` antes ou depoi
 
 ## Atualizacao do Manifesto
 
-Se a sessao gerar decisoes relevantes (mudanca de escopo, nova prioridade, risco identificado), atualizar `docs/project/manifest.md` na secao de Regras Aprendidas.
+Se a sessao gerar decisoes relevantes (mudanca de escopo, nova prioridade, risco identificado), registrar em `docs/project/learnings/business-learnings.md` (evidencia) + linha `decisao` no `ledger.md`; o manifesto recebe so o ponteiro do artefato de estrategia. Decisao nao e regra (ADR-0010): regra ativa so quando algo deve valer na implementacao.
 
 ## Handoffs
 

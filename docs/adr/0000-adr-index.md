@@ -25,4 +25,5 @@ Consulte `docs/adr/templates/` para ADRs pre-definidas baseadas em boas praticas
 | [0007](0007-loop-engineering-execucao.md) | Loop Engineering na Execucao (loop por fatia vertical) | Aceito | 2026-10-19 |
 | [0008](0008-seguranca-e-lgpd.md) | Seguranca da Informacao e Conformidade LGPD | Aceito | 2026-10-19 |
 | [0009](0009-distribuicao-catalogo-semente.md) | Distribuicao por catalogo e semente — o kit se monta dentro do projeto | Aceito | 2026-10-19 |
+| [0010](0010-memoria-do-projeto.md) | Memoria do projeto — regra ativa por caminho, evidencia sob demanda, validade e cobranca | Aceito | 2026-11-05 |
 | <!-- NNNN --> | <!-- titulo --> | <!-- Accepted/Proposed/Deprecated --> | <!-- YYYY-MM-DD --> |

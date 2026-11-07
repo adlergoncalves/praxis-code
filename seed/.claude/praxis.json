@@ -1,18 +1,18 @@
 {
   "repo": "https://github.com/adlergoncalves/praxis-code.git",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "pin": null,
   "tools": {
     ".claude/praxis/praxis.mjs": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/praxis.mjs": "797557465141d593fd68c3ba9eda05ac1fbda406f12c49d7c96d20371c9bcad6"
+        ".claude/praxis/praxis.mjs": "064876306c005ec5b71a48816ca2f107544933ea90d03d0ad721fd026ceff22d"
       }
     },
     ".claude/praxis/rules.md": {
       "kind": "asset",
       "files": {
-        ".claude/praxis/rules.md": "737b7e2100c1196ad529c7b3d315fd3520ed31e121e652925501ef8751e6312b"
+        ".claude/praxis/rules.md": "ee0dba3fa5264b77af4734f2b1f2d4132011551ccfaeb2af647097cf60422ed8"
       }
     },
     ".claude/settings.json": {

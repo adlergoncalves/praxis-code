@@ -42,7 +42,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Fixture de banco deve ser resetada entre testes ou usar transacao rollback
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre testes, cobertura, integration test strategy, test fixtures. Aplicar regras OBRIGATORIO/PROIBIDO definidas. Carregar `docs/project/learnings/backend-learnings.md` para verificar patterns de teste ja identificados no projeto.
+Ler ADRs em `docs/adr/` sobre testes, cobertura, integration test strategy, test fixtures. Aplicar regras OBRIGATORIO/PROIBIDO definidas. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/backend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

@@ -38,7 +38,7 @@ $ARGUMENTS → Caminho ou "geral"
 - `aria-invalid="true"` em inputs com erro
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre forms, validacao, schema. Carregar `docs/project/learnings/frontend-learnings.md` para aplicar patterns de form ja definidos no projeto.
+Ler ADRs em `docs/adr/` sobre forms, validacao, schema. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

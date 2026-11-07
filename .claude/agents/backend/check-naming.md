@@ -46,7 +46,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Proibido: `Update`, `Set`, `Process`, `Handle` como verbo principal sem qualificador (muito generico)
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre naming conventions. Carregar `docs/project/glossary.md` para verificar linguagem ubiqua do projeto. Carregar `docs/project/learnings/backend-learnings.md` para aplicar correcoes de naming ja identificadas anteriormente.
+Ler ADRs em `docs/adr/` sobre naming conventions. Carregar `docs/project/glossary.md` para verificar linguagem ubiqua do projeto. As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/backend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

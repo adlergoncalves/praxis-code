@@ -37,8 +37,8 @@ O kit inclui:
 - **45 agents** especializados, organizados em 8 domínios (Praxis, Discovery, Planner, Strategy, UX, engenharia reversa, module detailer, validação, scaffolding e mais)
 - **41 skills** de orquestração — a única forma de invocar workflows via `/`
 - **13 ADR templates** baseados em boas práticas de mercado
-- **7 templates de artefatos** (spec, plan, tasks, checklist, guia de validação, doctor.json, memória de design)
-- **Sistema de learnings** por domínio — o kit aprende e melhora com o uso
+- **8 templates de artefatos** (spec, plan, tasks, checklist, guia de validação, doctor.json, memória de design, regra ativa)
+- **Memória do projeto** (ADR-0010) — regra ativa carregada por caminho, evidência por domínio, validade e cobrança: o kit aprende com o uso sem inflar o contexto
 - **Team scope** (`--team front|back|db|full`) para trabalho focado por área
 - **Hooks de aprendizado** — registram decisões e correções no instante em que acontecem
 
@@ -809,11 +809,7 @@ O Claude Code tem um limite de contexto. Para manter a qualidade das respostas, 
 
 ### Handoff entre sessões (state.md)
 
-A fonte de "onde estamos" é o `docs/project/manifest.md` (projeto) e o Loop Log do `tasks.md` (feature em execução). O `docs/project/state.md` é um **snapshot local** (gitignored), reescrito pelo hook `capture.mjs` a cada turno e injetado como contexto pelo `reconcile.mjs` no início da sessão. Contém:
-- Fase atual do pipeline
-- Último artefato gerado
-- Próxima ação recomendada
-- Itens pendentes
+A fonte de "onde estamos" é o `docs/project/manifest.md` (projeto) e o Loop Log do `tasks.md` (feature em execução). O `docs/project/state.md` é um **snapshot local** (gitignored), reescrito pelo hook `capture.mjs` a cada turno: último checkpoint, evento e arquivos alterados no turno. No início da sessão o `reconcile.mjs` injeta esse checkpoint, a atividade recente do ledger e a cobrança da memória (`memory-check`: regra quebrada, fonte morta, vencida, correção sem regra). As regras do projeto não passam pelo hook: vivem em `.claude/rules/learned/` e o Claude Code as carrega sozinho (ADR-0010).
 
 ---
 
@@ -833,7 +829,8 @@ meu-projeto/
 |   |   +-- backend/        # 7 agents (6 de validação + scaffold-aggregate)
 |   +-- skills/          # 41 skills de orquestração
 |   +-- hooks/           # hooks de aprendizado
-|   +-- scripts/         # gates determinísticos
+|   +-- rules/learned/   # regras ativas do projeto (ADR-0010) — carregadas por `paths`
+|   +-- scripts/         # gates determinísticos (inclui memory-check)
 |   +-- settings.json    # permissões + registro dos hooks
 |
 +-- docs/
@@ -857,7 +854,7 @@ meu-projeto/
 |   |   +-- constitution.md  # Princípios (Fase 2)
 |   |   +-- glossary.md      # Linguagem ubíqua
 |   |   +-- manifest.md      # Estado vivo do pipeline
-|   |   +-- learnings/       # Memória evolutiva por domínio
+|   |   +-- learnings/       # Evidência da memória (regras ativas: .claude/rules/learned/)
 |   |       +-- frontend-learnings.md
 |   |       +-- backend-learnings.md
 |   |       +-- business-learnings.md
@@ -1028,10 +1025,11 @@ meu-projeto/
 - Use `/ux spec {modulo}` para revisar uma spec antes do `/implement` — garante que estados de loading, erro e vazio estão mapeados.
 - Use `/ux interface {descricao}` para feedback honesto sobre uma tela já implementada.
 
-### Sobre Learnings
-- Os learnings são a **memória evolutiva** do kit — quanto mais o projeto avança, mais preciso o kit fica.
-- Agents carregam **apenas o arquivo do seu domínio** — economizando tokens e contexto.
-- O kit usa os learnings para evitar erros repetidos e sugerir patterns já validados.
+### Sobre memória (ADR-0010)
+- **Regra ativa** (`.claude/rules/learned/<dominio>-<slug>.md`): o que o projeto aprendeu e muda a implementação. O Claude Code carrega sozinho, por `paths`, ao tocar os arquivos da área — na sessão principal, nos subagentes e nas sessões do driver. Correção do usuário vira regra na primeira vez.
+- **Learnings** (`docs/project/learnings/`): a evidência — por que cada regra existe, quando mudou ou caiu. Ninguém carrega por obrigação; abre-se a entrada que uma regra cita.
+- Toda regra tem `medido_em`, `derruba_com`, `vale_enquanto` e `Fonte` (`arquivo:linha`), conferida antes de aplicar. `node .claude/scripts/memory-check.mjs` cobra o que quebrou ou venceu.
+- Escada: correção → regra; regressão → check (`/forge`); padrão → ADR (`/architect`), e a regra sai.
 
 ### Sobre o kit
 - O `.claude/` é parte do projeto — commite junto com o código.

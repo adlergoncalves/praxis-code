@@ -7,7 +7,7 @@ Pipeline completo de **discovery → arquitetura → especificação → impleme
 - **41 skills** de orquestração e **45 agents** especializados, organizados em 8 domínios
 - **13 templates de ADR** baseados em boas práticas de mercado
 - **Loop Engineering** (ADR-0007): execução em loop por fatia vertical com gates objetivos
-- **Sistema de learnings** por domínio + hooks que registram decisões e correções no instante em que acontecem
+- **Memória do projeto** (ADR-0010): regra ativa carregada por caminho, evidência por domínio, validade com fonte no código e cobrança determinística; hooks registram decisões e correções no instante em que acontecem
 
 ---
 
@@ -55,7 +55,7 @@ O kit é só texto (prompts em Markdown) mais alguns scripts Node — **sem depe
 
 | O quê | Quando | O que faz |
 |-------|--------|-----------|
-| **Hooks de aprendizado** (`.claude/hooks/*.mjs`) | Automático: início de sessão, cada prompt, fim de turno | Escrevem em `docs/project/` (ledger, learnings, `state.md`) e num cursor local gitignored (`.claude/hooks/.capture-cursor.json`); leem o transcript da sessão para saber os arquivos alterados. A linha automática de cada turno vai para um arquivo local e gitignored, não para o ledger versionado. Não acessa rede nem executa comandos. Registra só caminhos de arquivos **dentro** do projeto. Se o Node não estiver instalado, não fazem nada. |
+| **Hooks de aprendizado** (`.claude/hooks/*.mjs`) | Automático: início de sessão, cada prompt, fim de turno | Escrevem `docs/project/state.md`, a linha automática de cada turno num ledger local gitignored (`docs/project/learnings/ledger-auto.md`) e um cursor local (`.claude/hooks/.capture-cursor.json`); leem o transcript da sessão para saber os arquivos alterados e, no início da sessão, rodam o `memory-check` (só leitura) sobre `.claude/rules/learned/`. Não escrevem regra nem learning (isso é o assistente, no instante). Não acessa rede nem executa comandos. Registra só caminhos de arquivos **dentro** do projeto. Se o Node não estiver instalado, não fazem nada. |
 | **Hooks de qualidade** (`.claude/hooks/quality/`, **opt-in**) | Só se você aceitar no `/setup`: a cada edição | **Executam comandos do seu projeto** — os que você aprovar em `.claude/quality.json` (formatar, lintar, rodar o teste ao lado do arquivo) — e pedem confirmação antes de editar caminho crítico (ADRs, pipelines, configuração do kit). Ligados no `.claude/settings.local.json` de quem aceitou; nunca no `settings.json` versionado. |
 | **Gates** (`.claude/scripts/`) | Quando o `/execute` ou o `/verify-all` pedem | Rodam o build/typecheck do **seu** projeto e checagens estáticas. Passam pelo pedido de permissão normal do Claude Code. |
 | **Auditoria de dependências** (`.claude/scripts/deps-audit.mjs`) | Quando uma fatia do `/execute` toca um manifesto, e no `/verify-all` | Roda o audit do ecossistema (`npm audit`, `pnpm audit`, `dotnet list package --vulnerable`, `pip-audit`) — **consulta a rede** — e compara com `docs/project/security/deps-baseline.json`. |
@@ -249,7 +249,8 @@ Esses são os números do **catálogo**. Um projeto recebe só o que usa: o `/se
   agents/<domínio>/  — 45 subagents em 8 domínios
   skills/<nome>/     — 41 skills
   hooks/             — hooks de aprendizado (em settings.json) e, em quality/, hooks de qualidade opt-in
-  scripts/           — gates e utilitários (build-gate, loop-doctor, loop-driver, loop-briefing, slice-gates, deps-audit, mutants, learnings, clichês, screenshot)
+  rules/learned/     — regras ativas do projeto (ADR-0010; do projeto, o catálogo não toca)
+  scripts/           — gates e utilitários (build-gate, loop-doctor, loop-driver, loop-briefing, slice-gates, memory-check, deps-audit, mutants, learnings, clichês, screenshot)
   reference/         — conhecimento canônico (design, adapters de stack)
 
 seed/                — a semente que o projeto instala (gerada por scripts/build-seed.mjs)
@@ -260,8 +261,8 @@ docs/
   kit-index.md|json  — inventário de skills/agents (gerado)
   adr/               — ADRs do projeto + templates/
   guide/             — manual, tutoriais e apresentação
-  templates/         — templates de spec, plan, tasks e checklist
-  project/           — manifesto, discovery, constitution, glossário, learnings/
+  templates/         — templates de spec, plan, tasks, checklist e regra ativa
+  project/           — manifesto, discovery, constitution, glossário, learnings/ (evidência da memória)
 
 scripts/             — manutenção do kit (generate-index, build-seed, validate-kit)
 ```

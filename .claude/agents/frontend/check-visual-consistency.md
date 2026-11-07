@@ -58,7 +58,7 @@ Screenshots permitem pegar drift que source-level perde:
 4. `docs/design-system/stack-profile.json` — opcional, indica adapter.
 5. `.claude/reference/frontend/design-system-anatomy.md` — estrutura canonica.
 6. `.claude/reference/frontend/register-{brand|product}.md` — defaults casados com o register.
-7. `docs/project/learnings/frontend-learnings.md` — patterns ja decididos.
+7. Regras ativas de frontend (`.claude/rules/learned/`, ADR-0010) — ja no contexto ou carregam ao abrir os arquivos; `docs/project/learnings/frontend-learnings.md` so como evidencia citada por uma regra.
 
 ---
 

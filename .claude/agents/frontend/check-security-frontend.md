@@ -42,7 +42,7 @@ $ARGUMENTS → Caminho ou "geral"
 - Confiar em flag do client (`isAdmin` no estado) para liberar acao sensivel sem validacao no servidor → AVISO
 
 ## REGRAS DINAMICAS
-Ler ADRs em `docs/adr/` sobre seguranca, autenticacao, armazenamento de sessao, LGPD e privacidade (ex: `0008-seguranca-e-lgpd.md`). Carregar `docs/project/learnings/frontend-learnings.md` para aplicar convencoes de seguranca ja definidas no projeto.
+Ler ADRs em `docs/adr/` sobre seguranca, autenticacao, armazenamento de sessao, LGPD e privacidade (ex: `0008-seguranca-e-lgpd.md`). As regras ativas do projeto (`.claude/rules/learned/`, ADR-0010) ja estao no contexto ou carregam ao abrir os arquivos do escopo — aplique-as como regra do projeto; `docs/project/learnings/frontend-learnings.md` e evidencia: abra so a entrada que uma regra citar.
 
 ## EXECUCAO
 

@@ -21,7 +21,7 @@ Transforma features de PRDs em specs tecnicas prontas para implementacao. Le PRD
 3. ADRs relevantes: `docs/adr/`
 4. Glossario: `docs/project/glossary.md`
 5. Specs existentes (referencia de formato): `docs/specs/*/spec.md`
-6. Learnings: `docs/project/learnings/business-learnings.md`
+6. Memoria: regras ativas de negocio (`.claude/rules/learned/business-*.md`, ADR-0010) carregam ao abrir `docs/specs/` e `docs/prds/`; `docs/project/learnings/business-learnings.md` e evidencia (abrir a entrada que uma regra citar)
 7. **Gate report**: `docs/prds/gate-reports/gate-{modulo}-*.md` (se existe — usar o **mais recente**):
    - **Decisoes em aberto** do Gate viram linhas `[REQUER RESPOSTA DO PM]` em Decisoes Fechadas
    - **Dependencias futuras** sinalizam aspectos da spec que dependem de modulos nao definidos ainda
@@ -30,7 +30,7 @@ Transforma features de PRDs em specs tecnicas prontas para implementacao. Le PRD
 
 ## Workflow
 
-1. **Carrega dependencias** (PRD + ADRs + glossario + learnings + ancora de design + motion.md + Constitution Page Shell)
+1. **Carrega dependencias** (PRD + ADRs + glossario + regras ativas + ancora de design + motion.md + Constitution Page Shell)
 2. **Le TODAS as ADRs do projeto** — necessario para gerar "Armadilhas da Demanda" com base real, nao generica
 3. **Determina tipo da spec** inferindo do PRD: `UI` | `Feature` | `Form` | `Modal` | `Backend-only` | `Integration` | `Scaffold`. O tipo decide secoes condicionais:
    - `UI` ou `Feature` com tela → inclui **Anatomia da Tela**
